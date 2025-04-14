@@ -77,7 +77,10 @@ void print_errors(const error_struct *errors);
  * @brief Prints the diagnostics information, including sensor states and error
  * values.
  * @param errors The error_struct containing the error values.
+ * @param interval The time interval in deciseconds for printing diagnostics.
+ * (Default: 10)
  */
-void print_diagnostics(const error_struct *errors);
+void print_diagnostics(const error_struct *errors,
+                       const uint16_t interval = 10);
 
 #endif  // LOGGER_H

@@ -4,6 +4,9 @@
 
 #include "../../include/hal/pwm.h"
 #include "../../include/hal/sensors.h"
+#include "../../include/hal/timer.h"
+
+static volatile uint16_t last_pid_time = 0;
 
 void pid_init(void) {
     sensor_setup();
@@ -62,6 +65,9 @@ void update_motors(int16_t delta_pwm) {
 }
 
 void update_pid(error_struct *errors) {
+    if (!time_elapsed(last_pid_time, PID_FRAME_INTERVAL)) return;
+
+    last_pid_time = time();
     update_central_error(errors);
     update_motors(get_delta_pwm(errors));
 }

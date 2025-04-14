@@ -1,7 +1,10 @@
 #include "../../include/logger/logger.h"
 
 #include "../../include/hal/sensors.h"
+#include "../../include/hal/timer.h"
 #include "../../include/hal/usart.h"
+
+static volatile uint16_t last_log_time = 0;
 
 void logger_init(void) {
     usart_init();
@@ -97,7 +100,10 @@ void print_errors(const error_struct *errors) {
     print_string("\r\n");
 }
 
-void print_diagnostics(const error_struct *errors) {
+void print_diagnostics(const error_struct *errors, const uint16_t interval) {
+    if (!time_elapsed(last_log_time, interval)) return;
+
+    last_log_time = time();
     print_errors(errors);
     print_sensors();
 }
