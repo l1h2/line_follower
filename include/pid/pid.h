@@ -3,11 +3,13 @@
 
 #include <stdint.h>
 
-#define KP 25  // Proportional gain
-#define KI 0   // Integral gain
-#define KD 0   // Derivative gain
+#define KP 25                 // Proportional gain
+#define KI 0                  // Integral gain
+#define KD 0                  // Derivative gain
+#define PID_FRAME_INTERVAL 1  // PID frame interval in deciseconds
+#define STOP_TIME 20          // Time to stop the motors in deciseconds
+#define BREAK_FRAMES STOP_TIME / PID_FRAME_INTERVAL  // Number of frames to stop
 
-#define PID_FRAME_INTERVAL 1          // PID frame interval in deciseconds
 #define MAX_ERROR_SUM 127             // Maximum error sum value
 #define MIN_ERROR_SUM -MAX_ERROR_SUM  // Minimum error sum value
 #define ERROR_SUM_THRESHOLD 5  // Error sum threshold for integral calculation
@@ -82,5 +84,11 @@ void update_motors(int16_t delta_pwm);
  * @param errors Pointer to the error_struct containing error values.
  */
 void update_pid(error_struct *errors);
+
+/**
+ * @brief Stops the motors by reducing the PWM values to zero.
+ * @param errors Pointer to the error_struct containing error values.
+ */
+void stop(error_struct *errors);
 
 #endif  // PID_H

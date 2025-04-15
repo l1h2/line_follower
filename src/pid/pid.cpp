@@ -7,6 +7,7 @@
 #include "../../include/hal/timer.h"
 
 static volatile uint16_t last_pid_time = 0;
+static volatile uint8_t base_pwm = BASE_PWM;
 
 void pid_init(void) {
     sensor_setup();
@@ -79,8 +80,8 @@ int16_t get_delta_pwm(error_struct *errors) {
 }
 
 void update_motors(int16_t delta_pwm) {
-    const int16_t pwm_a = BASE_PWM - delta_pwm;
-    const int16_t pwm_b = BASE_PWM + delta_pwm;
+    const int16_t pwm_a = base_pwm - delta_pwm;
+    const int16_t pwm_b = base_pwm + delta_pwm;
 
     set_motor_a_dir(pwm_a > 0);
     set_motor_b_dir(pwm_b > 0);
@@ -95,4 +96,12 @@ void update_pid(error_struct *errors) {
     last_pid_time = time();
     update_central_error(errors);
     update_motors(get_delta_pwm(errors));
+}
+
+void stop(error_struct *errors) {
+    const uint8_t break_speed = base_pwm / BREAK_FRAMES;
+    while (base_pwm > 0) {
+        base_pwm = (base_pwm <= break_speed) ? 0 : (base_pwm - break_speed);
+        update_pid(errors);
+    }
 }

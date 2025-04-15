@@ -28,5 +28,7 @@ int main(void) {
         update_pid(&error);
     }
 
+    stop(&error);
+
     return 0;
 }
