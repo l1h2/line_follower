@@ -34,28 +34,53 @@ void update_central_error(error_struct *errors) {
     errors->error = new_error * ERROR_WEIGHT / count - AVG_ERROR;
 }
 
-int16_t get_delta_pwm(error_struct *errors) {
-    int16_t delta_pwm = 0;
+int16_t get_p(error_struct *errors) {
+    if (KP == 0) return 0;
+
+    return KP * errors->error;
+}
+
+int16_t get_i(error_struct *errors) {
+    if (KI == 0) return 0;
+
     errors->error_sum += errors->error;
 
-    // Proportional term
-    delta_pwm += KP * errors->error;
+    if (abs(errors->error_sum) < ERROR_SUM_THRESHOLD) return 0;
 
-    // Integral term
-    delta_pwm += KI * errors->error_sum;
+    if (errors->error_sum > MAX_ERROR_SUM) {
+        errors->error_sum = MAX_ERROR_SUM;
+    } else if (errors->error_sum < MIN_ERROR_SUM) {
+        errors->error_sum = MIN_ERROR_SUM;
+    }
 
-    // Derivative term
-    delta_pwm += KD * (errors->error - errors->last_error);
+    return KI * errors->error_sum * PID_FRAME_INTERVAL;
+}
 
-    // Update last error
+int16_t get_d(error_struct *errors) {
+    if (KD == 0) return 0;
+
+    const int16_t delta_error = errors->error - errors->last_error;
     errors->last_error = errors->error;
+
+    errors->filtered_delta_error =
+        (errors->filtered_delta_error * 7 + delta_error) >> 3;
+
+    return KD * errors->filtered_delta_error / PID_FRAME_INTERVAL;
+}
+
+int16_t get_delta_pwm(error_struct *errors) {
+    int16_t delta_pwm = 0;
+
+    delta_pwm += get_p(errors);
+    delta_pwm += get_i(errors);
+    delta_pwm += get_d(errors);
 
     return delta_pwm;
 }
 
 void update_motors(int16_t delta_pwm) {
-    int16_t pwm_a = BASE_PWM - delta_pwm;
-    int16_t pwm_b = BASE_PWM + delta_pwm;
+    const int16_t pwm_a = BASE_PWM - delta_pwm;
+    const int16_t pwm_b = BASE_PWM + delta_pwm;
 
     set_motor_a_dir(pwm_a > 0);
     set_motor_b_dir(pwm_b > 0);
