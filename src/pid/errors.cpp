@@ -2,16 +2,6 @@
 
 #include <stdlib.h>
 
-#include "../../include/hal/sensors.h"
-
-void update_sensors(ErrorStruct *errors) {
-    errors->sensors.central_sensor = !IR6_ON;
-    errors->sensors.left_sensor = !IR1_ON;
-    errors->sensors.right_sensor = !IR12_ON;
-    errors->sensors.middle_sensor = !IR7_ON;
-    errors->sensors.central_sensors_state = CENTRAL_SENSOR_BYTE;
-}
-
 void update_error(ErrorStruct *errors) {
     const uint8_t central_sensors_state = errors->sensors.central_sensors_state;
     if (!central_sensors_state) {
@@ -62,7 +52,7 @@ void update_delta_error(ErrorStruct *errors) {
 }
 
 void update_error_struct(ErrorStruct *errors) {
-    update_sensors(errors);
+    update_sensors(&errors->sensors);
     update_error(errors);
     update_error_sum(errors);
     update_delta_error(errors);

@@ -3,6 +3,8 @@
 
 #include <avr/io.h>
 
+#include "sensor_constants.h"
+
 #define IR1 PD2   // Left lateral IR sensor
 #define IR2 PD3   // First central IR sensor
 #define IR3 PD4   // Second central IR sensor
@@ -71,9 +73,6 @@
 #define E6 (IR9_ON << 4)   // Sixth central IR sensor bit
 #define E7 (IR10_ON << 1)  // Seventh central IR sensor bit
 #define E8 (IR11_ON << 1)  // Eighth central IR sensor bit
-
-#define TOTAL_SENSORS 12         // Total number of sensors
-#define TOTAL_CENTRAL_SENSORS 8  // Total number of central sensors
 
 // Byte organization for central sensors
 #define CENTRAL_SENSOR_BYTE ~(E1 | E2 | E3 | E4 | E5 | E6 | E7 | E8)

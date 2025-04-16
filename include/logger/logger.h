@@ -1,71 +1,23 @@
 #ifndef LOGGER_H
 #define LOGGER_H
 
-#include <stdint.h>
-
+#include "../../include/logger/logger_base.h"
 #include "../pid/pid.h"
 
 /**
- * @brief Initializes USART for logging.
- * @note Should be used instead of usart_init() to ensure proper initialization
- * for logging purposes.
+ * @brief Prints the current state of the central sensors in a human-readable
+ * format.
+ * @param sensors The SensorState structure containing the sensor states to be
+ * printed.
  */
-void logger_init(void);
-
-/**
- * @brief Prints a string to the USART.
- * @param str The string to print.
- * @warning Ensure that the string is null-terminated to avoid undefined
- * behavior.
- * @note This function will block until the entire string is transmitted.
- */
-void print_string(const char *str);
-
-/**
- * @brief Prints a string to the USART.
- * @param str The string to print.
- * @warning Ensure that the string is null-terminated to avoid undefined
- * behavior.
- * @note This function will block until the entire string is transmitted.
- * @note It adds a newline character at the end of the string.
- */
-void print(const char *str);
-
-/**
- * @brief Prints a specific bit of a byte to the USART.
- * @param bit_position The position of the bit to print (0-7).
- * @param byte The byte from which to print the bit.
- */
-void print_bit(const uint8_t bit_position, const uint8_t byte);
-
-/**
- * @brief Prints a byte in decimal format to the USART.
- * @param byte The byte to print.
- */
-void print_byte(const uint8_t byte);
-
-/**
- * @brief Prints a signed byte in decimal format to the USART.
- * @param byte The byte to print.
- */
-void print_signed_byte(int8_t byte);
-
-/**
- * @brief Prints a word (16-bit integer) in decimal format to the USART.
- * @param word The word to print.
- */
-void printWord(const uint16_t word);
-
-/**
- * @brief Prints a byte in binary format to the USART.
- * @param byte The byte to print.
- */
-void print_binary(const uint8_t byte);
+void print_central_sensors(const SensorState *sensors);
 
 /**
  * @brief Prints the current state of the sensors in a human-readable format.
+ * @param sensors The SensorState structure containing the sensor states to be
+ * printed.
  */
-void print_sensors(void);
+void print_sensors(const SensorState *sensors);
 
 /**
  * @brief Prints the error values for PID control in a human-readable format.
@@ -81,11 +33,5 @@ void print_errors(const ErrorStruct *errors);
  * (Default: 10)
  */
 void print_diagnostics(const ErrorStruct *errors, const uint16_t interval = 10);
-
-/**
- * @brief Prints the current state of a debounce timer in us.
- * @param debounce_timer The current value of the debounce timer.
- */
-void print_debounce(const uint16_t debounce_timer);
 
 #endif  // LOGGER_H

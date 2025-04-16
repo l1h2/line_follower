@@ -3,14 +3,13 @@
 #include <stdlib.h>
 
 #include "../../include/hal/pwm.h"
-#include "../../include/hal/sensors.h"
-#include "../../include/hal/timer.h"
+#include "../../include/timer/time.h"
 
 static uint16_t last_pid_time = 0;
 static uint8_t base_pwm = BASE_PWM;
 
 void pid_init(void) {
-    sensor_setup();
+    sensors_init();
     motor_setup();
 }
 

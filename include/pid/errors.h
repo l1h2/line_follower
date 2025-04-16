@@ -4,6 +4,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#include "../vision/vision.h"
+
 #define ERROR_WEIGHT 2  // Weight for error calculation
 
 // Average error value
@@ -17,18 +19,6 @@
 #define ERROR_SUM_THRESHOLD 2  // Error sum threshold for integral calculation
 
 /**
- * @struct sensor_state
- * @brief Structure to hold the state of the sensors.
- */
-typedef struct {
-    uint8_t central_sensors_state;  // The state of the central sensors.
-    bool central_sensor;  // Flag to indicate if the central sensor is active.
-    bool left_sensor;     // Flag to indicate if the left sensor is active.
-    bool right_sensor;    // Flag to indicate if the right sensor is active.
-    bool middle_sensor;   // Flag to indicate if the middle sensor is active.
-} SensorState;
-
-/**
  * @struct ErrorStruct
  * @brief Structure to hold error values for PID control.
  */
@@ -39,12 +29,6 @@ typedef struct {
     int16_t error_sum;            // The sum of errors for integral calculation.
     SensorState sensors;          // Sensor state information.
 } ErrorStruct;
-
-/**
- * @brief Updates the sensor states in the error struct.
- * @param errors Pointer to the ErrorStruct to be updated.
- */
-void update_sensors(ErrorStruct *errors);
 
 /**
  * @brief Updates the error component of the error struct.
