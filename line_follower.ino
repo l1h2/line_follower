@@ -1,30 +1,26 @@
-#include <avr/io.h>
+#define DEBUG_MODE
 
 #include "include/hal/timer.h"
-#include "include/logger/logger.h"
+#include "include/logger/logger_debug.h"
 #include "include/pid/pid.h"
+#include "include/pid/vision.h"
 
-#define DEBUG_MODE
+#define LAPS 10  // Number of laps to run
 
 void setup(void) {
     timer_init();  // Initialize the timer for system time tracking
     pid_init();
-
-#ifdef DEBUG_MODE
     logger_init();
-#endif
 }
 
 int main(void) {
     setup();
 
-    error_struct error = {0, 0, 0, 0, 0};
+    ErrorStruct error = {0, 0, 0, 0, 0};
+    wait(50);  // Wait for 5 seconds before starting the PID loop
 
-    while (true) {
-#ifdef DEBUG_MODE
+    while (!check_stop(&error, LAPS)) {
         print_diagnostics(&error, 10);
-#endif
-
         update_pid(&error);
     }
 

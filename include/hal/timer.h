@@ -25,4 +25,11 @@ uint16_t time(void);
  */
 bool time_elapsed(const uint16_t last_time, const uint16_t interval);
 
+/**
+ * @brief Waits for the specified time interval to elapse.
+ *
+ * @param interval The time interval to wait for in deciseconds.
+ */
+void wait(const uint16_t interval);
+
 #endif  // TIMER_H

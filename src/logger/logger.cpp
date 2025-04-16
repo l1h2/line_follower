@@ -4,13 +4,13 @@
 #include "../../include/hal/timer.h"
 #include "../../include/hal/usart.h"
 
-static volatile uint16_t last_log_time = 0;
+static uint16_t last_log_time = 0;
 
 void logger_init(void) {
     usart_init();
 
-    print_string("Logger Initialized\r\n");
-    print_string("******************************************\r\n");
+    print("Logger Initialized");
+    print("******************************************");
 }
 
 void print_string(const char *str) {
@@ -91,19 +91,25 @@ void print_sensors(void) {
     print_string("\r\n");
 }
 
-void print_errors(const error_struct *errors) {
+void print_errors(const ErrorStruct *errors) {
     print_string("Error byte: ");
-    print_binary(errors->central_sensors_state);
+    print_binary(errors->sensors.central_sensors_state);
     print_string(" - Error: ");
     print_signed_byte(errors->error);
     print_string("\r\n");
     print_string("\r\n");
 }
 
-void print_diagnostics(const error_struct *errors, const uint16_t interval) {
+void print_diagnostics(const ErrorStruct *errors, const uint16_t interval) {
     if (!time_elapsed(last_log_time, interval)) return;
 
     last_log_time = time();
     print_errors(errors);
     print_sensors();
+}
+
+void print_debounce(const uint16_t debounce_timer) {
+    print_string("Debounce timer: ");
+    printWord(debounce_timer);
+    print_string("\r\n");
 }

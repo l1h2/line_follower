@@ -69,18 +69,23 @@ void print_sensors(void);
 
 /**
  * @brief Prints the error values for PID control in a human-readable format.
- * @param errors The error_struct containing the error values.
+ * @param errors The ErrorStruct containing the error values.
  */
-void print_errors(const error_struct *errors);
+void print_errors(const ErrorStruct *errors);
 
 /**
  * @brief Prints the diagnostics information, including sensor states and error
  * values.
- * @param errors The error_struct containing the error values.
+ * @param errors The ErrorStruct containing the error values.
  * @param interval The time interval in deciseconds for printing diagnostics.
  * (Default: 10)
  */
-void print_diagnostics(const error_struct *errors,
-                       const uint16_t interval = 10);
+void print_diagnostics(const ErrorStruct *errors, const uint16_t interval = 10);
+
+/**
+ * @brief Prints the current state of a debounce timer in us.
+ * @param debounce_timer The current value of the debounce timer.
+ */
+void print_debounce(const uint16_t debounce_timer);
 
 #endif  // LOGGER_H
