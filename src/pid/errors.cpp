@@ -38,17 +38,16 @@ void update_error_sum(ErrorStruct *errors) {
     }
 }
 
-void update_last_error(ErrorStruct *errors) {
-    errors->last_error = errors->error;
-}
-
 void update_delta_error(ErrorStruct *errors) {
     const int16_t delta_error = errors->error - errors->last_error;
-    update_last_error(errors);
 
     // Experiment with exponent filtering
     errors->filtered_delta_error =
         (errors->filtered_delta_error * 7 + delta_error) >> 3;
+}
+
+void update_last_error(ErrorStruct *errors) {
+    errors->last_error = errors->error;
 }
 
 void update_error_struct(ErrorStruct *errors) {
@@ -56,4 +55,5 @@ void update_error_struct(ErrorStruct *errors) {
     update_error(errors);
     update_error_sum(errors);
     update_delta_error(errors);
+    update_last_error(errors);
 }
