@@ -26,6 +26,7 @@ This project implements a line-follower robot using an Arduino as the controller
 - **Hardware Abstraction Layer (HAL)**: Provides low-level interaction with `AVR` registers and hardware components.
 - **Logger**: Outputs debugging information via `USART` for monitoring and diagnostics.
 - **Timer**: Manages system time and provides helper functions for time-based operations.
+- **State Machine**: Implements a state machine for managing robot states and transitions.
 
 ## Hardware Setup
 
@@ -85,6 +86,10 @@ For better compatibility with the `Arduino IDE/CLI`, the project uses `.cpp` fil
 
    The vision module, found in [include/vision](include/vision) and [src/vision](src/vision), processes sensor data to detect environmental characteristics such as line markers, curves, and crossings. It uses the `IR` sensors to try and determine pre-define environmental characteristics based on expectations of the robot's behavior.
 
+6. **State Machine**
+
+   The state machine module, located in [include/state_machine](include/state_machine) and [src/state_machine](src/state_machine), manages the robot's states and transitions. It helps the robot to switch between different modes of operation, such as line following, stopping, and error handling.
+
 ## Code Style and Compatibility
 
 - All code is written in `C` and implemented in `C++` files.
@@ -101,14 +106,22 @@ The `DEBUG_MODE` macro can be enabled/disabled in `line_follower.ino` to log ope
 
 ### Initialization
 
-The `setup()` function initializes the system timer, `PID` controller, and logger.
+The `setup()` function initializes the system timer, and logger.
+
+### State Machine
+
+The state machine is initialized in the `main()` function and is used to manage the robot's states and transitions. It controls the robot's behavior and is responsible for managing the entire operation. It controls `PID` and `PWM` configurations, as well as interacts with all actuator modules, to determine the robot's behavior.
 
 ### Main Loop
 
-The `main()` function continuously updates the `PID` controller and checks for stop conditions. Sensor data is processed, and motor speeds are adjusted to keep the robot on the line.
+The `main()` loop in the `RUNNING` state of the state machine continuously updates the `PID` controller and checks for stop conditions. Sensor data is processed, and motor speeds are adjusted to keep the robot on the line.
 
 The loop works in a frame based manner, where each event has its own frame interval for performing calculations based on the running system timmer. This is done to allow for more precise control of the robot, as well as offloading heavy calculations to different frames, providing for more efficient use of the CPU.
 
+However, the entire loop is managed by the state machine and no other code can run while the state machine has control of the robot's operation. This is done to prevent any other code from interfering with the robot's operation, as well as to allow for more precise control of the robot.
+
 ### Stopping
 
-The robot stops after completing the specified number of laps or detecting a stop marker. It accomplishes this by reducing the base `PWM` value in small intervals until it reaches `0`, at which point the robot stops. This is done to allow for a more gradual stop, as well as to allow for the robot to stop in a more controlled manner, preventing it from stopping abruptly.
+The robot stops when reaching the `STOPPED` state in the state machine after completing the specified number of laps. It accomplishes this by reducing the base `PWM` value in small intervals until it reaches `0`, at which point the robot stops. This is done to allow for a more gradual stop, as well as to allow for the robot to stop in a more controlled manner, preventing it from stopping abruptly.
+
+At this moment the state machine also terminates operations and allows for other code to run, if needed.
