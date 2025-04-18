@@ -60,10 +60,14 @@ void update_pid(ErrorStruct *errors) {
     update_motors(get_delta_pwm(errors));
 }
 
-void stop(ErrorStruct *errors) {
-    const uint8_t break_speed = base_pwm / BREAK_FRAMES;
-    while (base_pwm > 0) {
-        base_pwm = (base_pwm <= break_speed) ? 0 : (base_pwm - break_speed);
-        update_pid(errors);
+uint8_t get_base_pwm(void) { return base_pwm; }
+
+void set_base_pwm(const uint8_t pwm) {
+    if (pwm > MAX_PWM) {
+        base_pwm = MAX_PWM;
+    } else if (pwm < MIN_PWM) {
+        base_pwm = MIN_PWM;
+    } else {
+        base_pwm = pwm;
     }
 }

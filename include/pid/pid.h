@@ -58,9 +58,15 @@ void update_motors(const int16_t delta_pwm);
 void update_pid(ErrorStruct *errors);
 
 /**
- * @brief Stops the motors by reducing the PWM values to zero.
- * @param errors Pointer to the ErrorStruct containing error values.
+ * @brief Gets the base PWM value for the motors.
+ * @return The current base PWM value.
  */
-void stop(ErrorStruct *errors);
+uint8_t get_base_pwm(void);
+
+/**
+ * @brief Sets the base PWM value for the motors.
+ * @param pwm The new base PWM value to be set.
+ */
+void set_base_pwm(const uint8_t pwm);
 
 #endif  // PID_H
