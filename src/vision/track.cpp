@@ -13,7 +13,8 @@ void update_counters(const ErrorStruct *errors) {
     if (check_crossing(errors)) track.crossing_counter++;
     if (check_curve(errors)) track.curve_counter++;
     if (check_marker(errors)) track.marker_counter++;
-    if (check_lost(errors)) track.lost_counter++;
+    if (check_lost_left(errors)) track.lost_left_counter++;
+    if (check_lost_right(errors)) track.lost_right_counter++;
     if (check_pitch(errors)) track.pitch_counter++;
 }
 
@@ -23,7 +24,8 @@ void reset_counters() {
     track.crossing_counter = 0;
     track.curve_counter = 0;
     track.marker_counter = 0;
-    track.lost_counter = 0;
+    track.lost_left_counter = 0;
+    track.lost_right_counter = 0;
     track.pitch_counter = 0;
 }
 

@@ -5,6 +5,9 @@
 
 #include "../../include/pid/errors.h"
 
+// Minimum number of sensors for crossing detection
+#define CROSSING_SENSORS_THRESHOLD 4
+
 /**
  * @brief Checks if the line is detected based on the error struct.
  * @param errors Pointer to the ErrorStruct to be checked.
@@ -46,6 +49,20 @@ bool check_marker(const ErrorStruct *errors);
  * @return True if the line is lost, false otherwise.
  */
 bool check_lost(const ErrorStruct *errors);
+
+/**
+ * @brief Checks if the line is lost to the left based on the error struct.
+ * @param errors Pointer to the ErrorStruct to be checked.
+ * @return True if the line is lost, false otherwise.
+ */
+bool check_lost_left(const ErrorStruct *errors);
+
+/**
+ * @brief Checks if the line is lost to the right based on the error struct.
+ * @param errors Pointer to the ErrorStruct to be checked.
+ * @return True if the line is lost, false otherwise.
+ */
+bool check_lost_right(const ErrorStruct *errors);
 
 /**
  * @brief Checks if the robot is pitched based on the error struct.

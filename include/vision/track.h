@@ -1,22 +1,23 @@
 #ifndef TRACK_H
 #define TRACK_H
 
-#define DETECTION_DEBOUNCE_TIME 1  // Debounce time for detection in deciseconds
-
 #include "../../include/pid/errors.h"
+
+#define DETECTION_DEBOUNCE_TIME 1  // Debounce time for detection in deciseconds
 
 /**
  * @struct TrackCounters
  * @brief Structure to hold tracking counters for different line observations.
  */
 typedef struct {
-    uint16_t line_counter;      // Lines detected
-    uint16_t straight_counter;  // Straight lines detected
-    uint8_t crossing_counter;   // Crossings detected
-    uint8_t curve_counter;      // Curve markers detected
-    uint8_t marker_counter;     // Stop/start markers detected
-    uint8_t lost_counter;       // Number of times the line is lost
-    uint8_t pitch_counter;      // Number of times the line is lost due to pitch
+    uint16_t line_counter;       // Lines detected
+    uint16_t straight_counter;   // Straight lines detected
+    uint8_t crossing_counter;    // Crossings detected
+    uint8_t curve_counter;       // Curve markers detected
+    uint8_t marker_counter;      // Stop/start markers detected
+    uint8_t lost_left_counter;   // Times the line is lost to the left
+    uint8_t lost_right_counter;  // Times the line is lost to the right
+    uint8_t pitch_counter;       // Times the line is lost due to pitch
 } TrackCounters;
 
 /**

@@ -86,6 +86,12 @@ For better compatibility with the `Arduino IDE/CLI`, the project uses `.cpp` fil
 
    The vision module, found in [include/vision](include/vision) and [src/vision](src/vision), processes sensor data to detect environmental characteristics such as line markers, curves, and crossings. It uses the `IR` sensors to try and determine pre-define environmental characteristics based on expectations of the robot's behavior.
 
+   There is also an interactive [spreadsheet](docs/Sensors%20Observer.xlsx) in the [docs](docs) directory with the expected environment identifications used by the robot, which can be used to test the robot's behavior in a simulated environment and to help consider the different scenarios that the robot may encounter.
+
+   ![Spreadsheet Example](docs/images/sensors_interactive_observer.png)
+
+   The spreadsheet shows the hardware layout for the robot, where each sensor can be individually activated and the error properties altered to simulate the robot's expected identification of the environment. There is also a Truth Table that shows the expected identifications based on all possible arrangements of the sensors, which can be used to better understand the logic behind the robot's behavior.
+
 6. **State Machine**
 
    The state machine module, located in [include/state_machine](include/state_machine) and [src/state_machine](src/state_machine), manages the robot's states and transitions. It helps the robot to switch between different modes of operation, such as line following, stopping, and error handling.
