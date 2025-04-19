@@ -72,7 +72,7 @@ For better compatibility with the `Arduino IDE/CLI`, the project uses `.cpp` fil
 
 2. **Logger**
 
-   The logger module, found in [include/logger](include/logger) and [src/logger](src/logger), uses `USART` for debugging and diagnostics. It provides functions to print sensor states, errors, and other runtime information. Can be enabled/disabled by setting the `DEBUG_MODE` macro in [line_follower.ino](line_follower.ino).
+   The logger module, found in [include/logger](include/logger) and [src/logger](src/logger), uses `USART` for debugging and diagnostics. It provides functions to print sensor states, errors, and other runtime information. Can be enabled/disabled by setting the `DEBUG_MODE` macro in [config.h](include/config.h).
 
 3. **PID Controller**
 
@@ -102,7 +102,7 @@ For better compatibility with the `Arduino IDE/CLI`, the project uses `.cpp` fil
 
 ### Debugging
 
-The `DEBUG_MODE` macro can be enabled/disabled in `line_follower.ino` to log operation and error data via USART.
+The `DEBUG_MODE` macro can be enabled/disabled in [config.h](include/config.h) to log operation and error data via USART.
 
 ### Initialization
 
