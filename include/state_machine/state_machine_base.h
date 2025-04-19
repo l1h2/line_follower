@@ -1,6 +1,8 @@
 #ifndef STATE_MACHINE_BASE_H
 #define STATE_MACHINE_BASE_H
 
+#include <stdint.h>
+
 /**
  * @enum RobotStates
  * @brief Enumeration of robot states for the state machine.

@@ -1,8 +1,8 @@
 #include "../../../include/state_machine/states/stopped.h"
 
-void handle_stopped(void) {
-    // Handle stopped state logic here
-}
+#include "../../../include/logger/logger_debug.h"
+
+void handle_stopped(void) { print("STOPPED State: Handling stopped logic"); }
 
 bool handle_stopped_transitions(StateMachine* sm) {
     switch (sm->next_state) {

@@ -1,6 +1,8 @@
 #ifndef LOGGER_DEBUG_H
 #define LOGGER_DEBUG_H
 
+#include "../config.h"
+
 #ifdef DEBUG_MODE
 #include "logger.h"
 #else

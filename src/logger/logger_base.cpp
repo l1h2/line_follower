@@ -33,7 +33,7 @@ void print_signed_byte(int8_t byte) {
     print_byte(byte);
 }
 
-void printWord(const uint16_t word) {
+void print_word(const uint16_t word) {
     usart_transmit('0' + (word / 10000));        // Ten-thousands
     usart_transmit('0' + ((word / 1000) % 10));  // Thousands
     usart_transmit('0' + ((word / 100) % 10));   // Hundreds

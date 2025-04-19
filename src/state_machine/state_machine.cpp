@@ -1,5 +1,6 @@
 #include "../../include/state_machine/state_machine.h"
 
+#include "../../include/logger/logger_debug.h"
 #include "../../include/pid/pid.h"
 #include "../../include/state_machine/state_handler.h"
 #include "../../include/state_machine/transition_handler.h"
@@ -12,6 +13,7 @@ void state_machine_init(StateMachine* sm, const uint8_t laps) {
 }
 
 void run_state_machine(const uint8_t laps) {
+    print("Starting State Machine...");
     StateMachine sm;
 
     state_machine_init(&sm, laps);

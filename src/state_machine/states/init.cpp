@@ -1,15 +1,15 @@
 #include "../../../include/state_machine/states/init.h"
 
+#include "../../../include/logger/logger_debug.h"
 #include "../../../include/pid/pid.h"
 
 void handle_init(StateMachine* sm) {
+    print("INIT State: Initializing PID and other components");
     pid_init();
     sm->next_state = STATE_IDLE;
 }
 
-void handle_init_to_idle(void) {
-    // Handle transition logic here
-}
+void handle_init_to_idle(void) { print("Transitioning from INIT to IDLE"); }
 
 bool handle_init_transitions(StateMachine* sm) {
     switch (sm->next_state) {

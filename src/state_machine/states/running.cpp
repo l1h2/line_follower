@@ -6,6 +6,8 @@
 static ErrorStruct errors = {0};
 
 void handle_running(StateMachine* sm) {
+    print("RUNNING State: Handling running logic");
+
     const uint8_t laps = sm->laps;
 
     while (!check_stop(&errors, laps)) {
@@ -13,10 +15,13 @@ void handle_running(StateMachine* sm) {
         update_pid(&errors);
     }
 
+    print("Finalizing RUNNING state, preparing to stop");
     sm->next_state = STATE_STOPPED;
 }
 
 void handle_running_to_stopped(void) {
+    print("Transitioning from RUNNING to STOPPED");
+
     const uint8_t break_speed = get_base_pwm() / BREAK_FRAMES;
     uint8_t base_pwm = get_base_pwm();
 
@@ -28,6 +33,8 @@ void handle_running_to_stopped(void) {
 
         base_pwm = get_base_pwm();  // Confirm base_pwm after set_base_pwm()
     }
+
+    print("Base PWM set to 0, stopping motors");
 }
 
 bool handle_running_transitions(StateMachine* sm) {
