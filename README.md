@@ -54,15 +54,24 @@ There is also one analog ping connected to the battery connector, which is used 
 ## Project Structure
 
 ```plaintext
-root
-├── include/           # Header files
-├── src/               # Implementation files
-└── line_follower.ino  # Entry point for Arduino compliance
+line_follower
+├── include/            # Header files
+│   ├── hal/            # Hardware Abstraction Layer
+│   ├── logger/         # Logger module
+│   ├── pid/            # PID controller module
+│   ├── state_machine/  # State machine module
+│   ├── timer/          # Timer module
+│   ├── vision/         # Vision module
+│   └── config.h        # Configuration file
+├── src/                # Implementation files
+└── line_follower.ino   # Entry point for Arduino compliance
 ```
 
-The project is structured to be compatible with the `Arduino IDE/CLI`, which requires a specific file structure for compilation and upload. The main entry point is `line_follower.ino`, which includes the necessary headers, initializes the robot and runs the main loop. Also the `include` and `src` directories need to be located at the root level of the project for the `Arduino IDE/CLI` to recognize them correctly, which is the reason for not having specific `src` and `include` dirs for each individual module.
+The project is structured to be compatible with the `Arduino IDE/CLI`, which requires a specific file structure for compilation and upload. The main entry point is `line_follower.ino`, which includes the necessary headers, initializes the robot and runs the main loop. Also the `include` and `src` directories need to be located at the root level of the project for the `Arduino IDE/CLI` to recognize them correctly, which is the reason for not having specific `src` and `include` dirs for each individual module. This also means that the `include` and `src` directories mirror each other for better organization, with header files in [include](include) and their corresponding implementations in [src](src).
 
 For better compatibility with the `Arduino IDE/CLI`, the project uses `.cpp` files for implementation, but no `C++`-specific features are utilized, having the entire codebase written in `C`.
+
+Also the [config file](include/config.h) contains all the configuration macros for the project, including the `DEBUG_MODE` macro to enable/disable the logger module, as well as other general build and operation options that can be chosen. This allows for easy customization of the project without having to modify the code itself.
 
 ### Key Components
 
