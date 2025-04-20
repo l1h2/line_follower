@@ -4,7 +4,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "../../../include/pid/pid.h"
 #include "../state_machine_base.h"
 
 /**
@@ -15,8 +14,10 @@ void handle_running(StateMachine* sm);
 
 /**
  * @brief Handles the transition from running to stopped state.
+ * @param running_mode The current running mode of the robot.
+ * @return true if the transition was successful, false otherwise.
  */
-void handle_running_to_stopped(void);
+bool handle_running_to_stopped(const RunningModes running_mode);
 
 /**
  * @brief Handles the transitions within the running state.

@@ -43,7 +43,7 @@ bool check_break(const ErrorStruct *errors) {
     return true;
 }
 
-bool check_stop(const ErrorStruct *errors, const uint8_t laps) {
+bool check_stop(const ErrorStruct *errors) {
     if (!time_elapsed(last_marker_check_time, DETECTION_DEBOUNCE_TIME))
         return false;
 
@@ -52,5 +52,5 @@ bool check_stop(const ErrorStruct *errors, const uint8_t laps) {
     last_marker_check_time = time();
     track.marker_counter++;
 
-    return ((track.marker_counter >> 1) >= laps);
+    return !(track.marker_counter & 1);
 }

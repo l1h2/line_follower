@@ -48,9 +48,8 @@ bool check_break(const ErrorStruct *errors);
  * @brief Checks if the robot should stop based on the error struct and number
  * of laps.
  * @param errors Pointer to the ErrorStruct to be checked.
- * @param laps The number of laps to complete.
  * @return True if the robot should stop, false otherwise.
  */
-bool check_stop(const ErrorStruct *errors, const uint8_t laps);
+bool check_stop(const ErrorStruct *errors);
 
 #endif  // TRACK_H

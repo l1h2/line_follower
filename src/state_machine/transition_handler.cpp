@@ -1,10 +1,10 @@
 #include "../../include/state_machine/transition_handler.h"
 
-#include "../../include/state_machine/states/error.h"
-#include "../../include/state_machine/states/idle.h"
-#include "../../include/state_machine/states/init.h"
-#include "../../include/state_machine/states/running.h"
-#include "../../include/state_machine/states/stopped.h"
+#include "../../include/state_machine/base_states/error.h"
+#include "../../include/state_machine/base_states/idle.h"
+#include "../../include/state_machine/base_states/init.h"
+#include "../../include/state_machine/base_states/running.h"
+#include "../../include/state_machine/base_states/stopped.h"
 
 void update_state(StateMachine* sm) {
     sm->previous_state = sm->current_state;
@@ -12,30 +12,20 @@ void update_state(StateMachine* sm) {
 }
 
 bool handle_transition(StateMachine* sm) {
-    bool transition_successful = false;
-
     switch (sm->current_state) {
         case STATE_INIT:
-            transition_successful = handle_init_transitions(sm);
-            break;
+            return handle_init_transitions(sm);
         case STATE_IDLE:
-            transition_successful = handle_idle_transitions(sm);
-            break;
+            return handle_idle_transitions(sm);
         case STATE_RUNNING:
-            transition_successful = handle_running_transitions(sm);
-            break;
+            return handle_running_transitions(sm);
         case STATE_STOPPED:
-            transition_successful = handle_stopped_transitions(sm);
-            break;
+            return handle_stopped_transitions(sm);
         case STATE_ERROR:
-            transition_successful = handle_serror_transitions(sm);
-            break;
+            return handle_serror_transitions(sm);
         default:
-            transition_successful = false;
-            break;
+            return false;
     }
-
-    return transition_successful;
 }
 
 bool validate_request(StateMachine* sm) {

@@ -1,4 +1,4 @@
-#include "../../../include/state_machine/states/error.h"
+#include "../../../include/state_machine/base_states/error.h"
 
 #include "../../../include/logger/logger_debug.h"
 

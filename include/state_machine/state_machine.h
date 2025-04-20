@@ -13,6 +13,12 @@
 void state_machine_init(StateMachine* sm, const uint8_t laps);
 
 /**
+ * @brief Resets the state machine to its initial state.
+ * @param sm Pointer to the state machine structure.
+ */
+void reset_state_machine(StateMachine* sm);
+
+/**
  * @brief Runs the state machine.
  * @param laps Number of laps to run.
  */

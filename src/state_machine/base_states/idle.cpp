@@ -1,12 +1,14 @@
-#include "../../../include/state_machine/states/idle.h"
+#include "../../../include/state_machine/base_states/idle.h"
 
 #include "../../../include/logger/logger_debug.h"
 #include "../../../include/timer/time.h"
 
 void handle_idle(StateMachine* sm) {
     // TODO: Add bluetooth logic here
-    print("IDLE State: Waiting for 50 deciseconds");
+    print("IDLE State: Waiting for 50 deciseconds and selecting running mode");
     wait(50);
+    sm->running_mode = RUNNING_BASE_PID;
+    print("Running mode set to RUNNING_BASE_PID");
     print("Finished waiting in IDLE State");
     sm->next_state = STATE_RUNNING;
 }

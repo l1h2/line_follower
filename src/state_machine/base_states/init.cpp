@@ -1,4 +1,4 @@
-#include "../../../include/state_machine/states/init.h"
+#include "../../../include/state_machine/base_states/init.h"
 
 #include "../../../include/logger/logger_debug.h"
 #include "../../../include/pid/pid.h"

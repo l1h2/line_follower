@@ -9,7 +9,17 @@ void state_machine_init(StateMachine* sm, const uint8_t laps) {
     sm->previous_state = STATE_INIT;
     sm->current_state = STATE_INIT;
     sm->next_state = STATE_INIT;
+    sm->running_mode = RUNNING_INIT;
+    sm->lap = 0;
     sm->laps = laps;
+}
+
+void reset_state_machine(StateMachine* sm) {
+    sm->previous_state = STATE_INIT;
+    sm->current_state = STATE_INIT;
+    sm->next_state = STATE_INIT;
+    sm->running_mode = RUNNING_INIT;
+    sm->lap = 0;
 }
 
 void run_state_machine(const uint8_t laps) {

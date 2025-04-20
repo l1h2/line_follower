@@ -1,11 +1,11 @@
 #include "../../include/state_machine/state_handler.h"
 
 #include "../../include/logger/logger_debug.h"
-#include "../../include/state_machine/states/error.h"
-#include "../../include/state_machine/states/idle.h"
-#include "../../include/state_machine/states/init.h"
-#include "../../include/state_machine/states/running.h"
-#include "../../include/state_machine/states/stopped.h"
+#include "../../include/state_machine/base_states/error.h"
+#include "../../include/state_machine/base_states/idle.h"
+#include "../../include/state_machine/base_states/init.h"
+#include "../../include/state_machine/base_states/running.h"
+#include "../../include/state_machine/base_states/stopped.h"
 
 void handle_state(StateMachine* sm) {
     switch (sm->current_state) {

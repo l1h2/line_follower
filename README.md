@@ -68,23 +68,23 @@ For better compatibility with the `Arduino IDE/CLI`, the project uses `.cpp` fil
 
 1. **HAL (Hardware Abstraction Layer)**
 
-   Located in [include/hal](include/hal) and [src/hal](src/hal), this module interacts with `AVR` registers and hardware components such as motors and `IR` sensors, separating hardware-specific code from the main logic. It provides functions to read sensor data, control motors, manage `PWM` signals, control timers, and interact with `USART`.
+   Located in [hal](include/hal) and [hal](src/hal), this module interacts with `AVR` registers and hardware components such as motors and `IR` sensors, separating hardware-specific code from the main logic. It provides functions to read sensor data, control motors, manage `PWM` signals, control timers, and interact with `USART`.
 
 2. **Logger**
 
-   The logger module, found in [include/logger](include/logger) and [src/logger](src/logger), uses `USART` for debugging and diagnostics. It provides functions to print sensor states, errors, and other runtime information. Can be enabled/disabled by setting the `DEBUG_MODE` macro in [config.h](include/config.h).
+   The logger module, found in [logger](include/logger) and [logger](src/logger), uses `USART` for debugging and diagnostics. It provides functions to print sensor states, errors, and other runtime information. Can be enabled/disabled by setting the `DEBUG_MODE` macro in [config.h](include/config.h).
 
 3. **PID Controller**
 
-   The `PID` controller, implemented in [include/pid](include/pid) and [src/pid](src/pid), calculates motor speed adjustments based on sensor data to keep the robot on the line. It error functions based on sensor data to calculate the error values to be used in the `PID` controller. The `PID` controller uses the error values to calculate the motor speed adjustments, which are then sent to the motor driver circuit through the actuator logic.
+   The `PID` controller, implemented in [pid](include/pid) and [pid](src/pid), calculates motor speed adjustments based on sensor data to keep the robot on the line. It error functions based on sensor data to calculate the error values to be used in the `PID` controller. The `PID` controller uses the error values to calculate the motor speed adjustments, which are then sent to the motor driver circuit through the actuator logic.
 
 4. **Timer**
 
-   The timer module, located in [include/timer](include/timer) and [src/timer](src/timer), manages system time and provides helper functions for time-based operations. It uses an `8-bit` timer since the `16-bit` timer is already in use for the `PWM` signal generation, and uses a precision of 100 ms (1 decisecond) to establish a balance between precision control and number of interrupts needed for the timer to work. It also uses a `16-bit` variable to store the system time, so it has a maximum value of `65,535` deciseconds (~`1.82` hours) before overflow. The clock time precision has been measured experimentally to have a `-0.006%` error, which is negligible for the purposes of this project.
+   The timer module, located in [timer](include/timer) and [timer](src/timer), manages system time and provides helper functions for time-based operations. It uses an `8-bit` timer since the `16-bit` timer is already in use for the `PWM` signal generation, and uses a precision of 100 ms (1 decisecond) to establish a balance between precision control and number of interrupts needed for the timer to work. It also uses a `16-bit` variable to store the system time, so it has a maximum value of `65,535` deciseconds (~`1.82` hours) before overflow. The clock time precision has been measured experimentally to have a `-0.006%` error, which is negligible for the purposes of this project.
 
 5. **Vision**
 
-   The vision module, found in [include/vision](include/vision) and [src/vision](src/vision), processes sensor data to detect environmental characteristics such as line markers, curves, and crossings. It uses the `IR` sensors to try and determine pre-define environmental characteristics based on expectations of the robot's behavior.
+   The vision module, found in [vision](include/vision) and [vision](src/vision), processes sensor data to detect environmental characteristics such as line markers, curves, and crossings. It uses the `IR` sensors to try and determine pre-define environmental characteristics based on expectations of the robot's behavior.
 
    There is also an interactive [spreadsheet](docs/Sensors%20Observer.xlsx) in the [docs](docs) directory with the expected environment identifications used by the robot, which can be used to test the robot's behavior in a simulated environment and to help consider the different scenarios that the robot may encounter.
 
@@ -94,7 +94,7 @@ For better compatibility with the `Arduino IDE/CLI`, the project uses `.cpp` fil
 
 6. **State Machine**
 
-   The state machine module, located in [include/state_machine](include/state_machine) and [src/state_machine](src/state_machine), manages the robot's states and transitions. It helps the robot to switch between different modes of operation, such as line following, stopping, and error handling.
+   The state machine module, located in [state_machine](include/state_machine) and [state_machine](src/state_machine), manages the robot's states and transitions. It helps the robot to switch between different modes of operation, such as line following, stopping, and error handling. As well as the different running modes that control the robot's behavior during operation, located in [running_modes](include/state_machine/running_modes).
 
 ## Code Style and Compatibility
 
@@ -122,9 +122,13 @@ The state machine is initialized in the `main()` function and is used to manage 
 
 The `main()` loop in the `RUNNING` state of the state machine continuously updates the `PID` controller and checks for stop conditions. Sensor data is processed, and motor speeds are adjusted to keep the robot on the line.
 
-The loop works in a frame based manner, where each event has its own frame interval for performing calculations based on the running system timmer. This is done to allow for more precise control of the robot, as well as offloading heavy calculations to different frames, providing for more efficient use of the CPU.
+The exact behavior of the robot in this state is determined by the `RUNNING_MODE` set in the state machine, which can be changed to different modes of operation:
 
-However, the entire loop is managed by the state machine and no other code can run while the state machine has control of the robot's operation. This is done to prevent any other code from interfering with the robot's operation, as well as to allow for more precise control of the robot.
+- Base PID
+
+  The loop works in a frame based manner, where each event has its own frame interval for performing calculations based on the running system timmer. This is done to allow for more precise control of the robot, as well as offloading heavy calculations to different frames, providing for more efficient use of the CPU.
+
+In all modes the entire execution loop is managed by the state machine and no other code can run while the state machine has control of the robot's operation. This is done to prevent any other code from interfering with the robot's operation, as well as to allow for more precise control of the robot.
 
 ### Stopping
 
