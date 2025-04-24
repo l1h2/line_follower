@@ -9,10 +9,10 @@
 void timer_init(void);
 
 /**
- * @brief Returns the current system time in deciseconds.
+ * @brief Returns the current system time in centiseconds.
  *
- * @return The current system time in deciseconds.
- * @note Overflows at 65535 deciseconds (approximately 1.82 hours).
+ * @return The current system time in centiseconds.
+ * @note Overflows at 65535 centiseconds (approximately 11 minutes).
  * @note Uses atomic access to ensure thread safety.
  */
 uint16_t get_system_time(void);

@@ -3,7 +3,7 @@
 
 #include "../../include/pid/errors.h"
 
-#define DETECTION_DEBOUNCE_TIME 1  // Debounce time for detection in deciseconds
+#define DETECTION_DEBOUNCE_TIME 10  // Debounce time in centiseconds
 
 /**
  * @struct TrackCounters

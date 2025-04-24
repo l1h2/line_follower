@@ -5,11 +5,11 @@
 
 #include "errors.h"
 
-#define KP 25                 // Proportional gain
+#define KP 10                 // Proportional gain
 #define KI 0                  // Integral gain
 #define KD 0                  // Derivative gain
-#define PID_FRAME_INTERVAL 1  // PID frame interval in deciseconds
-#define STOP_TIME 20          // Time to stop the motors in deciseconds
+#define PID_FRAME_INTERVAL 1  // PID frame interval in centiseconds
+#define STOP_TIME 20          // Time to stop the motors in centiseconds
 #define BREAK_FRAMES STOP_TIME / PID_FRAME_INTERVAL  // Number of frames to stop
 
 /**

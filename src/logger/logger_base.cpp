@@ -41,6 +41,14 @@ void print_word(const uint16_t word) {
     usart_transmit('0' + (word % 10));           // Ones
 }
 
+void print_signed_word(int16_t word) {
+    if (word & (1 << 15)) {
+        usart_transmit('-');
+        word = ~word + 1;  // Convert to positive using two's complement
+    }
+    print_word(word);
+}
+
 void print_binary(const uint8_t byte) {
     for (int8_t i = 7; i >= 0; i--) {
         usart_transmit((byte & (1 << i)) ? '1' : '0');

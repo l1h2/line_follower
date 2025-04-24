@@ -11,6 +11,8 @@
 #define print_byte(byte) ((void)0)
 #define print_signed_byte(byte) ((void)0)
 #define printWord(word) ((void)0)
+#define print_signed_word(word) ((void)0)
+#define print_bool(value) ((void)0)
 #define print_binary(byte) ((void)0)
 #define print_string(str) ((void)0)
 #define print(str) ((void)0)

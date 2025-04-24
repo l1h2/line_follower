@@ -8,7 +8,7 @@ void pwm_init(void) {
     DDRB |= (1 << PWMA) | (1 << PWMB);
 
     TCCR1A |= (1 << COM1A1) | (1 << COM1B1) | (1 << WGM10);
-    TCCR1B |= (1 << CS12) | (1 << CS10) | (1 << WGM12);
+    TCCR1B |= (1 << CS11) | (1 << CS10) | (1 << WGM12);
 
     TCNT1 = 0;
 
@@ -36,11 +36,11 @@ void set_pwm_b(uint16_t pwm) {
 
 void set_motor_a_dir(const bool dir) {
     if (dir) {
-        MOTOR_PORT |= (1 << AIN2);
-        MOTOR_PORT &= ~(1 << AIN1);
-    } else {
         MOTOR_PORT |= (1 << AIN1);
         MOTOR_PORT &= ~(1 << AIN2);
+    } else {
+        MOTOR_PORT |= (1 << AIN2);
+        MOTOR_PORT &= ~(1 << AIN1);
     }
 }
 

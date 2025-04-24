@@ -42,8 +42,8 @@ int16_t get_delta_pwm(const ErrorStruct *errors) {
 }
 
 void update_motors(const int16_t delta_pwm) {
-    const int16_t pwm_a = base_pwm - delta_pwm;
-    const int16_t pwm_b = base_pwm + delta_pwm;
+    const int16_t pwm_a = base_pwm + delta_pwm;
+    const int16_t pwm_b = base_pwm - delta_pwm;
 
     set_motor_a_dir(pwm_a > 0);
     set_motor_b_dir(pwm_b > 0);

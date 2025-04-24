@@ -37,6 +37,12 @@ void print_signed_byte(int8_t byte);
 void print_word(const uint16_t word);
 
 /**
+ * @brief Prints a signed word (16-bit integer) in decimal format to the USART.
+ * @param word The word to print.
+ */
+void print_signed_word(int16_t word);
+
+/**
  * @brief Prints a byte in binary format to the USART.
  * @param byte The byte to print.
  */

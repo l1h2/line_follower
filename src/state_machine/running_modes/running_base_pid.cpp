@@ -15,7 +15,7 @@ void running_base_pid(StateMachine* sm) {
     const uint8_t laps = sm->laps;
 
     while (lap < laps) {
-        print_diagnostics(&errors, 10);
+        print_diagnostics(&errors, 100);
         update_pid(&errors);
         if (check_stop(&errors)) {
             sm->lap++;

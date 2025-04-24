@@ -7,23 +7,23 @@
  * @brief Initializes the timer for system time tracking.
  *
  * This function sets up the timer to generate interrupts at regular intervals,
- * allowing the system to keep track of time in deciseconds.
+ * allowing the system to keep track of time in centiseconds.
  */
 void start_timer(void);
 
 /**
- * @brief Returns the current system time in deciseconds.
+ * @brief Returns the current system time in centiseconds.
  *
- * @return The current system time in deciseconds.
- * @note Overflows at 65535 deciseconds (approximately 1.82 hours).
+ * @return The current system time in centiseconds.
+ * @note Overflows at 65535 centiseconds (approximately 11 minutes).
  */
 uint16_t time(void);
 
 /**
  * @brief Checks if the specified time interval has elapsed since the last time.
  *
- * @param last_time The last recorded time in deciseconds.
- * @param interval The time interval to check in deciseconds.
+ * @param last_time The last recorded time in centiseconds.
+ * @param interval The time interval to check in centiseconds.
  * @return true if the interval has elapsed, false otherwise.
  */
 bool time_elapsed(const uint16_t last_time, const uint16_t interval);
@@ -31,7 +31,7 @@ bool time_elapsed(const uint16_t last_time, const uint16_t interval);
 /**
  * @brief Waits for the specified time interval to elapse.
  *
- * @param interval The time interval to wait for in deciseconds.
+ * @param interval The time interval to wait for in centiseconds.
  */
 void wait(const uint16_t interval);
 

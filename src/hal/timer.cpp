@@ -3,32 +3,21 @@
 #include <avr/interrupt.h>
 #include <avr/io.h>
 
-// Timer scale for 100ms with prescaler 1024 and OCR2A value of 222
-// (Experimental)
-#define TIMER_SCALE 7
-
 static bool timer_initialized = false;  // Flag to check if timer is initialized
-static volatile uint16_t system_time = 0;      // System time in deciseconds
-static volatile uint8_t overflow_counter = 0;  // Overflow counter for Timer2
+static volatile uint16_t system_time = 0;  // System time in centiseconds
 
 void timer_init(void) {
     if (timer_initialized) return;
 
     TCCR2A |= (1 << WGM21);
     TCCR2B |= (1 << CS22) | (1 << CS21) | (1 << CS20);  // Set prescaler to 1024
-    OCR2A = 222;  // Set compare value for 100ms counter (Experimental)
+    OCR2A = 152;  // Set compare value for 10ms counter (Experimental)
 
     TIMSK2 |= (1 << OCIE2A);  // Enable Timer2 compare interrupt
     sei();                    // Enable global interrupts
 }
 
-ISR(TIMER2_COMPA_vect) {
-    overflow_counter++;
-    if (overflow_counter >= TIMER_SCALE) {  // 0.1 second has passed
-        overflow_counter = 0;               // Reset overflow counter
-        system_time++;                      // Increment system time every 100ms
-    }
-}
+ISR(TIMER2_COMPA_vect) { system_time++; }
 
 uint16_t get_system_time(void) {
     uint16_t current_time;

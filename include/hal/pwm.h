@@ -10,13 +10,13 @@
 #define BIN2 PB4  // Second direction control for motor B
 #define PWMB PB2  // PWM output for motor B
 
-#define MOTOR_A_PWM OCR1B  // PWM register for motor A
-#define MOTOR_B_PWM OCR1A  // PWM register for motor B
+#define MOTOR_A_PWM OCR1A  // PWM register for motor A
+#define MOTOR_B_PWM OCR1B  // PWM register for motor B
 
 #define MOTOR_DDR DDRB    // Data Direction Register for motor control
 #define MOTOR_PORT PORTB  // Port for motor control
 
-#define BASE_PWM 70        // Base PWM value for motor speed
+#define BASE_PWM 40        // Base PWM value for motor speed
 #define MAX_PWM 255        // Maximum PWM value for motor speed
 #define MIN_PWM 0          // Minimum PWM value for motor speed
 #define MAX_DELTA_PWM 500  // Maximum change in PWM value
@@ -26,8 +26,8 @@
  *
  * This function initializes the PWM registers for controlling two motors.
  *
- * @note The PWM control is set to Fast PWM mode, 8-bit (mode 5), with a 1024
- * pre-scale.
+ * @note The PWM control is set to Fast PWM mode, 8-bit (mode 5), with a 64
+ * pre-scale (^980 Hz).
  */
 void pwm_init(void);
 
