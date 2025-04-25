@@ -12,7 +12,7 @@ void handle_idle(StateMachine* sm) {
     // TODO: Add bluetooth logic here
     print("IDLE State: Waiting for 5 seconds and selecting running mode");
     wait(500);
-    set_running_mode(sm, RUNNING_SENSOR_TEST);
+    set_running_mode(sm, RUNNING_BASE_PID);
     print("Finished selecting running mode in IDLE State");
     request_next_state(sm, STATE_RUNNING);
 }

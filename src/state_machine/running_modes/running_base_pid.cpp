@@ -12,6 +12,7 @@ void running_base_pid(StateMachine* sm) {
     uint8_t lap = sm->lap;
     const uint8_t laps = sm->laps;
 
+    send_start_signal();
     while (lap < laps) {
         update_pid();
         if (check_stop()) {
@@ -20,6 +21,7 @@ void running_base_pid(StateMachine* sm) {
         }
     }
 
+    send_stop_signal();
     print("Finalizing RUNNING_BASE_PID mode");
 }
 

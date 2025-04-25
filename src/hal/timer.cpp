@@ -3,7 +3,7 @@
 #include <avr/interrupt.h>
 #include <avr/io.h>
 
-static bool timer_initialized = false;  // Flag to check if timer is initialized
+static bool timer_initialized = false;
 static volatile uint16_t system_time = 0;  // System time in centiseconds
 
 void timer_init(void) {

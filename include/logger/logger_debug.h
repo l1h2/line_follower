@@ -1,7 +1,7 @@
 #ifndef LOGGER_H
 #define LOGGER_H
 
-#include "../../include/logger/logger_base.h"
+#include <stdint.h>
 
 /**
  * @brief Prints the current state of the central sensors in a human-readable

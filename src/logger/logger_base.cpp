@@ -58,9 +58,7 @@ void print_binary(const uint8_t byte) {
 void print_bool(const bool value) { usart_transmit(value ? '1' : '0'); }
 
 void print_string(const char *str) {
-    while (*str) {
-        usart_transmit(*str++);
-    }
+    while (*str) usart_transmit(*str++);
 }
 
 void print(const char *str) {

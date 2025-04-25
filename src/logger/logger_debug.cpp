@@ -1,5 +1,6 @@
 #include "../../include/logger/logger_debug.h"
 
+#include "../../include/logger/logger_base.h"
 #include "../../include/pid/errors.h"
 #include "../../include/timer/time.h"
 

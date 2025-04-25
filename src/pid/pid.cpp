@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #include "../../include/hal/pwm.h"
+#include "../../include/logger/logger.h"
 #include "../../include/pid/errors.h"
 #include "../../include/timer/time.h"
 
@@ -61,6 +62,7 @@ void update_pid(void) {
     last_pid_time = time();
     update_errors();
     update_motors(get_delta_pwm());
+    print_vision_data();
 }
 
 uint8_t get_base_pwm(void) { return base_pwm; }

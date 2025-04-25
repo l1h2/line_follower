@@ -4,7 +4,9 @@
 #include "../config.h"
 
 #ifdef DEBUG_MODE
+#include "logger_base.h"
 #include "logger_debug.h"
+#include "logger_vision.h"
 #else
 #define logger_init() ((void)0)
 #define print_bit(bit_position, byte) ((void)0)
@@ -20,6 +22,9 @@
 #define print_sensors() ((void)0)
 #define print_errors(errors) ((void)0)
 #define print_diagnostics(errors, interval) ((void)0)
+#define print_vision_data() ((void)0)
+#define send_start_signal() ((void)0)
+#define send_stop_signal() ((void)0)
 #endif
 
 #endif  // LOGGER_DEBUG_H
