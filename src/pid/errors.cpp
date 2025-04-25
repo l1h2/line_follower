@@ -2,10 +2,12 @@
 
 #include <stdlib.h>
 
-void update_error(ErrorStruct *errors) {
-    const uint8_t central_sensors_state = errors->sensors.central_sensors_state;
+static ErrorStruct errors = {0, 0, 0, 0, get_sensors()};
+
+void update_error(void) {
+    const uint8_t central_sensors_state = errors.sensors->central_sensors_state;
     if (!central_sensors_state) {
-        if (errors->sensors.central_sensor) errors->error = 0;
+        if (errors.sensors->central_sensor) errors.error = 0;
         return;
     }
 
@@ -19,41 +21,49 @@ void update_error(ErrorStruct *errors) {
         count++;
     }
 
-    errors->error = new_error * ERROR_WEIGHT / count - AVG_ERROR;
+    errors.error = new_error * ERROR_WEIGHT / count - AVG_ERROR;
 }
 
-void update_error_sum(ErrorStruct *errors) {
+void update_error_sum(void) {
     // Test integral windup prevention and faster reseting
-    if (errors->error == 0) {  // Maybe use threshold instead of 0
-        errors->error_sum = 0;
+    if (errors.error == 0) {  // Maybe use threshold instead of 0
+        errors.error_sum = 0;
         return;
     }
 
-    errors->error_sum += errors->error;
+    errors.error_sum += errors.error;
 
-    if (errors->error_sum > MAX_ERROR_SUM) {
-        errors->error_sum = MAX_ERROR_SUM;
-    } else if (errors->error_sum < MIN_ERROR_SUM) {
-        errors->error_sum = MIN_ERROR_SUM;
+    if (errors.error_sum > MAX_ERROR_SUM) {
+        errors.error_sum = MAX_ERROR_SUM;
+    } else if (errors.error_sum < MIN_ERROR_SUM) {
+        errors.error_sum = MIN_ERROR_SUM;
     }
 }
 
-void update_delta_error(ErrorStruct *errors) {
-    const int16_t delta_error = errors->error - errors->last_error;
+void update_delta_error(void) {
+    const int16_t delta_error = errors.error - errors.last_error;
 
     // Experiment with exponent filtering
-    errors->filtered_delta_error =
-        (errors->filtered_delta_error * 7 + delta_error) >> 3;
+    errors.filtered_delta_error =
+        (errors.filtered_delta_error * 7 + delta_error) >> 3;
 }
 
-void update_last_error(ErrorStruct *errors) {
-    errors->last_error = errors->error;
+void update_last_error(void) { errors.last_error = errors.error; }
+
+void update_errors(void) {
+    update_sensors();
+    update_error();
+    update_error_sum();
+    update_delta_error();
+    update_last_error();
 }
 
-void update_error_struct(ErrorStruct *errors) {
-    update_sensors(&errors->sensors);
-    update_error(errors);
-    update_error_sum(errors);
-    update_delta_error(errors);
-    update_last_error(errors);
+void clear_errors(void) {
+    errors.error = 0;
+    errors.last_error = 0;
+    errors.filtered_delta_error = 0;
+    errors.error_sum = 0;
+    clear_sensors();
 }
+
+ErrorStruct* get_errors(void) { return &errors; }

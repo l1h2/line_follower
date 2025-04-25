@@ -7,18 +7,18 @@ static TrackCounters track = {0};
 static uint16_t last_curve_check_time = 0;
 static uint16_t last_marker_check_time = 0;
 
-void update_counters(const ErrorStruct *errors) {
-    if (check_line(errors)) track.line_counter++;
-    if (check_straight(errors)) track.straight_counter++;
-    if (check_crossing(errors)) track.crossing_counter++;
-    if (check_curve(errors)) track.curve_counter++;
-    if (check_marker(errors)) track.marker_counter++;
-    if (check_lost_left(errors)) track.lost_left_counter++;
-    if (check_lost_right(errors)) track.lost_right_counter++;
-    if (check_pitch(errors)) track.pitch_counter++;
+void update_counters(void) {
+    if (check_line()) track.line_counter++;
+    if (check_straight()) track.straight_counter++;
+    if (check_crossing()) track.crossing_counter++;
+    if (check_curve()) track.curve_counter++;
+    if (check_marker()) track.marker_counter++;
+    if (check_lost_left()) track.lost_left_counter++;
+    if (check_lost_right()) track.lost_right_counter++;
+    if (check_pitch()) track.pitch_counter++;
 }
 
-void reset_counters() {
+void reset_counters(void) {
     track.line_counter = 0;
     track.straight_counter = 0;
     track.crossing_counter = 0;
@@ -29,13 +29,13 @@ void reset_counters() {
     track.pitch_counter = 0;
 }
 
-TrackCounters get_counters() { return track; }
+TrackCounters get_counters(void) { return track; }
 
-bool check_break(const ErrorStruct *errors) {
+bool check_break(void) {
     if (!time_elapsed(last_curve_check_time, DETECTION_DEBOUNCE_TIME))
         return false;
 
-    if (!check_curve(errors)) return false;
+    if (!check_curve()) return false;
 
     last_curve_check_time = time();
     track.curve_counter++;
@@ -43,11 +43,11 @@ bool check_break(const ErrorStruct *errors) {
     return true;
 }
 
-bool check_stop(const ErrorStruct *errors) {
+bool check_stop(void) {
     if (!time_elapsed(last_marker_check_time, DETECTION_DEBOUNCE_TIME))
         return false;
 
-    if (!check_marker(errors)) return false;
+    if (!check_marker()) return false;
 
     last_marker_check_time = time();
     track.marker_counter++;

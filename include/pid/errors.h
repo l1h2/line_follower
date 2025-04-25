@@ -1,7 +1,6 @@
 #ifndef ERRORS_H
 #define ERRORS_H
 
-#include <stdbool.h>
 #include <stdint.h>
 
 #include "../vision/vision.h"
@@ -27,37 +26,24 @@ typedef struct {
     int8_t last_error;  // The last error value for derivative calculation.
     int8_t filtered_delta_error;  // The filtered delta error value.
     int16_t error_sum;            // The sum of errors for integral calculation.
-    SensorState sensors;          // Sensor state information.
+    SensorState* sensors;         // Pointer to sensor state information.
 } ErrorStruct;
 
 /**
- * @brief Updates the error component of the error struct.
- * @param errors Pointer to the ErrorStruct to be updated.
- */
-void update_error(ErrorStruct *errors);
-
-/**
- * @brief Updates the error sum component of the error struct.
- * @param errors Pointer to the ErrorStruct to be updated.
- */
-void update_error_sum(ErrorStruct *errors);
-
-/**
- * @brief Updates the last error component of the error struct.
- * @param errors Pointer to the ErrorStruct to be updated.
- */
-void update_last_error(ErrorStruct *errors);
-
-/**
- * @brief Updates the delta error component of the error struct.
- * @param errors Pointer to the ErrorStruct to be updated.
- */
-void update_delta_error(ErrorStruct *errors);
-
-/**
  * @brief Updates the error struct with the latest sensor data and error values.
- * @param errors Pointer to the ErrorStruct to be updated.
  */
-void update_error_struct(ErrorStruct *errors);
+void update_errors(void);
+
+/**
+ * @brief Clears the error struct by resetting its values.
+ */
+void clear_errors(void);
+
+/**
+ * @brief Returns a pointer to the error struct.
+ *
+ * @return Pointer to the ErrorStruct containing error values.
+ */
+ErrorStruct* get_errors(void);
 
 #endif  // ERRORS_H

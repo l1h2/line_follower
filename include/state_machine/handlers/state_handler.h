@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#include "state_machine_base.h"
+#include "../state_machine_base.h"
 
 /**
  * @brief Handles the state machine logic based on the current state.

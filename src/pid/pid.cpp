@@ -3,8 +3,11 @@
 #include <stdlib.h>
 
 #include "../../include/hal/pwm.h"
+#include "../../include/pid/errors.h"
 #include "../../include/timer/time.h"
 
+// Use static pointer to reduce number of function calls in the PID loop
+static const ErrorStruct *errors = get_errors();
 static uint16_t last_pid_time = 0;
 static uint8_t base_pwm = BASE_PWM;
 
@@ -13,30 +16,30 @@ void pid_init(void) {
     motor_setup();
 }
 
-int16_t get_p(const ErrorStruct *errors) {
+int16_t get_p(void) {
     if (KP == 0) return 0;
 
     return KP * errors->error;
 }
 
-int16_t get_i(const ErrorStruct *errors) {
+int16_t get_i(void) {
     if (KI == 0) return 0;
 
     return KI * errors->error_sum * PID_FRAME_INTERVAL;
 }
 
-int16_t get_d(const ErrorStruct *errors) {
+int16_t get_d(void) {
     if (KD == 0) return 0;
 
     return KD * errors->filtered_delta_error / PID_FRAME_INTERVAL;
 }
 
-int16_t get_delta_pwm(const ErrorStruct *errors) {
+int16_t get_delta_pwm(void) {
     int16_t delta_pwm = 0;
 
-    delta_pwm += get_p(errors);
-    delta_pwm += get_i(errors);
-    delta_pwm += get_d(errors);
+    delta_pwm += get_p();
+    delta_pwm += get_i();
+    delta_pwm += get_d();
 
     return delta_pwm;
 }
@@ -52,12 +55,12 @@ void update_motors(const int16_t delta_pwm) {
     set_pwm_b((uint16_t)abs(pwm_b));
 }
 
-void update_pid(ErrorStruct *errors) {
+void update_pid(void) {
     if (!time_elapsed(last_pid_time, PID_FRAME_INTERVAL)) return;
 
     last_pid_time = time();
-    update_error_struct(errors);  // Maybe move this to bypass time check
-    update_motors(get_delta_pwm(errors));
+    update_errors();
+    update_motors(get_delta_pwm());
 }
 
 uint8_t get_base_pwm(void) { return base_pwm; }

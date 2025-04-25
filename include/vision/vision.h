@@ -25,8 +25,18 @@ void sensors_init(void);
 
 /**
  * @brief Updates the sensor states in the error struct.
- * @param errors Pointer to the ErrorStruct to be updated.
  */
-void update_sensors(SensorState *sensors);
+void update_sensors(void);
+
+/**
+ * @brief Clears the sensor states in the error struct.
+ */
+void clear_sensors(void);
+
+/**
+ * @brief Returns a pointer to the sensor state structure.
+ * @return Pointer to the sensor state structure.
+ */
+SensorState* get_sensors(void);
 
 #endif  // VISION_H

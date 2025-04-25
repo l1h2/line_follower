@@ -1,6 +1,6 @@
-#include "../../../include/state_machine/base_states/stopped.h"
+#include "../../../include/state_machine/states/stopped.h"
 
-#include "../../../include/logger/logger_debug.h"
+#include "../../../include/logger/logger.h"
 
 void handle_stopped(void) { print("STOPPED State: Handling stopped logic"); }
 

@@ -1,10 +1,8 @@
 #include "../../../include/state_machine/running_modes/running_base_pid.h"
 
-#include "../../../include/logger/logger_debug.h"
+#include "../../../include/logger/logger.h"
 #include "../../../include/pid/pid.h"
 #include "../../../include/vision/track.h"
-
-static ErrorStruct errors = {0};
 
 void running_base_pid(StateMachine* sm) {
     print("RUNNING_BASE_PID Mode: Handling running logic");
@@ -15,16 +13,10 @@ void running_base_pid(StateMachine* sm) {
     const uint8_t laps = sm->laps;
 
     while (lap < laps) {
-        print_diagnostics(&errors, 100);
-        update_pid(&errors);
-        if (check_stop(&errors)) {
+        update_pid();
+        if (check_stop()) {
             sm->lap++;
             lap++;
-            print_string("Completed lap: ");
-            print_byte(lap);
-            print_string(" of ");
-            print_byte(laps);
-            print(" laps");
         }
     }
 
@@ -36,10 +28,9 @@ void running_base_pid_to_stopped(void) {
     uint8_t base_pwm = get_base_pwm();
 
     while (base_pwm > 0) {
-        print_diagnostics(&errors, 10);
         base_pwm = (base_pwm <= break_speed) ? 0 : (base_pwm - break_speed);
         set_base_pwm(base_pwm);
-        update_pid(&errors);
+        update_pid();
 
         base_pwm = get_base_pwm();  // Confirm base_pwm after set_base_pwm()
     }

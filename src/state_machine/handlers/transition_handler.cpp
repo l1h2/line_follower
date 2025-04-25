@@ -1,10 +1,10 @@
-#include "../../include/state_machine/transition_handler.h"
+#include "../../../include/state_machine/handlers/transition_handler.h"
 
-#include "../../include/state_machine/base_states/error.h"
-#include "../../include/state_machine/base_states/idle.h"
-#include "../../include/state_machine/base_states/init.h"
-#include "../../include/state_machine/base_states/running.h"
-#include "../../include/state_machine/base_states/stopped.h"
+#include "../../../include/state_machine/states/error.h"
+#include "../../../include/state_machine/states/idle.h"
+#include "../../../include/state_machine/states/init.h"
+#include "../../../include/state_machine/states/running.h"
+#include "../../../include/state_machine/states/stopped.h"
 
 void update_state(StateMachine* sm) {
     sm->previous_state = sm->current_state;
@@ -22,18 +22,18 @@ bool handle_transition(StateMachine* sm) {
         case STATE_STOPPED:
             return handle_stopped_transitions(sm);
         case STATE_ERROR:
-            return handle_serror_transitions(sm);
+            return handle_error_transitions(sm);
         default:
             return false;
     }
 }
 
-bool validate_request(StateMachine* sm) {
+bool validate_transition(StateMachine* sm) {
     return (sm->next_state != sm->current_state);
 }
 
 bool request_transition(StateMachine* sm) {
-    if (!validate_request(sm)) return false;
+    if (!validate_transition(sm)) return false;
 
     if (handle_transition(sm)) {
         update_state(sm);

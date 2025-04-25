@@ -1,8 +1,12 @@
-#include "../../../include/state_machine/base_states/running.h"
+#include "../../../include/state_machine/states/running.h"
 
-#include "../../../include/logger/logger_debug.h"
-#include "../../../include/state_machine/running_modes/running_base_pid.h"
+#include "../../../include/logger/logger.h"
+#include "../../../include/state_machine/handlers/state_request_handler.h"
 #include "../../../include/vision/track.h"
+
+// Running modes
+#include "../../../include/state_machine/running_modes/running_base_pid.h"
+#include "../../../include/state_machine/running_modes/running_sensor_test.h"
 
 void handle_running(StateMachine* sm) {
     print("RUNNING State: Choosing running mode");
@@ -12,7 +16,12 @@ void handle_running(StateMachine* sm) {
             print("No running mode set, program will stop");
             return;
         case RUNNING_BASE_PID:
+            print("Running mode set to RUNNING_BASE_PID");
             running_base_pid(sm);
+            break;
+        case RUNNING_SENSOR_TEST:
+            print("Running mode set to RUNNING_SENSOR_TEST");
+            running_sensor_test(sm);
             break;
         default:
             print("Unknown running mode, program will stop");
@@ -20,7 +29,7 @@ void handle_running(StateMachine* sm) {
     }
 
     print("Finalizing RUNNING state, preparing to stop");
-    sm->next_state = STATE_STOPPED;
+    request_next_state(sm, STATE_STOPPED);
 }
 
 bool handle_running_to_stopped(const RunningModes running_mode) {
@@ -29,6 +38,9 @@ bool handle_running_to_stopped(const RunningModes running_mode) {
     switch (running_mode) {
         case RUNNING_BASE_PID:
             running_base_pid_to_stopped();
+            break;
+        case RUNNING_SENSOR_TEST:
+            running_sensor_test_to_stopped();
             break;
         default:
             print("Unknown running mode, going to error state");

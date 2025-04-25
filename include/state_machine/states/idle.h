@@ -12,11 +12,6 @@
 void handle_idle(StateMachine* sm);
 
 /**
- * @brief Handles the transition from idle to running state.
- */
-void handle_idle_to_running(void);
-
-/**
  * @brief Handles the transitions within the idle state.
  * @param sm Pointer to the state machine structure.
  * @return true if the transition was successful, false otherwise.

@@ -13,13 +13,6 @@
 void handle_running(StateMachine* sm);
 
 /**
- * @brief Handles the transition from running to stopped state.
- * @param running_mode The current running mode of the robot.
- * @return true if the transition was successful, false otherwise.
- */
-bool handle_running_to_stopped(const RunningModes running_mode);
-
-/**
  * @brief Handles the transitions within the running state.
  * @param sm Pointer to the state machine structure.
  * @return true if the transition was successful, false otherwise.

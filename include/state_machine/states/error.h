@@ -21,6 +21,6 @@ void handle_any_to_error(StateMachine* sm);
  * @param sm Pointer to the state machine structure.
  * @return true if the transition was successful, false otherwise.
  */
-bool handle_serror_transitions(StateMachine* sm);
+bool handle_error_transitions(StateMachine* sm);
 
 #endif  // ERROR_STATE_H

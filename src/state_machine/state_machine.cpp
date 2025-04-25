@@ -1,9 +1,9 @@
 #include "../../include/state_machine/state_machine.h"
 
-#include "../../include/logger/logger_debug.h"
+#include "../../include/logger/logger.h"
 #include "../../include/pid/pid.h"
-#include "../../include/state_machine/state_handler.h"
-#include "../../include/state_machine/transition_handler.h"
+#include "../../include/state_machine/handlers/state_handler.h"
+#include "../../include/state_machine/handlers/transition_handler.h"
 
 void state_machine_init(StateMachine* sm, const uint8_t laps) {
     sm->previous_state = STATE_INIT;

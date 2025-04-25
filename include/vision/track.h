@@ -1,7 +1,8 @@
 #ifndef TRACK_H
 #define TRACK_H
 
-#include "../../include/pid/errors.h"
+#include <stdbool.h>
+#include <stdint.h>
 
 #define DETECTION_DEBOUNCE_TIME 10  // Debounce time in centiseconds
 
@@ -22,9 +23,8 @@ typedef struct {
 
 /**
  * @brief Updates the tracking counters based on the error struct.
- * @param errors Pointer to the ErrorStruct to be updated.
  */
-void update_counters(const ErrorStruct *errors);
+void update_counters(void);
 
 /**
  * @brief Resets the tracking counters to zero.
@@ -39,17 +39,15 @@ TrackCounters get_counters(void);
 
 /**
  * @brief Checks if the robot should break based on the error struct.
- * @param errors Pointer to the ErrorStruct to be checked.
  * @return True if the robot should break, false otherwise.
  */
-bool check_break(const ErrorStruct *errors);
+bool check_break(void);
 
 /**
  * @brief Checks if the robot should stop based on the error struct and number
  * of laps.
- * @param errors Pointer to the ErrorStruct to be checked.
  * @return True if the robot should stop, false otherwise.
  */
-bool check_stop(const ErrorStruct *errors);
+bool check_stop(void);
 
 #endif  // TRACK_H

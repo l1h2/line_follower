@@ -1,24 +1,30 @@
-#ifndef LOGGER_DEBUG_H
-#define LOGGER_DEBUG_H
+#ifndef LOGGER_H
+#define LOGGER_H
 
-#include "../config.h"
+#include "../../include/logger/logger_base.h"
 
-#ifdef DEBUG_MODE
-#include "logger.h"
-#else
-#define logger_init() ((void)0)
-#define print_bit(bit_position, byte) ((void)0)
-#define print_byte(byte) ((void)0)
-#define print_signed_byte(byte) ((void)0)
-#define printWord(word) ((void)0)
-#define print_signed_word(word) ((void)0)
-#define print_bool(value) ((void)0)
-#define print_binary(byte) ((void)0)
-#define print_string(str) ((void)0)
-#define print(str) ((void)0)
-#define print_sensors() ((void)0)
-#define print_errors(errors) ((void)0)
-#define print_diagnostics(errors, interval) ((void)0)
-#endif
+/**
+ * @brief Prints the current state of the central sensors in a human-readable
+ * format.
+ */
+void print_central_sensors(void);
 
-#endif  // LOGGER_DEBUG_H
+/**
+ * @brief Prints the current state of the sensors in a human-readable format.
+ */
+void print_sensors(void);
+
+/**
+ * @brief Prints the error values for PID control in a human-readable format.
+ */
+void print_errors(void);
+
+/**
+ * @brief Prints the diagnostics information, including sensor states and error
+ * values.
+ * @param interval The time interval in centiseconds for printing diagnostics.
+ * (Default: 100)
+ */
+void print_diagnostics(const uint16_t interval = 100);
+
+#endif  // LOGGER_H

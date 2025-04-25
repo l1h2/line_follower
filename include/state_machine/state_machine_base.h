@@ -10,6 +10,7 @@
 typedef enum {
     RUNNING_INIT,
     RUNNING_BASE_PID,
+    RUNNING_SENSOR_TEST,
     RUNNING_TIME_STOP,
     RUNNING_LINE_TRACKING,
 } RunningModes;

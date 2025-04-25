@@ -1,5 +1,5 @@
 #include "include/config.h"
-#include "include/logger/logger_debug.h"
+#include "include/logger/logger.h"
 #include "include/state_machine/state_machine.h"
 #include "include/timer/time.h"
 
