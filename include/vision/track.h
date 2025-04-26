@@ -2,24 +2,8 @@
 #define TRACK_H
 
 #include <stdbool.h>
-#include <stdint.h>
 
-#define DETECTION_DEBOUNCE_TIME 10  // Debounce time in centiseconds
-
-/**
- * @struct TrackCounters
- * @brief Structure to hold tracking counters for different line observations.
- */
-typedef struct {
-    uint16_t line_counter;       // Lines detected
-    uint16_t straight_counter;   // Straight lines detected
-    uint8_t crossing_counter;    // Crossings detected
-    uint8_t curve_counter;       // Curve markers detected
-    uint8_t marker_counter;      // Stop/start markers detected
-    uint8_t lost_left_counter;   // Times the line is lost to the left
-    uint8_t lost_right_counter;  // Times the line is lost to the right
-    uint8_t pitch_counter;       // Times the line is lost due to pitch
-} TrackCounters;
+#include "vision_base.h"
 
 /**
  * @brief Updates the tracking counters based on the error struct.

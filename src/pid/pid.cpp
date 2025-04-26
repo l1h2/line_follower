@@ -3,39 +3,49 @@
 #include <stdlib.h>
 
 #include "../../include/hal/pwm.h"
-#include "../../include/logger/logger.h"
 #include "../../include/pid/errors.h"
 #include "../../include/timer/time.h"
+#include "../../include/vision/vision.h"
 
-// Use static pointer to reduce number of function calls in the PID loop
-static const ErrorStruct *errors = get_errors();
-static uint16_t last_pid_time = 0;
-static uint8_t base_pwm = BASE_PWM;
+#define KP 10
+#define KI 0
+#define KD 0
+#define BASE_PWM 40
+#define PID_FRAME_INTERVAL 1
+#define STOP_TIME 20
 
-void pid_init(void) {
-    sensors_init();
-    motor_setup();
+static PidStruct pid = {
+    .kp = KP,
+    .ki = KI,
+    .kd = KD,
+    .base_pwm = BASE_PWM,
+    .max_pwm = MAX_PWM,
+    .min_pwm = MIN_PWM,
+    .frame_interval = PID_FRAME_INTERVAL,
+    .last_pid_time = 0,
+    .stop_time = STOP_TIME,
+    .errors = get_errors(),
+};
+
+static int16_t get_p(void) {
+    if (pid.kp == 0) return 0;
+
+    return pid.kp * pid.errors->error;
 }
 
-int16_t get_p(void) {
-    if (KP == 0) return 0;
+static int16_t get_i(void) {
+    if (pid.ki == 0) return 0;
 
-    return KP * errors->error;
+    return pid.ki * pid.errors->error_sum * pid.frame_interval;
 }
 
-int16_t get_i(void) {
-    if (KI == 0) return 0;
+static int16_t get_d(void) {
+    if (pid.kd == 0) return 0;
 
-    return KI * errors->error_sum * PID_FRAME_INTERVAL;
+    return pid.kd * pid.errors->filtered_delta_error / pid.frame_interval;
 }
 
-int16_t get_d(void) {
-    if (KD == 0) return 0;
-
-    return KD * errors->filtered_delta_error / PID_FRAME_INTERVAL;
-}
-
-int16_t get_delta_pwm(void) {
+static int16_t get_delta_pwm(void) {
     int16_t delta_pwm = 0;
 
     delta_pwm += get_p();
@@ -45,9 +55,9 @@ int16_t get_delta_pwm(void) {
     return delta_pwm;
 }
 
-void update_motors(const int16_t delta_pwm) {
-    const int16_t pwm_a = base_pwm + delta_pwm;
-    const int16_t pwm_b = base_pwm - delta_pwm;
+static void update_motors(const int16_t delta_pwm) {
+    const int16_t pwm_a = pid.base_pwm + delta_pwm;
+    const int16_t pwm_b = pid.base_pwm - delta_pwm;
 
     set_motor_a_dir(pwm_a > 0);
     set_motor_b_dir(pwm_b > 0);
@@ -56,23 +66,28 @@ void update_motors(const int16_t delta_pwm) {
     set_pwm_b((uint16_t)abs(pwm_b));
 }
 
-void update_pid(void) {
-    if (!time_elapsed(last_pid_time, PID_FRAME_INTERVAL)) return;
+void pid_init(void) {
+    sensors_init();
+    motor_setup();
+}
 
-    last_pid_time = time();
+bool update_pid(void) {
+    if (!time_elapsed(pid.last_pid_time, pid.frame_interval)) return false;
+
+    pid.last_pid_time = time();
     update_errors();
     update_motors(get_delta_pwm());
-    print_vision_data();
+    return true;
 }
 
-uint8_t get_base_pwm(void) { return base_pwm; }
-
-void set_base_pwm(const uint8_t pwm) {
+void set_max_pwm(const uint8_t pwm) {
     if (pwm > MAX_PWM) {
-        base_pwm = MAX_PWM;
+        pid.max_pwm = MAX_PWM;
     } else if (pwm < MIN_PWM) {
-        base_pwm = MIN_PWM;
+        pid.max_pwm = MIN_PWM;
     } else {
-        base_pwm = pwm;
+        pid.max_pwm = pwm;
     }
 }
+
+PidStruct* get_pid(void) { return &pid; }

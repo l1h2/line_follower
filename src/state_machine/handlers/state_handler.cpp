@@ -8,26 +8,26 @@
 #include "../../../include/state_machine/states/stopped.h"
 
 void handle_state(StateMachine* sm) {
+    send_state_machine_info(sm, STATE);
+
     switch (sm->current_state) {
         case STATE_INIT:
-            print("State: INIT");
             handle_init(sm);
             break;
         case STATE_IDLE:
-            print("State: IDLE");
             handle_idle(sm);
             break;
         case STATE_RUNNING:
-            print("State: RUNNING");
             handle_running(sm);
             break;
         case STATE_STOPPED:
-            print("State: STOPPED");
             handle_stopped();
             break;
         case STATE_ERROR:
-            print("State: ERROR");
             handle_error();
             break;
+        default:
+            debug_print("Unknown state!");
+            return;
     }
 }

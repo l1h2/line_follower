@@ -12,6 +12,12 @@
 void logger_init(void);
 
 /**
+ * @brief Prints a character to the USART.
+ * @param c The character to print.
+ */
+void print_char(const char c);
+
+/**
  * @brief Prints a specific bit of a byte to the USART.
  * @param bit_position The position of the bit to print (0-7).
  * @param byte The byte from which to print the bit.
@@ -62,6 +68,12 @@ void print_bool(const bool value);
  * @note This function will block until the entire string is transmitted.
  */
 void print_string(const char *str);
+
+/**
+ * @brief Prints a newline character to the USART.
+ * @note This function will block until the newline character is transmitted.
+ */
+void print_new_line(void);
 
 /**
  * @brief Prints a string to the USART.

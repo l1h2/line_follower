@@ -16,10 +16,8 @@
 #define MOTOR_DDR DDRB    // Data Direction Register for motor control
 #define MOTOR_PORT PORTB  // Port for motor control
 
-#define BASE_PWM 40        // Base PWM value for motor speed
-#define MAX_PWM 255        // Maximum PWM value for motor speed
-#define MIN_PWM 0          // Minimum PWM value for motor speed
-#define MAX_DELTA_PWM 500  // Maximum change in PWM value
+#define MAX_PWM 255  // Maximum PWM value for motor speed
+#define MIN_PWM 0    // Minimum PWM value for motor speed
 
 /**
  * @brief Sets up the PWM registers for motor control.

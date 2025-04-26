@@ -3,9 +3,6 @@
 
 #include <stdbool.h>
 
-// Minimum number of sensors for crossing detection
-#define CROSSING_SENSORS_THRESHOLD 4
-
 /**
  * @brief Checks if the line is detected based on the error struct.
  * @return True if the line is detected, false otherwise.

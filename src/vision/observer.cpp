@@ -2,10 +2,14 @@
 
 #include "../../include/pid/errors.h"
 
+// Minimum number of sensors for crossing detection
+#define CROSSING_SENSORS_THRESHOLD 4
+
 static const ErrorStruct *errors = get_errors();
 
 bool check_line(void) {
-    return (errors->error > MIN_ERROR && errors->error < MAX_ERROR);
+    return (errors->error > errors->min_error &&
+            errors->error < errors->max_error);
 }
 
 bool check_straight(void) {
@@ -30,7 +34,7 @@ bool check_crossing(void) {
 bool check_curve(void) {
     if (!errors->sensors->left_sensor) return false;
     if (errors->sensors->right_sensor) return false;
-    if (errors->error <= MIN_ERROR) return false;
+    if (errors->error <= errors->min_error) return false;
     if (check_crossing()) return false;
 
     return true;
@@ -39,7 +43,7 @@ bool check_curve(void) {
 bool check_marker(void) {
     if (!errors->sensors->right_sensor) return false;
     if (errors->sensors->left_sensor) return false;
-    if (errors->error >= MAX_ERROR) return false;
+    if (errors->error >= errors->max_error) return false;
     if (check_crossing()) return false;
 
     return true;
@@ -54,14 +58,14 @@ bool check_lost_left(void) {
     if (errors->sensors->right_sensor) return false;
     if (!check_lost()) return false;
 
-    return (errors->error <= MIN_ERROR);
+    return (errors->error <= errors->min_error);
 }
 
 bool check_lost_right(void) {
     if (errors->sensors->left_sensor) return false;
     if (!check_lost()) return false;
 
-    return (errors->error >= MAX_ERROR);
+    return (errors->error >= errors->max_error);
 }
 
 bool check_pitch(void) {
@@ -69,5 +73,6 @@ bool check_pitch(void) {
     if (errors->sensors->left_sensor) return false;
     if (!check_lost()) return false;
 
-    return (errors->error > MIN_ERROR && errors->error < MAX_ERROR);
+    return (errors->error > errors->min_error &&
+            errors->error < errors->max_error);
 }

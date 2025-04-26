@@ -5,7 +5,7 @@
 #include "../../../include/vision/track.h"
 
 void running_base_pid(StateMachine* sm) {
-    print("RUNNING_BASE_PID Mode: Handling running logic");
+    debug_print("RUNNING_BASE_PID Mode: Handling running logic");
 
     // Assigning lap variables to local scope to reduce number of
     // dereferences in the main execution loop
@@ -14,7 +14,8 @@ void running_base_pid(StateMachine* sm) {
 
     send_start_signal();
     while (lap < laps) {
-        update_pid();
+        if (update_pid()) send_vision_data();
+
         if (check_stop()) {
             sm->lap++;
             lap++;
@@ -22,18 +23,19 @@ void running_base_pid(StateMachine* sm) {
     }
 
     send_stop_signal();
-    print("Finalizing RUNNING_BASE_PID mode");
+    debug_print("Finalizing RUNNING_BASE_PID mode");
 }
 
 void running_base_pid_to_stopped(void) {
-    const uint8_t break_speed = get_base_pwm() / BREAK_FRAMES;
-    uint8_t base_pwm = get_base_pwm();
+    const PidStruct* pid = get_pid();
+    const uint8_t break_speed =
+        pid->max_pwm / (pid->stop_time / pid->frame_interval);
 
-    while (base_pwm > 0) {
-        base_pwm = (base_pwm <= break_speed) ? 0 : (base_pwm - break_speed);
-        set_base_pwm(base_pwm);
+    uint8_t max_pwm = pid->max_pwm;
+
+    while (pid->max_pwm > 0) {
+        max_pwm = (max_pwm <= break_speed) ? 0 : (max_pwm - break_speed);
+        set_max_pwm(max_pwm);
         update_pid();
-
-        base_pwm = get_base_pwm();  // Confirm base_pwm after set_base_pwm()
     }
 }

@@ -16,6 +16,16 @@ typedef enum {
 } RunningModes;
 
 /**
+ * @enum StopModes
+ * @brief Enumeration of stopping modes for the robot.
+ */
+typedef enum {
+    STOP_MODE_NONE,
+    STOP_MODE_TIME,
+    STOP_MODE_LAPS,
+} StopModes;
+
+/**
  * @enum RobotStates
  * @brief Enumeration of robot states for the state machine.
  */
@@ -36,8 +46,10 @@ typedef struct {
     RobotStates current_state;   // Current state of the robot
     RobotStates next_state;      // Next state of the robot
     RunningModes running_mode;   // Current running mode of the robot
+    StopModes stop_mode;         // Current stopping mode of the robot
     uint8_t lap;                 // Current number of laps completed
     uint8_t laps;                // Number of laps to run
+    uint8_t stop_time;           // Time in seconds for the robot to stop
 } StateMachine;
 
 #endif  // STATE_MACHINE_BASE_H

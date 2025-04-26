@@ -5,12 +5,14 @@
 #include "../../../include/state_machine/handlers/state_request_handler.h"
 
 void handle_init(StateMachine* sm) {
-    print("INIT State: Initializing PID and other components");
+    debug_print("INIT State: Initializing PID and other components");
     pid_init();
     request_next_state(sm, STATE_IDLE);
 }
 
-void handle_init_to_idle(void) { print("Transitioning from INIT to IDLE"); }
+static void handle_init_to_idle(void) {
+    debug_print("Transitioning from INIT to IDLE");
+}
 
 bool handle_init_transitions(StateMachine* sm) {
     switch (sm->next_state) {

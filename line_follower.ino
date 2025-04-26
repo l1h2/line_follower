@@ -10,7 +10,7 @@ void setup(void) {
 
 int main(void) {
     setup();
-    run_state_machine(LAPS);
+    run_state_machine();
 
     return 0;
 }

@@ -13,6 +13,8 @@ void logger_init(void) {
     print("******************************************");
 }
 
+void print_char(const char c) { usart_transmit(c); }
+
 void print_bit(const uint8_t bit_position, const uint8_t byte) {
     if (bit_position > 7) return;  // Invalid bit position
 
@@ -61,7 +63,9 @@ void print_string(const char *str) {
     while (*str) usart_transmit(*str++);
 }
 
+void print_new_line(void) { usart_transmit('\n'); }
+
 void print(const char *str) {
     print_string(str);
-    print_string("\r\n");
+    print_new_line();
 }

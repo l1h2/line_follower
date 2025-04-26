@@ -5,13 +5,15 @@
 #include "../../include/state_machine/handlers/state_handler.h"
 #include "../../include/state_machine/handlers/transition_handler.h"
 
-void state_machine_init(StateMachine* sm, const uint8_t laps) {
+static void state_machine_init(StateMachine* sm) {
     sm->previous_state = STATE_INIT;
     sm->current_state = STATE_INIT;
     sm->next_state = STATE_INIT;
     sm->running_mode = RUNNING_INIT;
+    sm->stop_mode = STOP_MODE_NONE;
     sm->lap = 0;
-    sm->laps = laps;
+    sm->laps = 0;
+    sm->stop_time = 0;
 }
 
 void reset_state_machine(StateMachine* sm) {
@@ -19,14 +21,17 @@ void reset_state_machine(StateMachine* sm) {
     sm->current_state = STATE_INIT;
     sm->next_state = STATE_INIT;
     sm->running_mode = RUNNING_INIT;
+    sm->stop_mode = STOP_MODE_NONE;
     sm->lap = 0;
+    sm->laps = 0;
+    sm->stop_time = 0;
 }
 
-void run_state_machine(const uint8_t laps) {
-    print("Starting State Machine...");
+void run_state_machine() {
+    debug_print("Starting State Machine...");
     StateMachine sm;
 
-    state_machine_init(&sm, laps);
+    state_machine_init(&sm);
 
     while (sm.current_state != STATE_STOPPED &&
            sm.current_state != STATE_ERROR) {

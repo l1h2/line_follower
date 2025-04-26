@@ -1,6 +1,6 @@
 #include "../../../include/state_machine/handlers/state_request_handler.h"
 
-bool validate_next_state(StateMachine* sm) {
+static bool validate_next_state(StateMachine* sm) {
     return (sm->next_state == sm->current_state);
 }
 

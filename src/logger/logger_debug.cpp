@@ -3,8 +3,23 @@
 #include "../../include/logger/logger_base.h"
 #include "../../include/pid/errors.h"
 #include "../../include/timer/time.h"
+#include "../../include/vision/vision.h"
 
 static uint16_t last_log_time = 0;
+
+void debug_print_char(const char c) { print_char(c); }
+void debug_print_bit(const uint8_t bit_position, const uint8_t byte) {
+    print_bit(bit_position, byte);
+}
+void debug_print_byte(const uint8_t byte) { print_byte(byte); }
+void debug_print_signed_byte(int8_t byte) { print_signed_byte(byte); }
+void debug_print_word(const uint16_t word) { print_word(word); }
+void debug_print_signed_word(int16_t word) { print_signed_word(word); }
+void debug_print_binary(const uint8_t byte) { print_binary(byte); }
+void debug_print_bool(const bool value) { print_bool(value); }
+void debug_print_string(const char *str) { print_string(str); }
+void debug_print_new_line(void) { print_new_line(); }
+void debug_print(const char *str) { print(str); }
 
 void print_central_sensors(void) {
     const SensorState *sensors = get_sensors();
