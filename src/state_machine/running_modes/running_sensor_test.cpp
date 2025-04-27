@@ -2,13 +2,14 @@
 
 #include "../../../include/logger/logger.h"
 #include "../../../include/pid/errors.h"
+#include "../../../include/receiver/receiver.h"
+#include "../../../include/state_machine/running_modes/running_base.h"
 #include "../../../include/timer/time.h"
-#include "../../../include/vision/track.h"
 
 void running_sensor_test(StateMachine* sm) {
     debug_print("RUNNING_SENSOR_TEST Mode: Handling running logic");
 
-    while (true) {
+    while (sm->can_run) {
         print_diagnostics();
 
         send_start_signal();
@@ -17,6 +18,9 @@ void running_sensor_test(StateMachine* sm) {
 
         wait(100);
         update_errors();
+
+        check_stop(sm);
+        process_serial_commands();
     }
 
     debug_print("Finalizing RUNNING_SENSOR_TEST mode");

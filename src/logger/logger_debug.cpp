@@ -48,25 +48,24 @@ void print_sensors(void) {
     print_string(" | ");
     print_bool(sensors->right_sensor);
 
-    print_string("\r\n");
+    print_new_line();
     print_string("                    ");
     print_bool(sensors->middle_sensor);
 
-    print_string("\r\n");
+    print_new_line();
     print_string("******************************************");
-    print_string("\r\n");
-    print_string("\r\n");
+    print_new_line();
 }
 
 void print_errors(void) {
     const ErrorStruct *errors = get_errors();
 
+    print_new_line();
     print_string("Error byte: ");
     print_binary(errors->sensors->central_sensors_state);
     print_string(" - Error: ");
     print_signed_byte(errors->error);
-    print_string("\r\n");
-    print_string("\r\n");
+    print_new_line();
 }
 
 void print_diagnostics(const uint16_t interval) {

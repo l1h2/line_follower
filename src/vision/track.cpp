@@ -45,7 +45,15 @@ bool check_break(void) {
     return true;
 }
 
-bool check_stop(void) {
+bool check_start_marker(void) {
+    if (!check_marker()) return false;
+
+    track.marker_counter++;
+
+    return (track.marker_counter & 0);
+}
+
+bool check_stop_marker(void) {
     if (!time_elapsed(last_marker_check_time, DETECTION_DEBOUNCE_TIME))
         return false;
 

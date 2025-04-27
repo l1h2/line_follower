@@ -7,8 +7,9 @@
 
 /**
  * @brief Handles the stopped state logic.
+ * @param sm Pointer to the state machine structure.
  */
-void handle_stopped(void);
+void handle_stopped(StateMachine* sm);
 
 /**
  * @brief Handles the transitions within the stopped state.

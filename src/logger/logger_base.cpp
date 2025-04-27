@@ -2,15 +2,16 @@
 
 #include "../../include/hal/usart.h"
 
-static bool is_logging_enabled = false;
+static bool logging_enabled = false;
 
 void logger_init(void) {
-    if (is_logging_enabled) return;
+    if (logging_enabled) return;
 
-    usart_init();
+    usart_init_transmitter();
 
     print("Logger Initialized");
     print("******************************************");
+    logging_enabled = true;
 }
 
 void print_char(const char c) { usart_transmit(c); }

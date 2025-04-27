@@ -1,21 +1,38 @@
 #include "../../../include/state_machine/states/idle.h"
 
+#include "../../../include/config.h"
 #include "../../../include/logger/logger.h"
+#include "../../../include/receiver/receiver.h"
+#include "../../../include/state_machine/handlers/config_handler.h"
 #include "../../../include/state_machine/handlers/state_request_handler.h"
 #include "../../../include/timer/time.h"
 
-static void set_running_mode(StateMachine* sm, RunningModes mode) {
-    sm->running_mode = mode;
-}
-
+#ifdef BLUETOOTH_MODE
 void handle_idle(StateMachine* sm) {
-    // TODO: Add bluetooth logic here
+    debug_print("IDLE State: Waiting for bluetooth commands");
+
+    while (!sm->can_run) {
+        send_robot_data(sm, process_serial_commands() ? 0 : 100);
+    }
+
+    debug_print("Start command received in IDLE State");
+    request_next_state(sm, STATE_RUNNING);
+}
+#else
+void handle_idle(StateMachine* sm) {
     debug_print("IDLE State: Waiting for 5 seconds and selecting running mode");
     wait(500);
-    set_running_mode(sm, RUNNING_BASE_PID);
+
+    set_running_mode(RUNNING_SENSOR_TEST);
+    set_stop_mode(STOP_MODE_NONE);
+    set_can_run(true);
+    set_laps(0);
+    set_stop_time(0);
+
     debug_print("Finished selecting running mode in IDLE State");
     request_next_state(sm, STATE_RUNNING);
 }
+#endif
 
 static void handle_idle_to_running(void) {
     debug_print("Transitioning from IDLE to RUNNING");

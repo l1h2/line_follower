@@ -1,0 +1,27 @@
+#ifndef RECEIVER_H
+#define RECEIVER_H
+
+#include "../config.h"
+
+#if defined(DEBUG_MODE) || defined(BLUETOOTH_MODE)
+#include "receiver_base.h"
+#else
+#define receiver_init() ((void)0)
+#define buffer_size() ((uint8_t)0)
+#define read_last_transmission() ((char)0)
+#define read_raw_buffer(buffer_out) ((char *)0)
+#define read_available() (false)
+#define read_buffer_full() (false)
+#define read_char() ((char)0)
+#define read(buffer_out) ((char *)0)
+#endif  // DEBUG_MODE || BLUETOOTH_MODE
+
+#ifdef BLUETOOTH_MODE
+#include "serial.h"
+#else
+#define read_command() ((Command){INVALID_COMMAND, 0})
+#define wait_for_command() ((Command){INVALID_COMMAND, 0})
+#define process_serial_commands() ((void)0)
+#endif  // BLUETOOTH_MODE
+
+#endif  // RECEIVER_H

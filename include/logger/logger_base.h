@@ -6,8 +6,6 @@
 
 /**
  * @brief Initializes USART for logging.
- * @note Should be used instead of usart_init() to ensure proper initialization
- * for logging purposes.
  */
 void logger_init(void);
 

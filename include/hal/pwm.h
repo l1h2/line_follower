@@ -20,16 +20,6 @@
 #define MIN_PWM 0    // Minimum PWM value for motor speed
 
 /**
- * @brief Sets up the PWM registers for motor control.
- *
- * This function initializes the PWM registers for controlling two motors.
- *
- * @note The PWM control is set to Fast PWM mode, 8-bit (mode 5), with a 64
- * pre-scale (^980 Hz).
- */
-void pwm_init(void);
-
-/**
  * @brief Configures the motor driver pins and initializes the PWM.
  */
 void motor_setup(void);

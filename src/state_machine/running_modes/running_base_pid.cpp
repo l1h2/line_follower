@@ -2,24 +2,21 @@
 
 #include "../../../include/logger/logger.h"
 #include "../../../include/pid/pid.h"
-#include "../../../include/vision/track.h"
+#include "../../../include/receiver/receiver.h"
+#include "../../../include/state_machine/handlers/config_handler.h"
+#include "../../../include/state_machine/running_modes/running_base.h"
 
 void running_base_pid(StateMachine* sm) {
     debug_print("RUNNING_BASE_PID Mode: Handling running logic");
 
-    // Assigning lap variables to local scope to reduce number of
-    // dereferences in the main execution loop
-    uint8_t lap = sm->lap;
-    const uint8_t laps = sm->laps;
-
     send_start_signal();
-    while (lap < laps) {
+    set_start_time();
+
+    while (sm->can_run) {
         if (update_pid()) send_vision_data();
 
-        if (check_stop()) {
-            sm->lap++;
-            lap++;
-        }
+        check_stop(sm);
+        process_serial_commands();
     }
 
     send_stop_signal();
@@ -32,10 +29,14 @@ void running_base_pid_to_stopped(void) {
         pid->max_pwm / (pid->stop_time / pid->frame_interval);
 
     uint8_t max_pwm = pid->max_pwm;
+    bool pid_updated = true;
 
     while (pid->max_pwm > 0) {
+        if (!update_pid()) continue;
+
         max_pwm = (max_pwm <= break_speed) ? 0 : (max_pwm - break_speed);
         set_max_pwm(max_pwm);
-        update_pid();
+
+        send_vision_data();
     }
 }

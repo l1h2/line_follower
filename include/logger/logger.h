@@ -46,12 +46,12 @@
 #else
 #define send_start_signal() ((void)0)
 #define send_stop_signal() ((void)0)
-#define send_state_info(state) ((void)0)
-#define send_mode_info(mode) ((void)0)
-#define sen_pid_info(info, value) ((void)0)
+#define send_state_machine_info(sm, info) ((void)0)
+#define send_pid_info(info, value) ((void)0)
 #define send_vision_data() ((void)0)
 #define send_pid_data() ((void)0)
-#define send_data(sm) ((void)0)
+#define send_state_machine_data(sm) ((void)0)
+#define send_robot_data(...) ((void)0)
 #endif  // BLUETOOTH_MODE
 
 #endif  // LOGGER_H

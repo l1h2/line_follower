@@ -5,23 +5,6 @@
 
 #include "../../include/state_machine/state_machine_base.h"
 
-/**
- * @brief Enum for serial input commands.
- */
-typedef enum {
-    START = '$',
-    STOP = '%',
-    SET_KP = 'P',
-    SET_KI = 'I',
-    SET_KD = 'D',
-    SET_BASE_PWM = 'B',
-    SET_MAX_PWM = 'M',
-    SET_RUNNING_MODE = 'R',
-    SET_STOP_MODE = 'S',
-    SET_LAPS = 'L',
-    SET_STOP_TIME = 'T',
-} SerialInputs;
-
 typedef enum {
     STATE,
     RUNNING_MODE,

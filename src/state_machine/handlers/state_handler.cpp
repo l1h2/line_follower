@@ -21,7 +21,7 @@ void handle_state(StateMachine* sm) {
             handle_running(sm);
             break;
         case STATE_STOPPED:
-            handle_stopped();
+            handle_stopped(sm);
             break;
         case STATE_ERROR:
             handle_error();

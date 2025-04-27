@@ -7,12 +7,12 @@
 #include "../../include/timer/time.h"
 #include "../../include/vision/vision.h"
 
-#define KP 10
-#define KI 0
-#define KD 0
-#define BASE_PWM 40
-#define PID_FRAME_INTERVAL 1
-#define STOP_TIME 20
+#define KP 10                 // Proportional gain
+#define KI 0                  // Integral gain
+#define KD 0                  // Derivative gain
+#define BASE_PWM 40           // Base PWM value for the motors
+#define PID_FRAME_INTERVAL 1  // PID frame interval in centiseconds
+#define STOP_TIME 20          // Time to stop the motors in centiseconds
 
 static PidStruct pid = {
     .kp = KP,
@@ -80,6 +80,24 @@ bool update_pid(void) {
     return true;
 }
 
+PidStruct* get_pid(void) { return &pid; }
+
+void set_kp(const uint8_t kp) { pid.kp = kp; }
+
+void set_ki(const uint8_t ki) { pid.ki = ki; }
+
+void set_kd(const uint8_t kd) { pid.kd = kd; }
+
+void set_base_pwm(const uint8_t base_pwm) {
+    if (base_pwm > MAX_PWM) {
+        pid.base_pwm = MAX_PWM;
+    } else if (base_pwm < MIN_PWM) {
+        pid.base_pwm = MIN_PWM;
+    } else {
+        pid.base_pwm = base_pwm;
+    }
+}
+
 void set_max_pwm(const uint8_t pwm) {
     if (pwm > MAX_PWM) {
         pid.max_pwm = MAX_PWM;
@@ -89,5 +107,3 @@ void set_max_pwm(const uint8_t pwm) {
         pid.max_pwm = pwm;
     }
 }
-
-PidStruct* get_pid(void) { return &pid; }

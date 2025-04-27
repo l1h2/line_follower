@@ -28,10 +28,15 @@ TrackCounters get_counters(void);
 bool check_break(void);
 
 /**
- * @brief Checks if the robot should stop based on the error struct and number
- * of laps.
+ * @brief Checks for a start marker based on the error struct.
+ * @return True if the robot should start, false otherwise.
+ */
+bool check_start_marker(void);
+
+/**
+ * @brief Checks for a stop marker based on the error struct.
  * @return True if the robot should stop, false otherwise.
  */
-bool check_stop(void);
+bool check_stop_marker(void);
 
 #endif  // TRACK_H

@@ -1,6 +1,7 @@
 #ifndef STATE_MACHINE_BASE_H
 #define STATE_MACHINE_BASE_H
 
+#include <stdbool.h>
 #include <stdint.h>
 
 /**
@@ -47,9 +48,11 @@ typedef struct {
     RobotStates next_state;      // Next state of the robot
     RunningModes running_mode;   // Current running mode of the robot
     StopModes stop_mode;         // Current stopping mode of the robot
+    bool can_run;                // Flag indicating if the robot can run
     uint8_t lap;                 // Current number of laps completed
     uint8_t laps;                // Number of laps to run
-    uint8_t stop_time;           // Time in seconds for the robot to stop
+    uint16_t start_time;         // Start time in seconds
+    uint16_t stop_time;          // Time in seconds for the robot to stop
 } StateMachine;
 
 #endif  // STATE_MACHINE_BASE_H
