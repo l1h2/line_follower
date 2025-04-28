@@ -9,12 +9,11 @@
 void timer_init(void);
 
 /**
- * @brief Returns the current system time in centiseconds.
+ * @brief Returns the current system time in milliseconds.
  *
- * @return The current system time in centiseconds.
- * @note Overflows at 65535 centiseconds (approximately 11 minutes).
+ * @return The current system time in milliseconds.
  * @note Uses atomic access to ensure thread safety.
  */
-uint16_t get_system_time(void);
+uint32_t get_system_time(void);
 
 #endif  // TIMER_H

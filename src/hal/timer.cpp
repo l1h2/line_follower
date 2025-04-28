@@ -4,14 +4,14 @@
 #include <avr/io.h>
 
 static bool timer_initialized = false;
-static volatile uint16_t system_time = 0;  // System time in centiseconds
+static volatile uint32_t system_time = 0;  // System time in milliseconds
 
 void timer_init(void) {
     if (timer_initialized) return;
 
     TCCR2A |= (1 << WGM21);
-    TCCR2B |= (1 << CS22) | (1 << CS21) | (1 << CS20);  // Set prescaler to 1024
-    OCR2A = 152;  // Set compare value for 10ms counter (Experimental)
+    TCCR2B |= (1 << CS22);  // Set prescaler to 64
+    OCR2A = 248;            // Set compare value for 1ms counter (Experimental)
 
     TIMSK2 |= (1 << OCIE2A);  // Enable Timer2 compare interrupt
     sei();                    // Enable global interrupts
@@ -19,8 +19,8 @@ void timer_init(void) {
 
 ISR(TIMER2_COMPA_vect) { system_time++; }
 
-uint16_t get_system_time(void) {
-    uint16_t current_time;
+uint32_t get_system_time(void) {
+    uint32_t current_time;
     cli();  // Disable interrupts to ensure atomic access
     current_time = system_time;
     sei();  // Re-enable interrupts

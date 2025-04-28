@@ -7,12 +7,12 @@
 #include "../../include/timer/time.h"
 #include "../../include/vision/vision.h"
 
-#define KP 10                 // Proportional gain
+#define KP 20                 // Proportional gain
 #define KI 0                  // Integral gain
 #define KD 0                  // Derivative gain
 #define BASE_PWM 40           // Base PWM value for the motors
-#define PID_FRAME_INTERVAL 1  // PID frame interval in centiseconds
-#define STOP_TIME 20          // Time to stop the motors in centiseconds
+#define PID_FRAME_INTERVAL 1  // PID frame interval in milliseconds
+#define STOP_TIME 200         // Time to stop the motors in milliseconds
 
 static PidStruct pid = {
     .kp = KP,
@@ -54,10 +54,21 @@ static int16_t get_delta_pwm(void) {
 
     return delta_pwm;
 }
+static int16_t get_pwm(const int16_t delta_pwm) {
+    int16_t pwm = pid.base_pwm + delta_pwm;
+
+    if (pwm > pid.max_pwm) {
+        return pid.max_pwm;
+    } else if (pwm < pid.min_pwm) {
+        return pid.min_pwm;
+    }
+
+    return pwm;
+}
 
 static void update_motors(const int16_t delta_pwm) {
-    const int16_t pwm_a = pid.base_pwm + delta_pwm;
-    const int16_t pwm_b = pid.base_pwm - delta_pwm;
+    const int16_t pwm_a = get_pwm(delta_pwm);
+    const int16_t pwm_b = get_pwm(-delta_pwm);
 
     set_motor_a_dir(pwm_a > 0);
     set_motor_b_dir(pwm_b > 0);
@@ -72,9 +83,9 @@ void pid_init(void) {
 }
 
 bool update_pid(void) {
-    if (!time_elapsed(pid.last_pid_time, pid.frame_interval)) return false;
+    // if (!time_elapsed(pid.last_pid_time, pid.frame_interval)) return false;
 
-    pid.last_pid_time = time();
+    // pid.last_pid_time = time();
     update_errors();
     update_motors(get_delta_pwm());
     return true;

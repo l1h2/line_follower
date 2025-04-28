@@ -23,10 +23,10 @@ void handle_idle(StateMachine* sm) {
     debug_print("IDLE State: Waiting for 5 seconds and selecting running mode");
     wait(500);
 
-    set_running_mode(RUNNING_SENSOR_TEST);
-    set_stop_mode(STOP_MODE_NONE);
+    set_running_mode(RUNNING_BASE_PID);
+    set_stop_mode(STOP_MODE_LAPS);
     set_can_run(true);
-    set_laps(0);
+    set_laps(2);
     set_stop_time(0);
 
     debug_print("Finished selecting running mode in IDLE State");

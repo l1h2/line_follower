@@ -68,11 +68,11 @@ static void update_error_sum(void) {
 }
 
 static void update_delta_error(void) {
-    const int16_t delta_error = errors.error - errors.last_error;
+    const int8_t delta_error = errors.error - errors.last_error;
 
     // Experiment with exponent filtering
-    errors.filtered_delta_error =
-        (errors.filtered_delta_error * 7 + delta_error) >> 3;
+    errors.filtered_delta_error = delta_error;
+    // (errors.filtered_delta_error * 7 + delta_error) >> 3;
 }
 
 static void update_last_error(void) { errors.last_error = errors.error; }

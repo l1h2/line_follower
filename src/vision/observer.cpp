@@ -1,11 +1,32 @@
 #include "../../include/vision/observer.h"
 
+#include "../../include/logger/logger.h"
 #include "../../include/pid/errors.h"
+#include "../../include/timer/time.h"
+
+#define DETECTION_DEBOUNCE_TIME 100  // Debounce time in milliseconds
 
 // Minimum number of sensors for crossing detection
 #define CROSSING_SENSORS_THRESHOLD 4
 
 static const ErrorStruct *errors = get_errors();
+static uint16_t last_crossing_check_time = 0;
+
+static bool check_non_contiguous_sensors(const uint8_t sensors_state) {
+    bool found_active = false;
+    bool found_gap = false;
+
+    for (uint8_t i = 0; i < 8; i++) {
+        if (sensors_state & (1 << i)) {
+            if (found_gap) return true;
+            found_active = true;
+        } else if (found_active) {
+            found_gap = true;
+        }
+    }
+
+    return false;
+}
 
 bool check_line(void) {
     return (errors->error > errors->min_error &&
@@ -18,6 +39,14 @@ bool check_straight(void) {
 }
 
 bool check_crossing(void) {
+    if (!time_elapsed(last_crossing_check_time, DETECTION_DEBOUNCE_TIME)) {
+        return false;
+    }
+
+    if (check_non_contiguous_sensors(errors->sensors->central_sensors_state)) {
+        return true;
+    }
+
     uint8_t total_central_sensors = 0;
 
     if (errors->sensors->central_sensor) total_central_sensors++;
@@ -46,6 +75,13 @@ bool check_marker(void) {
     if (errors->error >= errors->max_error) return false;
     if (check_crossing()) return false;
 
+    debug_print_string("Marker: ");
+    debug_print_bool(errors->sensors->right_sensor);
+    debug_print_binary(errors->sensors->central_sensors_state);
+    debug_print_bool(errors->sensors->left_sensor);
+    debug_print_string(" - ");
+    debug_print_signed_byte(errors->error);
+    debug_print_new_line();
     return true;
 }
 

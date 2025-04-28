@@ -9,6 +9,7 @@
 #define SERIAL_STOP_MODE "S_MODE:"     // Stop mode of the
 #define SERIAL_LAPS "LAPS:"            // Number of laps to run
 #define SERIAL_STOP_TIME "S_TIME:"     // Time in seconds for the robot to stop
+#define SERIAL_LOG_DATA "L_DATA:"      // Data to be logged
 #define SERIAL_KP "KP:"                // Proportional gain
 #define SERIAL_KI "KI:"                // Integral gain
 #define SERIAL_KD "KD:"                // Derivative gain
@@ -41,6 +42,9 @@ void send_state_machine_info(const StateMachine *sm,
             break;
         case STOP_TIME:
             send_data(SERIAL_STOP_TIME, sm->stop_time);
+            break;
+        case LOG_DATA:
+            send_data(SERIAL_LOG_DATA, sm->log_data);
             break;
     }
 }

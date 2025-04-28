@@ -14,6 +14,7 @@ static StateMachine sm = {
     .laps = 0,
     .start_time = 0,
     .stop_time = 0,
+    .log_data = false,
 };
 
 void reset_state_machine(void) {
@@ -27,6 +28,7 @@ void reset_state_machine(void) {
     sm.laps = 0;
     sm.start_time = 0;
     sm.stop_time = 0;
+    sm.log_data = false;
 }
 
 void restart_state_machine(void) {
@@ -38,7 +40,7 @@ void restart_state_machine(void) {
 StateMachine* get_state_machine(void) { return &sm; }
 
 void set_running_mode(const RunningModes mode) {
-    if (mode < RUNNING_INIT || mode > RUNNING_LINE_TRACKING) {
+    if (mode < RUNNING_INIT || mode > RUNNING_SENSOR_TEST) {
         debug_print("Invalid running mode!");
         return;
     }
@@ -58,6 +60,10 @@ void set_can_run(const bool can_run) { sm.can_run = can_run; }
 
 void set_laps(const uint8_t laps) { sm.laps = laps; }
 
+void add_lap(void) { sm.lap++; }
+
 void set_start_time(void) { sm.start_time = time(); }
 
 void set_stop_time(const uint8_t stop_time) { sm.stop_time = stop_time; }
+
+void set_log_data(const bool log_data) { sm.log_data = log_data; }

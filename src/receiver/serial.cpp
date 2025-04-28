@@ -38,6 +38,9 @@ static void handle_command(const Command command) {
         case SET_STOP_TIME:
             set_stop_time(command.value);
             break;
+        case SET_LOG_DATA:
+            set_log_data(command.value);
+            break;
         default:
             return;
     }

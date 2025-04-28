@@ -20,6 +20,7 @@ static SerialCommands get_serial_command(void) {
         case SET_STOP_MODE:
         case SET_LAPS:
         case SET_STOP_TIME:
+        case SET_LOG_DATA:
             return serial_command;
         default:
             return INVALID_COMMAND;

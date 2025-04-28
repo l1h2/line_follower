@@ -22,9 +22,9 @@ void send_state_machine_data(const StateMachine* sm);
 /**
  * @brief Sends all data in the bluetooth protocol format.
  * @param sm Pointer to the state machine structure.
- * @param interval The time interval in centiseconds for printing data.
- * (Default: 100)
+ * @param interval The time interval in milliseconds for printing data.
+ * (Default: 1000)
  */
-void send_robot_data(const StateMachine* sm, const uint16_t interval = 100);
+void send_robot_data(const StateMachine* sm, const uint32_t interval = 1000);
 
 #endif  // BLUETOOTH_LOGGER_H

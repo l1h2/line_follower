@@ -11,6 +11,7 @@ typedef enum {
     STOP_MODE,
     LAPS,
     STOP_TIME,
+    LOG_DATA,
 } SerialSmOutputs;
 
 /**

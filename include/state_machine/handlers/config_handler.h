@@ -42,9 +42,14 @@ void set_can_run(const bool can_run);
 
 /**
  * @brief Sets the number of laps for the state machine.
- * @param laps The number of laps to set.
+ * @param lap The number of laps to set.
  */
 void set_laps(const uint8_t laps);
+
+/**
+ * @brief Adds a lap to the current lap count of the state machine.
+ */
+void add_lap(void);
 
 /**
  * @brief Starts the time for the state machine operation.
@@ -57,5 +62,11 @@ void set_start_time(void);
  * @param stop_time The stop time to set.
  */
 void set_stop_time(const uint8_t stop_time);
+
+/**
+ * @brief Sets the log_data flag for the state machine.
+ * @param log_data The value to set for the log_data flag.
+ */
+void set_log_data(const bool log_data);
 
 #endif  // CONFIG_HANDLER_H

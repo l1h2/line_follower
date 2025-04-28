@@ -37,6 +37,7 @@ void send_state_machine_data(const StateMachine *sm) {
     send_state_machine_info(sm, STOP_MODE);
     send_state_machine_info(sm, LAPS);
     send_state_machine_info(sm, STOP_TIME);
+    send_state_machine_info(sm, LOG_DATA);
 }
 
 void send_robot_data(const StateMachine *sm, const uint16_t interval) {

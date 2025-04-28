@@ -7,7 +7,7 @@
 static void check_stop_laps(StateMachine* sm) {
     if (!check_stop_marker()) return;
 
-    set_laps(sm->lap + 1);
+    add_lap();
     if (sm->lap >= sm->laps) set_can_run(false);
 }
 

@@ -110,9 +110,9 @@ void print_errors(void);
 /**
  * @brief Prints the diagnostics information, including sensor states and error
  * values.
- * @param interval The time interval in centiseconds for printing diagnostics.
- * (Default: 100)
+ * @param interval The time interval in milliseconds for printing diagnostics.
+ * (Default: 1000)
  */
-void print_diagnostics(const uint16_t interval = 100);
+void print_diagnostics(const uint16_t interval = 1000);
 
 #endif  // LOGGER_DEBUG_H

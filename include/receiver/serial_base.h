@@ -19,6 +19,7 @@ typedef enum {
     SET_STOP_MODE = 'S',
     SET_LAPS = 'L',
     SET_STOP_TIME = 'T',
+    SET_LOG_DATA = 'G',
     INVALID_COMMAND = 0
 } SerialCommands;
 

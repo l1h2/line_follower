@@ -3,7 +3,7 @@
 #include "../../include/timer/time.h"
 #include "../../include/vision/observer.h"
 
-#define DETECTION_DEBOUNCE_TIME 10  // Debounce time in centiseconds
+#define DETECTION_DEBOUNCE_TIME 100  // Debounce time in milliseconds
 
 static TrackCounters track = {0};
 static uint16_t last_curve_check_time = 0;

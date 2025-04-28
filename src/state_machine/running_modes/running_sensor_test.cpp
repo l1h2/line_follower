@@ -12,9 +12,11 @@ void running_sensor_test(StateMachine* sm) {
     while (sm->can_run) {
         print_diagnostics();
 
-        send_start_signal();
-        send_vision_data();
-        send_stop_signal();
+        if (sm->log_data) {
+            send_start_signal();
+            send_vision_data();
+            send_stop_signal();
+        }
 
         wait(100);
         update_errors();

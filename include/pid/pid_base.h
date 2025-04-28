@@ -30,13 +30,13 @@ typedef struct {
 typedef struct {
     uint8_t kp;              // Proportional gain
     uint8_t ki;              // Integral gain
-    uint8_t kd;              // Derivative gain
+    uint16_t kd;             // Derivative gain
     uint8_t base_pwm;        // Base PWM value for the motors
     uint8_t max_pwm;         // Maximum PWM value for the motors
     uint8_t min_pwm;         // Minimum PWM value for the motors
-    uint8_t frame_interval;  // PID frame interval in centiseconds
+    uint8_t frame_interval;  // PID frame interval in milliseconds
     uint16_t last_pid_time;  // Last time the PID was updated
-    uint8_t stop_time;       // Time to stop the motors in centiseconds
+    uint32_t stop_time;      // Time to stop the motors in milliseconds
     ErrorStruct* errors;     // Pointer to the error structure
 } PidStruct;
 

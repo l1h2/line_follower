@@ -12,8 +12,6 @@ typedef enum {
     RUNNING_INIT,
     RUNNING_BASE_PID,
     RUNNING_SENSOR_TEST,
-    RUNNING_TIME_STOP,
-    RUNNING_LINE_TRACKING,
 } RunningModes;
 
 /**
@@ -53,6 +51,7 @@ typedef struct {
     uint8_t laps;                // Number of laps to run
     uint16_t start_time;         // Start time in seconds
     uint16_t stop_time;          // Time in seconds for the robot to stop
+    bool log_data;               // Flag indicating if data should be logged
 } StateMachine;
 
 #endif  // STATE_MACHINE_BASE_H
