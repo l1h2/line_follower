@@ -13,16 +13,6 @@ void setup(void) {
 int main(void) {
     setup();
 
-    // while (true) {
-    //     print_string("KP:");
-    //     print_char(37);
-    //     print_new_line();
-    //     print_string("R_MODE:");
-    //     print_char(1);
-    //     print_new_line();
-    //     wait(100);
-    // }
-
     run_state_machine();
 
     return 0;

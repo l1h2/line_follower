@@ -64,7 +64,10 @@ void print_string(const char *str) {
     while (*str) usart_transmit(*str++);
 }
 
-void print_new_line(void) { usart_transmit('\n'); }
+void print_new_line(void) {
+    usart_transmit('\r');
+    usart_transmit('\n');
+}
 
 void print(const char *str) {
     print_string(str);

@@ -5,6 +5,7 @@
 #include "../../../include/vision/track.h"
 
 // Running modes
+#include "../../../include/state_machine/handlers/config_handler.h"
 #include "../../../include/state_machine/running_modes/running_base_pid.h"
 #include "../../../include/state_machine/running_modes/running_sensor_test.h"
 
@@ -13,7 +14,8 @@ void handle_running(StateMachine* sm) {
 
     switch (sm->running_mode) {
         case RUNNING_INIT:
-            debug_print("No running mode set, program will stop");
+            debug_print("No running mode set, going back to IDLE state");
+            request_next_state(sm, STATE_IDLE);
             return;
         case RUNNING_BASE_PID:
             debug_print("Running mode set to RUNNING_BASE_PID");
@@ -25,6 +27,7 @@ void handle_running(StateMachine* sm) {
             break;
         default:
             debug_print("Unknown running mode, program will stop");
+            request_next_state(sm, STATE_ERROR);
             return;
     }
 
@@ -55,6 +58,10 @@ bool handle_running_transitions(StateMachine* sm) {
     switch (sm->next_state) {
         case STATE_STOPPED:
             return handle_running_to_stopped(sm->running_mode);
+        case STATE_IDLE:
+            set_can_run(false);
+            debug_print("Transitioning from RUNNING to IDLE");
+            return true;
         default:
             return false;
     }

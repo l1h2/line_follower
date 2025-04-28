@@ -28,7 +28,7 @@ void usart_init_transmitter(void) {
     if (transmitter_initialized) return;
 
     usart_init();
-    UCSR0B = (1 << TXEN0);
+    UCSR0B |= (1 << TXEN0);
 
     transmitter_initialized = true;
 }
@@ -37,7 +37,7 @@ void usart_init_receiver(void) {
     if (receiver_initialized) return;
 
     usart_init();
-    UCSR0B = (1 << RXEN0) | (1 << RXCIE0);
+    UCSR0B |= (1 << RXEN0) | (1 << RXCIE0);
 
     receiver_initialized = true;
 

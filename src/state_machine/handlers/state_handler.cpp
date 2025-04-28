@@ -8,7 +8,7 @@
 #include "../../../include/state_machine/states/stopped.h"
 
 void handle_state(StateMachine* sm) {
-    send_state_machine_info(sm, STATE);
+    send_robot_data(sm, 0);
 
     switch (sm->current_state) {
         case STATE_INIT:
