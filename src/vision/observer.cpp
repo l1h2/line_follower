@@ -3,8 +3,7 @@
 #include "../../include/logger/logger.h"
 #include "../../include/pid/errors.h"
 #include "../../include/timer/time.h"
-
-#define DETECTION_DEBOUNCE_TIME 100  // Debounce time in milliseconds
+#include "../../include/vision/vision_base.h"
 
 // Minimum number of sensors for crossing detection
 #define CROSSING_SENSORS_THRESHOLD 4

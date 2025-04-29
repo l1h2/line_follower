@@ -27,18 +27,14 @@ void running_base_pid(StateMachine* sm) {
 void running_base_pid_to_stopped(void) {
     const StateMachine* sm = get_state_machine();
     const PidStruct* pid = get_pid();
-    const uint8_t break_speed =
-        pid->max_pwm / (pid->stop_time / pid->frame_interval);
 
     const uint8_t max_pwm_save = pid->max_pwm;
     uint8_t max_pwm = max_pwm_save;
-    bool pid_updated = true;
 
-    while (pid->max_pwm > 0) {
+    while (pid->max_pwm) {
         if (!update_pid()) continue;
 
-        max_pwm = (max_pwm <= break_speed) ? 0 : (max_pwm - break_speed);
-        set_max_pwm(max_pwm);
+        set_max_pwm(--max_pwm);
 
         if (sm->log_data) send_vision_data();
     }

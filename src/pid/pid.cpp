@@ -2,17 +2,17 @@
 
 #include <stdlib.h>
 
+#include "../../include/config.h"
 #include "../../include/hal/pwm.h"
 #include "../../include/pid/errors.h"
 #include "../../include/timer/time.h"
 #include "../../include/vision/vision.h"
 
-#define KP 20                 // Proportional gain
-#define KI 0                  // Integral gain
-#define KD 0                  // Derivative gain
-#define BASE_PWM 40           // Base PWM value for the motors
-#define PID_FRAME_INTERVAL 1  // PID frame interval in milliseconds
-#define STOP_TIME 200         // Time to stop the motors in milliseconds
+#define KP 20                                   // Proportional gain
+#define KI 0                                    // Integral gain
+#define KD 0                                    // Derivative gain
+#define BASE_PWM 40                             // Base PWM value for the motors
+#define PID_FRAME_INTERVAL 1 * TIME_MULTIPLIER  // PID frame interval
 
 static PidStruct pid = {
     .kp = KP,
@@ -23,7 +23,6 @@ static PidStruct pid = {
     .min_pwm = MIN_PWM,
     .frame_interval = PID_FRAME_INTERVAL,
     .last_pid_time = 0,
-    .stop_time = STOP_TIME,
     .errors = get_errors(),
 };
 
@@ -83,9 +82,9 @@ void pid_init(void) {
 }
 
 bool update_pid(void) {
-    // if (!time_elapsed(pid.last_pid_time, pid.frame_interval)) return false;
+    if (!time_elapsed(pid.last_pid_time, pid.frame_interval)) return false;
 
-    // pid.last_pid_time = time();
+    pid.last_pid_time = time();
     update_errors();
     update_motors(get_delta_pwm());
     return true;
@@ -97,7 +96,7 @@ void set_kp(const uint8_t kp) { pid.kp = kp; }
 
 void set_ki(const uint8_t ki) { pid.ki = ki; }
 
-void set_kd(const uint8_t kd) { pid.kd = kd; }
+void set_kd(const uint8_t kd) { pid.kd = kd == 255 ? 1000 : kd; }
 
 void set_base_pwm(const uint8_t base_pwm) {
     if (base_pwm > MAX_PWM) {

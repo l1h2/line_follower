@@ -3,6 +3,9 @@
 
 #include <stdint.h>
 
+#include "../../include/config.h"
+#include "../../include/logger/logger_base.h"
+
 /**
  * @brief Debug wrapper for the print_char function.
  * @param c The character to print.
@@ -110,9 +113,9 @@ void print_errors(void);
 /**
  * @brief Prints the diagnostics information, including sensor states and error
  * values.
- * @param interval The time interval in milliseconds for printing diagnostics.
- * (Default: 1000)
+ * @param interval The time interval for printing diagnostics. (Default: 1
+ * second)
  */
-void print_diagnostics(const uint16_t interval = 1000);
+void print_diagnostics(const uint32_t interval = LOG_INTERVAL);
 
 #endif  // LOGGER_DEBUG_H

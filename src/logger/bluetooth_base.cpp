@@ -41,7 +41,7 @@ void send_state_machine_info(const StateMachine *sm,
             send_data(SERIAL_LAPS, sm->laps);
             break;
         case STOP_TIME:
-            send_data(SERIAL_STOP_TIME, sm->stop_time);
+            send_data(SERIAL_STOP_TIME, sm->stop_time / 1000);
             break;
         case LOG_DATA:
             send_data(SERIAL_LOG_DATA, sm->log_data);

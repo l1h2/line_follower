@@ -64,6 +64,6 @@ void add_lap(void) { sm.lap++; }
 
 void set_start_time(void) { sm.start_time = time(); }
 
-void set_stop_time(const uint8_t stop_time) { sm.stop_time = stop_time; }
+void set_stop_time(const uint8_t stop_time) { sm.stop_time = stop_time * 1000; }
 
 void set_log_data(const bool log_data) { sm.log_data = log_data; }

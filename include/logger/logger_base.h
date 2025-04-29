@@ -4,6 +4,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#define LOG_INTERVAL 1000 * TIME_MULTIPLIER  // Default log interval
+
 /**
  * @brief Initializes USART for logging.
  */

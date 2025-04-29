@@ -4,6 +4,10 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#include "../config.h"
+
+#define DETECTION_DEBOUNCE_TIME 100 * TIME_MULTIPLIER  // Debounce time
+
 /**
  * @struct sensor_state
  * @brief Structure to hold the state of the sensors.

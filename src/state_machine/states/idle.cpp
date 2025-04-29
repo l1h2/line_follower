@@ -1,11 +1,12 @@
 #include "../../../include/state_machine/states/idle.h"
 
+#include <util/delay.h>
+
 #include "../../../include/config.h"
 #include "../../../include/logger/logger.h"
 #include "../../../include/receiver/receiver.h"
 #include "../../../include/state_machine/handlers/config_handler.h"
 #include "../../../include/state_machine/handlers/state_request_handler.h"
-#include "../../../include/timer/time.h"
 
 #ifdef BLUETOOTH_MODE
 void handle_idle(StateMachine* sm) {
@@ -21,7 +22,7 @@ void handle_idle(StateMachine* sm) {
 #else
 void handle_idle(StateMachine* sm) {
     debug_print("IDLE State: Waiting for 5 seconds and selecting running mode");
-    wait(500);
+    _delay_ms(5000);
 
     set_running_mode(RUNNING_BASE_PID);
     set_stop_mode(STOP_MODE_LAPS);

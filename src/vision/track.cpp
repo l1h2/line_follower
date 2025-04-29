@@ -3,11 +3,8 @@
 #include "../../include/timer/time.h"
 #include "../../include/vision/observer.h"
 
-#define DETECTION_DEBOUNCE_TIME 100  // Debounce time in milliseconds
-
 static TrackCounters track = {0};
-static uint16_t last_curve_check_time = 0;
-static uint16_t last_marker_check_time = 0;
+static uint32_t last_check_time = 0;
 
 void update_counters(void) {
     if (check_line()) track.line_counter++;
@@ -34,12 +31,10 @@ void reset_counters(void) {
 TrackCounters get_counters(void) { return track; }
 
 bool check_break(void) {
-    if (!time_elapsed(last_curve_check_time, DETECTION_DEBOUNCE_TIME))
-        return false;
-
+    if (!time_elapsed(last_check_time, DETECTION_DEBOUNCE_TIME)) return false;
     if (!check_curve()) return false;
 
-    last_curve_check_time = time();
+    last_check_time = time();
     track.curve_counter++;
 
     return true;
@@ -54,12 +49,10 @@ bool check_start_marker(void) {
 }
 
 bool check_stop_marker(void) {
-    if (!time_elapsed(last_marker_check_time, DETECTION_DEBOUNCE_TIME))
-        return false;
-
+    if (!time_elapsed(last_check_time, DETECTION_DEBOUNCE_TIME)) return false;
     if (!check_marker()) return false;
 
-    last_marker_check_time = time();
+    last_check_time = time();
     track.marker_counter++;
 
     return !(track.marker_counter & 1);

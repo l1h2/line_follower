@@ -8,7 +8,7 @@
 #include "../../include/timer/time.h"
 #include "../../include/vision/vision.h"
 
-static uint16_t last_log_time = 0;
+static uint32_t last_log_time = 0;
 
 void send_vision_data(void) {
     const SensorState *sensors = get_sensors();
@@ -40,7 +40,7 @@ void send_state_machine_data(const StateMachine *sm) {
     send_state_machine_info(sm, LOG_DATA);
 }
 
-void send_robot_data(const StateMachine *sm, const uint16_t interval) {
+void send_robot_data(const StateMachine *sm, const uint32_t interval) {
     if (!time_elapsed(last_log_time, interval)) return;
 
     last_log_time = time();

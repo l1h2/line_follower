@@ -5,7 +5,7 @@
 #include "../../include/timer/time.h"
 #include "../../include/vision/vision.h"
 
-static uint16_t last_log_time = 0;
+static uint32_t last_log_time = 0;
 
 void debug_print_char(const char c) { print_char(c); }
 void debug_print_bit(const uint8_t bit_position, const uint8_t byte) {
@@ -68,7 +68,7 @@ void print_errors(void) {
     print_new_line();
 }
 
-void print_diagnostics(const uint16_t interval) {
+void print_diagnostics(const uint32_t interval) {
     if (!time_elapsed(last_log_time, interval)) return;
 
     last_log_time = time();

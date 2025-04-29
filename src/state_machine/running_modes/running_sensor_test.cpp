@@ -1,10 +1,11 @@
 #include "../../../include/state_machine/running_modes/running_sensor_test.h"
 
+#include <util/delay.h>
+
 #include "../../../include/logger/logger.h"
 #include "../../../include/pid/errors.h"
 #include "../../../include/receiver/receiver.h"
 #include "../../../include/state_machine/running_modes/running_base.h"
-#include "../../../include/timer/time.h"
 
 void running_sensor_test(StateMachine* sm) {
     debug_print("RUNNING_SENSOR_TEST Mode: Handling running logic");
@@ -18,7 +19,7 @@ void running_sensor_test(StateMachine* sm) {
             send_stop_signal();
         }
 
-        wait(100);
+        _delay_ms(1000);
         update_errors();
 
         check_stop(sm);

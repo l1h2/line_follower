@@ -4,13 +4,12 @@
 
 void start_timer(void) { timer_init(); }
 
-uint16_t time(void) { return get_system_time(); }
+void start_debug_timer(void) { debug_timer_init(); }
 
-bool time_elapsed(const uint16_t last_time, const uint16_t interval) {
+void stop_debug_timer(void) { debug_timer_stop(); }
+
+uint32_t time(void) { return get_system_time(); }
+
+bool time_elapsed(const uint32_t last_time, const uint32_t interval) {
     return (time() - last_time) >= interval;
-}
-
-void wait(const uint16_t interval) {
-    const uint16_t start_time = time();
-    while (!time_elapsed(start_time, interval));
 }

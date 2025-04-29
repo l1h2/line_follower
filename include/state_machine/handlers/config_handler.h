@@ -59,7 +59,7 @@ void set_start_time(void);
 
 /**
  * @brief Sets the stop time for the state machine.
- * @param stop_time The stop time to set.
+ * @param stop_time The stop time to set in seconds.
  */
 void set_stop_time(const uint8_t stop_time);
 
