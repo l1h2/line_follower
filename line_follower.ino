@@ -14,17 +14,9 @@ void setup(void) {
 int main(void) {
     setup();
 
-    // if (is_battery_low()) {
-    //     print("Battery low, shutting down...");
-    //     return 1;
-    // }
-
-    while (true) {
-        print_string("BATTERY:");
-        print_char(240);
-        print_new_line();
-
-        _delay_ms(1000);
+    if (is_battery_low()) {
+        print("Battery low, shutting down...");
+        return 1;
     }
 
     run_state_machine();

@@ -30,8 +30,19 @@ void reset_counters(void) {
 
 TrackCounters get_counters(void) { return track; }
 
+bool check_on_crossing(void) {
+    if (!time_elapsed(last_check_time, DETECTION_DEBOUNCE_TIME)) return false;
+    if (!check_crossing()) return false;
+
+    last_check_time = time();
+    track.crossing_counter++;
+
+    return true;
+}
+
 bool check_break(void) {
     if (!time_elapsed(last_check_time, DETECTION_DEBOUNCE_TIME)) return false;
+    if (!check_on_crossing()) return false;
     if (!check_curve()) return false;
 
     last_check_time = time();
@@ -50,6 +61,7 @@ bool check_start_marker(void) {
 
 bool check_stop_marker(void) {
     if (!time_elapsed(last_check_time, DETECTION_DEBOUNCE_TIME)) return false;
+    if (!check_on_crossing()) return false;
     if (!check_marker()) return false;
 
     last_check_time = time();

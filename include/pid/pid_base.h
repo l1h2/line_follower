@@ -33,7 +33,6 @@ typedef struct {
     uint16_t kd;              // Derivative gain
     uint8_t base_pwm;         // Base PWM value for the motors
     uint8_t max_pwm;          // Maximum PWM value for the motors
-    uint8_t min_pwm;          // Minimum PWM value for the motors
     uint32_t frame_interval;  // PID frame interval
     uint32_t last_pid_time;   // Last time the PID was updated
     ErrorStruct* errors;      // Pointer to the error structure

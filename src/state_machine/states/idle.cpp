@@ -13,7 +13,7 @@ void handle_idle(StateMachine* sm) {
     debug_print("IDLE State: Waiting for bluetooth commands");
 
     while (!sm->can_run) {
-        send_robot_data(sm, process_serial_commands() ? 0 : 100);
+        send_robot_data(sm, process_serial_commands() ? 0 : 1000);
     }
 
     debug_print("Start command received in IDLE State");

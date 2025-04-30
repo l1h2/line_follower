@@ -5,6 +5,7 @@
 #include "../../../include/receiver/receiver.h"
 #include "../../../include/state_machine/handlers/config_handler.h"
 #include "../../../include/state_machine/running_modes/running_base.h"
+#include "../../../include/vision/track.h"
 
 void running_base_pid(StateMachine* sm) {
     debug_print("RUNNING_BASE_PID Mode: Handling running logic");
@@ -13,8 +14,11 @@ void running_base_pid(StateMachine* sm) {
     set_start_time();
 
     while (sm->can_run) {
-        update_pid();
         if (update_pid() && sm->log_data) send_vision_data();
+
+        // check_on_crossing();
+        // check_break();
+        // check_stop_marker();
 
         check_stop(sm);
         process_serial_commands();

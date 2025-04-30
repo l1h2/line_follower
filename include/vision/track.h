@@ -22,6 +22,12 @@ void reset_counters(void);
 TrackCounters get_counters(void);
 
 /**
+ * @brief Checks if the robot is on a crossing based on the error struct.
+ * @return True if the robot is on a crossing, false otherwise.
+ */
+bool check_on_crossing(void);
+
+/**
  * @brief Checks if the robot should break based on the error struct.
  * @return True if the robot should break, false otherwise.
  */

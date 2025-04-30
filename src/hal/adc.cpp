@@ -14,8 +14,8 @@ void adc_init(void) {
     // AVcc with external capacitor at AREF, (8-bit precision)
     ADMUX = (1 << REFS0) | (1 << ADLAR);
 
-    // Enable ADC, prescaler = 128
-    ADCSRA = (1 << ADEN) | (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0);
+    // Enable ADC, prescaler = 64
+    ADCSRA = (1 << ADEN) | (1 << ADPS2) | (1 << ADPS1);
 
     adc_initialized = true;
 }

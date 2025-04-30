@@ -65,6 +65,10 @@ void print_errors(void) {
     print_binary(errors->sensors->central_sensors_state);
     print_string(" - Error: ");
     print_signed_byte(errors->error);
+    print_string(" - Last error: ");
+    print_signed_byte(errors->filtered_delta_error);
+    print_string(" - Error sum: ");
+    print_signed_word(errors->error_sum);
     print_new_line();
 }
 

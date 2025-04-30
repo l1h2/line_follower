@@ -8,7 +8,7 @@ void pwm_init(void) {
     DDRB |= (1 << PWMA) | (1 << PWMB);
 
     TCCR1A |= (1 << COM1A1) | (1 << COM1B1) | (1 << WGM10);
-    TCCR1B |= (1 << CS11) | (1 << CS10) | (1 << WGM12);
+    TCCR1B |= (1 << CS10);
 
     TCNT1 = 0;
 

@@ -53,7 +53,7 @@ static void update_error(void) {
 
 static void update_error_sum(void) {
     // Test integral windup prevention and faster reseting
-    if (errors.error == 0) {  // Maybe use threshold instead of 0
+    if (abs(errors.error) < 2) {
         errors.error_sum = 0;
         return;
     }
@@ -72,7 +72,8 @@ static void update_delta_error(void) {
 
     // Experiment with exponent filtering
     errors.filtered_delta_error = delta_error;
-    // (errors.filtered_delta_error * 7 + delta_error) >> 3;
+    // errors.filtered_delta_error =
+    //     (errors.filtered_delta_error * 7 + delta_error) >> 3;
 }
 
 static void update_last_error(void) { errors.last_error = errors.error; }

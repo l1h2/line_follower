@@ -3,7 +3,7 @@
 #include "../../include/hal/adc.h"
 #include "../../include/hal/sensors.h"
 
-#define BATTERY_CELL_THRESHOLD 180  // Minimum value for batter cell
+#define BATTERY_CELL_THRESHOLD 188  // Minimum value for batter cell
 
 static bool battery_monitor_enabled = false;
 
@@ -44,5 +44,5 @@ uint8_t get_battery_value(void) {
 }
 
 bool is_battery_low(void) {
-    return (get_last_battery_update() < BATTERY_CELL_THRESHOLD);
+    return (get_battery_value() < BATTERY_CELL_THRESHOLD);
 }

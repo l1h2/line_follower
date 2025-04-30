@@ -8,10 +8,10 @@
 #include "../../include/timer/time.h"
 #include "../../include/vision/vision.h"
 
-#define KP 20                                   // Proportional gain
+#define KP 12                                   // Proportional gain
 #define KI 0                                    // Integral gain
-#define KD 0                                    // Derivative gain
-#define BASE_PWM 40                             // Base PWM value for the motors
+#define KD 1000                                 // Derivative gain
+#define BASE_PWM 60                             // Base PWM value for the motors
 #define PID_FRAME_INTERVAL 1 * TIME_MULTIPLIER  // PID frame interval
 
 static PidStruct pid = {
@@ -20,7 +20,6 @@ static PidStruct pid = {
     .kd = KD,
     .base_pwm = BASE_PWM,
     .max_pwm = MAX_PWM,
-    .min_pwm = MIN_PWM,
     .frame_interval = PID_FRAME_INTERVAL,
     .last_pid_time = 0,
     .errors = get_errors(),
@@ -58,8 +57,8 @@ static int16_t get_pwm(const int16_t delta_pwm) {
 
     if (pwm > pid.max_pwm) {
         return pid.max_pwm;
-    } else if (pwm < pid.min_pwm) {
-        return pid.min_pwm;
+    } else if (pwm < -pid.max_pwm) {
+        return -pid.max_pwm;
     }
 
     return pwm;
