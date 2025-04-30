@@ -3,6 +3,8 @@
 
 #include <avr/io.h>
 
+#define BATTERY_CELL ADCH7  // Battery cell voltage pin connected to ADC
+
 #define TOTAL_SENSORS 12         // Total number of sensors
 #define TOTAL_CENTRAL_SENSORS 8  // Total number of central sensors
 

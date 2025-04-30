@@ -26,6 +26,11 @@ typedef enum {
 } SerialPidOutputs;
 
 /**
+ * @brief Send the battery value to the receiver.
+ */
+void send_battery_value(void);
+
+/**
  * @brief Signal receiver to start listening for binary data.
  */
 void send_start_signal(void);

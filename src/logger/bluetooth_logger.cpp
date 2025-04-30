@@ -44,6 +44,7 @@ void send_robot_data(const StateMachine *sm, const uint32_t interval) {
     if (!time_elapsed(last_log_time, interval)) return;
 
     last_log_time = time();
+    send_battery_value();
     send_state_machine_data(sm);
     send_pid_data();
 }

@@ -1,7 +1,9 @@
 #include "../../include/logger/bluetooth_base.h"
 
+#include "../../include/battery/battery.h"
 #include "../../include/logger/logger_base.h"
 
+#define SERIAL_BATTERY "BATTERY:"      // Battery value
 #define SERIAL_START_SIGNAL "START"    // Start signal for the receiver
 #define SERIAL_STOP_SIGNAL "STOP"      // Stop signal for the receiver
 #define SERIAL_STATE "STATE:"          // State of the robot
@@ -20,6 +22,10 @@ static void send_data(const char *key, const uint8_t value) {
     print_string(key);
     print_char(value);
     print_new_line();
+}
+
+void send_battery_value(void) {
+    send_data(SERIAL_BATTERY, get_battery_value());
 }
 
 void send_start_signal(void) { print(SERIAL_START_SIGNAL); }
