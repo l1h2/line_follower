@@ -52,6 +52,12 @@ void set_laps(const uint8_t laps);
 void add_lap(void);
 
 /**
+ * @brief Sets the current lap count of the state machine.
+ * @param lap The lap number to be set.
+ */
+void set_lap(const uint8_t lap);
+
+/**
  * @brief Starts the time for the state machine operation.
  * @param start_time The start time to set.
  */

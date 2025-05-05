@@ -1,20 +1,24 @@
 #include "../../include/vision/observer.h"
 
-#include "../../include/logger/logger.h"
+#include <stdlib.h>
+
 #include "../../include/pid/errors.h"
 #include "../../include/vision/vision_base.h"
 
 // Minimum number of sensors for crossing detection
 #define CROSSING_SENSORS_THRESHOLD 4
 
+// Threshold for max error possible in a side marker detection
+#define SIDE_MARKERS_ERROR_THRESHOLD 3
+
 static const ErrorStruct *errors = get_errors();
 
-static bool check_non_contiguous_sensors(const uint8_t sensors_state) {
+bool check_non_contiguous_sensors(void) {
     bool found_active = false;
     bool found_gap = false;
 
     for (uint8_t i = 0; i < 8; i++) {
-        if (sensors_state & (1 << i)) {
+        if (errors->sensors->central_sensors_state & (1 << i)) {
             if (found_gap) return true;
             found_active = true;
         } else if (found_active) {
@@ -36,10 +40,6 @@ bool check_straight(void) {
 }
 
 bool check_crossing(void) {
-    if (check_non_contiguous_sensors(errors->sensors->central_sensors_state)) {
-        return true;
-    }
-
     uint8_t total_central_sensors = 0;
 
     if (errors->sensors->central_sensor) total_central_sensors++;
@@ -49,47 +49,23 @@ bool check_crossing(void) {
             total_central_sensors++;
         }
     }
-    if (total_central_sensors < CROSSING_SENSORS_THRESHOLD) return false;
 
-    debug_print_string("Crossing: ");
-    debug_print_bool(errors->sensors->right_sensor);
-    debug_print_binary(errors->sensors->central_sensors_state);
-    debug_print_bool(errors->sensors->left_sensor);
-    debug_print_string(" - ");
-    debug_print_signed_byte(errors->error);
-    debug_print_string(" - ");
-    debug_print_byte(total_central_sensors);
-    debug_print_new_line();
     return (total_central_sensors >= CROSSING_SENSORS_THRESHOLD);
 }
 
 bool check_curve(void) {
     if (!errors->sensors->left_sensor) return false;
     if (errors->sensors->right_sensor) return false;
-    if (errors->error <= errors->min_error) return false;
+    if ((int8_t)abs(errors->error) > SIDE_MARKERS_ERROR_THRESHOLD) return false;
 
-    debug_print_string("Curve: ");
-    debug_print_bool(errors->sensors->right_sensor);
-    debug_print_binary(errors->sensors->central_sensors_state);
-    debug_print_bool(errors->sensors->left_sensor);
-    debug_print_string(" - ");
-    debug_print_signed_byte(errors->error);
-    debug_print_new_line();
     return true;
 }
 
 bool check_marker(void) {
     if (!errors->sensors->right_sensor) return false;
     if (errors->sensors->left_sensor) return false;
-    if (errors->error >= errors->max_error) return false;
+    if ((int8_t)abs(errors->error) > SIDE_MARKERS_ERROR_THRESHOLD) return false;
 
-    debug_print_string("Marker: ");
-    debug_print_bool(errors->sensors->right_sensor);
-    debug_print_binary(errors->sensors->central_sensors_state);
-    debug_print_bool(errors->sensors->left_sensor);
-    debug_print_string(" - ");
-    debug_print_signed_byte(errors->error);
-    debug_print_new_line();
     return true;
 }
 

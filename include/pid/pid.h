@@ -44,9 +44,24 @@ void set_kd(const uint8_t kd);
 /**
  * @brief Sets the base PWM value for the motors.
  * @param pwm The new base PWM value to be set.
- * @note This function is used for gradually stopping the motors.
  */
 void set_base_pwm(const uint8_t pwm);
+
+/**
+ * @brief Sets the PWM value for the motors.
+ * @param pwm The new PWM value to be set.
+ */
+void set_current_pwm(const int16_t pwm);
+
+/**
+ * @brief Resets the current PWM used to the base PWM value.
+ */
+void reset_pwm(void);
+
+/**
+ * @brief Restarts the current PWM used to the initial PWM value.
+ */
+void restart_pwm(void);
 
 /**
  * @brief Sets the max PWM value for the motors.

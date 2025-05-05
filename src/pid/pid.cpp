@@ -8,10 +8,11 @@
 #include "../../include/timer/time.h"
 #include "../../include/vision/vision.h"
 
-#define KP 12                                   // Proportional gain
-#define KI 0                                    // Integral gain
-#define KD 1000                                 // Derivative gain
-#define BASE_PWM 60                             // Base PWM value for the motors
+#define KP 16           // Proportional gain
+#define KI 0            // Integral gain
+#define KD 1000         // Derivative gain
+#define INITIAL_PWM 70  // Initial PWM value to avoid acceleration issues
+#define BASE_PWM 90     // Base PWM value for the motors
 #define PID_FRAME_INTERVAL 1 * TIME_MULTIPLIER  // PID frame interval
 
 static PidStruct pid = {
@@ -19,7 +20,9 @@ static PidStruct pid = {
     .ki = KI,
     .kd = KD,
     .base_pwm = BASE_PWM,
+    .current_pwm = INITIAL_PWM < BASE_PWM ? INITIAL_PWM : BASE_PWM,
     .max_pwm = MAX_PWM,
+    .min_pwm = -MAX_PWM,
     .frame_interval = PID_FRAME_INTERVAL,
     .last_pid_time = 0,
     .errors = get_errors(),
@@ -52,8 +55,9 @@ static int16_t get_delta_pwm(void) {
 
     return delta_pwm;
 }
+
 static int16_t get_pwm(const int16_t delta_pwm) {
-    int16_t pwm = pid.base_pwm + delta_pwm;
+    int16_t pwm = pid.current_pwm + delta_pwm;
 
     if (pwm > pid.max_pwm) {
         return pid.max_pwm;
@@ -97,14 +101,32 @@ void set_ki(const uint8_t ki) { pid.ki = ki; }
 
 void set_kd(const uint8_t kd) { pid.kd = kd == 255 ? 1000 : kd; }
 
-void set_base_pwm(const uint8_t base_pwm) {
-    if (base_pwm > MAX_PWM) {
-        pid.base_pwm = MAX_PWM;
-    } else if (base_pwm < MIN_PWM) {
+void set_base_pwm(const uint8_t pwm) {
+    if (pwm >= pid.max_pwm) {
+        pid.base_pwm = pid.max_pwm;
+    } else if (pwm <= MIN_PWM) {
         pid.base_pwm = MIN_PWM;
     } else {
-        pid.base_pwm = base_pwm;
+        pid.base_pwm = pwm;
     }
+
+    pid.current_pwm = pid.base_pwm;
+}
+
+void set_current_pwm(const int16_t pwm) {
+    if (pwm >= pid.max_pwm) {
+        pid.current_pwm = pid.max_pwm;
+    } else if (pwm <= pid.min_pwm) {
+        pid.current_pwm = pid.min_pwm;
+    } else {
+        pid.current_pwm = pwm;
+    }
+}
+
+void reset_pwm(void) { pid.current_pwm = pid.base_pwm; }
+
+void restart_pwm(void) {
+    pid.current_pwm = INITIAL_PWM < pid.base_pwm ? INITIAL_PWM : pid.base_pwm;
 }
 
 void set_max_pwm(const uint8_t pwm) {
@@ -115,4 +137,6 @@ void set_max_pwm(const uint8_t pwm) {
     } else {
         pid.max_pwm = pwm;
     }
+
+    pid.min_pwm = -pid.max_pwm;
 }

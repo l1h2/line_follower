@@ -24,11 +24,11 @@ void send_vision_data(void) {
 void send_pid_data(void) {
     const PidStruct *pid = get_pid();
 
-    send_pid_info(KP, pid->kp);
-    send_pid_info(KI, pid->ki);
-    send_pid_info(KD, pid->kd);
-    send_pid_info(BASE_PWM, pid->base_pwm);
-    send_pid_info(MAX_PWM, pid->max_pwm);
+    send_pid_info(pid, KP);
+    send_pid_info(pid, KI);
+    send_pid_info(pid, KD);
+    send_pid_info(pid, BASE_PWM);
+    send_pid_info(pid, MAX_PWM);
 }
 
 void send_state_machine_data(const StateMachine *sm) {

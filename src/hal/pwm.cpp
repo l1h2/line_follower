@@ -35,7 +35,7 @@ void set_pwm_b(uint16_t pwm) {
 }
 
 void set_motor_a_dir(const bool dir) {
-    if (dir) {
+    if (!dir) {  // Motor A has an inverted connection
         MOTOR_PORT |= (1 << AIN1);
         MOTOR_PORT &= ~(1 << AIN2);
     } else {

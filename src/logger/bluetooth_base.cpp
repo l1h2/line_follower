@@ -55,22 +55,22 @@ void send_state_machine_info(const StateMachine *sm,
     }
 }
 
-void send_pid_info(const SerialPidOutputs info, const uint8_t value) {
+void send_pid_info(const PidStruct *pid, const SerialPidOutputs info) {
     switch (info) {
         case KP:
-            send_data(SERIAL_KP, value);
+            send_data(SERIAL_KP, pid->kp);
             break;
         case KI:
-            send_data(SERIAL_KI, value);
+            send_data(SERIAL_KI, pid->ki);
             break;
         case KD:
-            send_data(SERIAL_KD, value);
+            send_data(SERIAL_KD, pid->kd == 1000 ? 255 : pid->kd);
             break;
         case BASE_PWM:
-            send_data(SERIAL_BASE_PWM, value);
+            send_data(SERIAL_BASE_PWM, pid->base_pwm);
             break;
         case MAX_PWM:
-            send_data(SERIAL_MAX_PWM, value);
+            send_data(SERIAL_MAX_PWM, pid->max_pwm);
             break;
     }
 }

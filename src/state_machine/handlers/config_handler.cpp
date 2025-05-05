@@ -62,6 +62,8 @@ void set_laps(const uint8_t laps) { sm.laps = laps; }
 
 void add_lap(void) { sm.lap++; }
 
+void set_lap(const uint8_t lap) { sm.lap = lap; }
+
 void set_start_time(void) { sm.start_time = time(); }
 
 void set_stop_time(const uint8_t stop_time) { sm.stop_time = stop_time * 1000; }

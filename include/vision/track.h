@@ -19,19 +19,7 @@ void reset_counters(void);
  * @brief Gets the current tracking counters.
  * @return The current tracking counters.
  */
-TrackCounters get_counters(void);
-
-/**
- * @brief Checks if the robot is on a crossing based on the error struct.
- * @return True if the robot is on a crossing, false otherwise.
- */
-bool check_on_crossing(void);
-
-/**
- * @brief Checks if the robot should break based on the error struct.
- * @return True if the robot should break, false otherwise.
- */
-bool check_break(void);
+TrackCounters* get_counters(void);
 
 /**
  * @brief Checks for a start marker based on the error struct.
@@ -40,9 +28,9 @@ bool check_break(void);
 bool check_start_marker(void);
 
 /**
- * @brief Checks for a stop marker based on the error struct.
- * @return True if the robot should stop, false otherwise.
+ * @brief Update crossings, curves and markers with line characteristics.
+ * @return True if counter was updated, false otherwise.
  */
-bool check_stop_marker(void);
+bool update_track_counters(void);
 
 #endif  // TRACK_H

@@ -53,7 +53,7 @@ static void update_error(void) {
 
 static void update_error_sum(void) {
     // Test integral windup prevention and faster reseting
-    if (abs(errors.error) < 2) {
+    if ((int8_t)abs(errors.error) < 2) {
         errors.error_sum = 0;
         return;
     }

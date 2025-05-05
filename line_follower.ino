@@ -14,10 +14,10 @@ void setup(void) {
 int main(void) {
     setup();
 
-    if (is_battery_low()) {
-        print("Battery low, shutting down...");
-        return 1;
-    }
+    // if (is_battery_low()) {
+    //     print("Battery low, shutting down...");
+    //     return 1;
+    // }
 
     run_state_machine();
 

@@ -4,6 +4,12 @@
 #include <stdbool.h>
 
 /**
+ * @brief Checks if there are any non contiguous sensors active.
+ * @return True if non contiguous sensors were found, false otherwise.
+ */
+bool check_non_contiguous_sensors(void);
+
+/**
  * @brief Checks if the line is detected based on the error struct.
  * @return True if the line is detected, false otherwise.
  */

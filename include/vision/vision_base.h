@@ -6,7 +6,7 @@
 
 #include "../config.h"
 
-#define DETECTION_DEBOUNCE_TIME 100 * TIME_MULTIPLIER  // Debounce time
+#define DETECTION_DEBOUNCE_TIME 30 * TIME_MULTIPLIER  // Debounce time
 
 /**
  * @struct sensor_state

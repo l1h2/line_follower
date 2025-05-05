@@ -3,8 +3,13 @@
 
 #include <stdint.h>
 
+#include "../../include/pid/pid.h"
 #include "../../include/state_machine/state_machine_base.h"
 
+/**
+ * @enum SerialSmOutputs
+ * @brief Enum for serial output State Machine commands.
+ */
 typedef enum {
     STATE,
     RUNNING_MODE,
@@ -15,7 +20,8 @@ typedef enum {
 } SerialSmOutputs;
 
 /**
- * @brief Enum for serial output commands.
+ * @enum SerialPidOutputs
+ * @brief Enum for serial output PID commands.
  */
 typedef enum {
     KP,
@@ -50,9 +56,9 @@ void send_state_machine_info(const StateMachine *sm,
 
 /**
  * @brief Send information to the receiver.
+ * @param The PID structure containing the information to send.
  * @param info The type of information to send.
- * @param value The value associated with the information.
  */
-void send_pid_info(const SerialPidOutputs info, const uint8_t value);
+void send_pid_info(const PidStruct *pid, const SerialPidOutputs info);
 
 #endif  // BLUETOOTH_BASE_H

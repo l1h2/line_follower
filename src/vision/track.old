@@ -1,25 +1,17 @@
-#include "../../include/vision/track.h"
-
 #include "../../include/logger/logger.h"
 #include "../../include/pid/errors.h"
 #include "../../include/timer/time.h"
 #include "../../include/vision/observer.h"
+#include "../../include/vision/track.h"
 
 #define OBSERVER_FRAME_INTERVAL 1 * TIME_MULTIPLIER  // Observer frame interval
-#define MEMORY_COUNTER_THRESHOLD 8  // Number of consecutive measurements needed
-#define CROSSING_COUNTER_THRESHOLD 1  // Threshold for crossing memory counters
+#define MARKER_ACCEPT_THRESHOLD 7  // Number of consecutive measurements needed
 
 static TrackCounters track = {0};
 static uint32_t last_check_time = 0;
 static uint32_t last_true_check_time = 0;
 
-typedef enum { NONE, CROSSING, CURVE, MARKER } MemoryCounters;
-typedef struct {
-    uint8_t counter;
-    MemoryCounters last;
-} Memory;
-
-static Memory memory = {.counter = 0, .last = NONE};
+static uint8_t check_marker_counter = 0;
 
 static const ErrorStruct* errors = get_errors();
 
@@ -55,31 +47,16 @@ bool check_start_marker(void) {
     return (track.marker_counter & 0);
 }
 
-static void reset_memory(void) {
-    memory.counter = 0;
-    memory.last = NONE;
+static void reset_marker_counter(void) { check_marker_counter = 0; }
+
+static bool check_marker_memory(void) {
+    if (!check_marker()) return false;
+
+    check_marker_counter++;
+    return check_marker_counter >= MARKER_ACCEPT_THRESHOLD;
 }
 
-static bool check_memory(const MemoryCounters counter) {
-    if (counter != memory.last) {
-        memory.last = counter;
-        memory.counter = 1;
-        return false;
-    }
-
-    memory.counter++;
-
-    if (counter == CROSSING) {
-        if (memory.counter < CROSSING_COUNTER_THRESHOLD) return false;
-    } else {
-        if (memory.counter < MEMORY_COUNTER_THRESHOLD) return false;
-    }
-
-    reset_memory();
-    return true;
-}
-
-bool update_track_counters(void) {
+bool update_marker_counters(void) {
     if (!time_elapsed(last_check_time, OBSERVER_FRAME_INTERVAL)) {
         return false;
     }
@@ -93,41 +70,38 @@ bool update_track_counters(void) {
     if (check_non_contiguous_sensors()) return false;
 
     if (check_crossing()) {
-        if (!check_memory(CROSSING)) return false;
-
         track.crossing_counter++;
         last_true_check_time = time();
-        debug_print_string("C ");
-        debug_print_bool(errors->sensors->right_sensor);
-        debug_print_binary(errors->sensors->central_sensors_state);
-        debug_print_bool(errors->sensors->left_sensor);
-        debug_print_new_line();
+        reset_marker_counter();
+        // debug_print_string("Crossing: ");
+        // debug_print_bool(errors->sensors->right_sensor);
+        // debug_print_binary(errors->sensors->central_sensors_state);
+        // debug_print_bool(errors->sensors->left_sensor);
+        // debug_print_new_line();
         return true;
     }
 
     if (check_curve()) {
-        if (!check_memory(CURVE)) return false;
-
         track.curve_counter++;
         last_true_check_time = time();
-        debug_print_string("V ");
-        debug_print_bool(errors->sensors->right_sensor);
-        debug_print_binary(errors->sensors->central_sensors_state);
-        debug_print_bool(errors->sensors->left_sensor);
-        debug_print_new_line();
+        reset_marker_counter();
+        // debug_print_string("Curve: ");
+        // debug_print_bool(errors->sensors->right_sensor);
+        // debug_print_binary(errors->sensors->central_sensors_state);
+        // debug_print_bool(errors->sensors->left_sensor);
+        // debug_print_new_line();
         return true;
     }
 
-    if (check_marker()) {
-        if (!check_memory(MARKER)) return false;
-
+    if (check_marker_memory()) {
         track.marker_counter++;
         last_true_check_time = time();
-        debug_print_string("M ");
+        debug_print_string("Marker: ");
         debug_print_bool(errors->sensors->right_sensor);
         debug_print_binary(errors->sensors->central_sensors_state);
         debug_print_bool(errors->sensors->left_sensor);
         debug_print_new_line();
+        reset_marker_counter();
         return true;
     }
 
