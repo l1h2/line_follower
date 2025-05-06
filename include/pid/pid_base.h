@@ -32,6 +32,7 @@ typedef struct {
     uint8_t ki;                 // Integral gain
     uint16_t kd;                // Derivative gain
     uint8_t kff;                // Feedforward gain
+    uint8_t kb;                 // Brake gain
     uint8_t base_pwm;           // Base PWM value for the motors
     int16_t current_pwm;        // Current PWM value for the motors
     uint8_t max_pwm;            // Maximum PWM value for the motors

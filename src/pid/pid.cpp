@@ -12,15 +12,18 @@
 #define KI 0            // Integral gain
 #define KD 1000         // Derivative gain
 #define KFF 10          // Feedforward gain
+#define KB 0            // Brake gain
 #define INITIAL_PWM 70  // Initial PWM value to avoid acceleration issues
 #define BASE_PWM 90     // Base PWM value for the motors
 #define PID_FRAME_INTERVAL 1 * TIME_MULTIPLIER  // PID frame interval
+#define BRAKE_THRESHOLD 3                       // Threshold for braking factor
 
 static PidStruct pid = {
     .kp = KP,
     .ki = KI,
     .kd = KD,
     .kff = KFF,
+    .kb = KB,
     .base_pwm = BASE_PWM,
     .current_pwm = INITIAL_PWM < BASE_PWM ? INITIAL_PWM : BASE_PWM,
     .max_pwm = MAX_PWM,
@@ -54,6 +57,14 @@ static int16_t get_ff(void) {
     return pid.kff * pid.errors->feedforward;
 }
 
+static uint8_t get_brake_factor(void) {
+    if (pid.kb == 0) return 0;
+
+    const uint8_t p = (uint8_t)abs(pid.errors->error);
+
+    return p <= BRAKE_THRESHOLD ? 0 : pid.kb * p;
+}
+
 static int16_t get_delta_pwm(void) {
     int16_t delta_pwm = 0;
 
@@ -65,7 +76,7 @@ static int16_t get_delta_pwm(void) {
 }
 
 static void update_current_pwm(void) {
-    const int16_t reference_pwm = pid.base_pwm + get_ff();
+    const int16_t reference_pwm = pid.base_pwm + get_ff() - get_brake_factor();
 
     if (pid.current_pwm == reference_pwm) return;
 
@@ -75,6 +86,8 @@ static void update_current_pwm(void) {
 
 static int16_t get_pwm(const int16_t delta_pwm) {
     update_current_pwm();
+
+    const uint8_t brake_factor = get_brake_factor();
 
     int16_t pwm = pid.current_pwm + delta_pwm;
 
