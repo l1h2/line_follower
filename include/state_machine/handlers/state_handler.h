@@ -7,8 +7,7 @@
 
 /**
  * @brief Handles the state machine logic based on the current state.
- * @param sm Pointer to the state machine structure.
  */
-void handle_state(StateMachine* sm);
+void handle_state(void);
 
 #endif  // STATE_HANDLER_H

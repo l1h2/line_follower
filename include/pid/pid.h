@@ -21,7 +21,7 @@ bool update_pid(void);
  * @brief Returns a pointer to the PID struct.
  * @return Pointer to the PidStruct containing PID parameters and state.
  */
-PidStruct* get_pid(void);
+const PidStruct* get_pid(void);
 
 /**
  * @brief Set the proportional gain (Kp) value for the PID controller.

@@ -22,4 +22,4 @@ void clear_sensors() {
     sensors.central_sensors_state = 0;
 }
 
-SensorState* get_sensors() { return &sensors; }
+const SensorState* get_sensors() { return &sensors; }

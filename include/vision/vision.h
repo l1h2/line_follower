@@ -25,6 +25,6 @@ void clear_sensors(void);
  * @brief Returns a pointer to the sensor state structure.
  * @return Pointer to the sensor state structure.
  */
-SensorState* get_sensors(void);
+const SensorState* get_sensors(void);
 
 #endif  // VISION_H

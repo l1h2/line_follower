@@ -58,6 +58,12 @@ void print_binary(const uint8_t byte) {
     }
 }
 
+void print_reverse_binary(const uint8_t byte) {
+    for (uint8_t i = 0; i < 8; i++) {
+        usart_transmit((byte & (1 << i)) ? '1' : '0');
+    }
+}
+
 void print_bool(const bool value) { usart_transmit(value ? '1' : '0'); }
 
 void print_string(const char *str) {

@@ -7,15 +7,14 @@
 
 /**
  * @brief Handles the initialization state logic.
- * @param sm Pointer to the state machine structure.
  */
-void handle_init(StateMachine* sm);
+void handle_init(void);
 
 /**
  * @brief Handles the transitions within the initialization state.
- * @param sm Pointer to the state machine structure.
+ * @param next_state The next state to transition to.
  * @return true if the transition was successful, false otherwise.
  */
-bool handle_init_transitions(StateMachine* sm);
+bool handle_init_transitions(const RobotStates next_state);
 
 #endif  // INIT_STATE_H

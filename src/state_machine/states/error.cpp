@@ -5,13 +5,13 @@
 
 void handle_error(void) { debug_print("ERROR State: Handling error logic"); }
 
-void handle_any_to_error(StateMachine* sm) {
+void handle_any_to_error(void) {
     debug_print("Transitioning to ERROR State from any state");
-    request_next_state(sm, STATE_ERROR);
+    request_next_state(STATE_ERROR);
 }
 
-bool handle_error_transitions(StateMachine* sm) {
-    switch (sm->next_state) {
+bool handle_error_transitions(const RobotStates next_state) {
+    switch (next_state) {
         default:
             return false;
     }

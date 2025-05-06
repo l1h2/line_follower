@@ -11,6 +11,7 @@
 #define KP 16           // Proportional gain
 #define KI 0            // Integral gain
 #define KD 1000         // Derivative gain
+#define KFF 10          // Feedforward gain
 #define INITIAL_PWM 70  // Initial PWM value to avoid acceleration issues
 #define BASE_PWM 90     // Base PWM value for the motors
 #define PID_FRAME_INTERVAL 1 * TIME_MULTIPLIER  // PID frame interval
@@ -19,6 +20,7 @@ static PidStruct pid = {
     .kp = KP,
     .ki = KI,
     .kd = KD,
+    .kff = KFF,
     .base_pwm = BASE_PWM,
     .current_pwm = INITIAL_PWM < BASE_PWM ? INITIAL_PWM : BASE_PWM,
     .max_pwm = MAX_PWM,
@@ -46,6 +48,12 @@ static int16_t get_d(void) {
     return pid.kd * pid.errors->filtered_delta_error / pid.frame_interval;
 }
 
+static int16_t get_ff(void) {
+    if (pid.kff == 0) return 0;
+
+    return pid.kff * pid.errors->feedforward;
+}
+
 static int16_t get_delta_pwm(void) {
     int16_t delta_pwm = 0;
 
@@ -56,7 +64,18 @@ static int16_t get_delta_pwm(void) {
     return delta_pwm;
 }
 
+static void update_current_pwm(void) {
+    const int16_t reference_pwm = pid.base_pwm + get_ff();
+
+    if (pid.current_pwm == reference_pwm) return;
+
+    pid.current_pwm =
+        pid.current_pwm < reference_pwm ? pid.current_pwm + 1 : reference_pwm;
+}
+
 static int16_t get_pwm(const int16_t delta_pwm) {
+    update_current_pwm();
+
     int16_t pwm = pid.current_pwm + delta_pwm;
 
     if (pwm > pid.max_pwm) {
@@ -93,13 +112,15 @@ bool update_pid(void) {
     return true;
 }
 
-PidStruct* get_pid(void) { return &pid; }
+const PidStruct* get_pid(void) { return &pid; }
 
 void set_kp(const uint8_t kp) { pid.kp = kp; }
 
 void set_ki(const uint8_t ki) { pid.ki = ki; }
 
 void set_kd(const uint8_t kd) { pid.kd = kd == 255 ? 1000 : kd; }
+
+void set_kff(const uint8_t kff) { pid.kff = kff; }
 
 void set_base_pwm(const uint8_t pwm) {
     if (pwm >= pid.max_pwm) {

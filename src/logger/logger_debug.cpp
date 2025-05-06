@@ -21,7 +21,7 @@ void debug_print_string(const char *str) { print_string(str); }
 void debug_print_new_line(void) { print_new_line(); }
 void debug_print(const char *str) { print(str); }
 
-void print_central_sensors(void) {
+void debug_print_central_sensors(void) {
     const SensorState *sensors = get_sensors();
 
     for (uint8_t i = 0; i <= 8; i++) {
@@ -37,13 +37,13 @@ void print_central_sensors(void) {
     }
 }
 
-void print_sensors(void) {
+void debug_print_sensors(void) {
     const SensorState *sensors = get_sensors();
 
     print_bool(sensors->left_sensor);
     print_string(" | ");
 
-    print_central_sensors();
+    debug_print_central_sensors();
 
     print_string(" | ");
     print_bool(sensors->right_sensor);
@@ -57,7 +57,7 @@ void print_sensors(void) {
     print_new_line();
 }
 
-void print_errors(void) {
+void debug_print_errors(void) {
     const ErrorStruct *errors = get_errors();
 
     print_new_line();
@@ -72,10 +72,19 @@ void print_errors(void) {
     print_new_line();
 }
 
-void print_diagnostics(const uint32_t interval) {
+void debug_print_diagnostics(const uint32_t interval) {
     if (!time_elapsed(last_log_time, interval)) return;
 
     last_log_time = time();
-    print_errors();
-    print_sensors();
+    debug_print_errors();
+    debug_print_sensors();
+}
+
+void debug_print_forward_sensors(void) {
+    const ErrorStruct *errors = get_errors();
+
+    print_bool(errors->sensors->left_sensor);
+    print_reverse_binary(errors->sensors->central_sensors_state);
+    print_bool(errors->sensors->right_sensor);
+    print_new_line();
 }

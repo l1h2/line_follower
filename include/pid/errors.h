@@ -20,6 +20,6 @@ void clear_errors(void);
  *
  * @return Pointer to the ErrorStruct containing error values.
  */
-ErrorStruct* get_errors(void);
+const ErrorStruct* get_errors(void);
 
 #endif  // ERRORS_H

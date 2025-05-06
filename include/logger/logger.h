@@ -15,6 +15,7 @@
 #define print_signed_word(word) ((void)0)
 #define print_bool(value) ((void)0)
 #define print_binary(byte) ((void)0)
+#define print_reverse_binary(byte) ((void)0)
 #define print_string(str) ((void)0)
 #define print_new_line() ((void)0)
 #define print(str) ((void)0)
@@ -34,10 +35,11 @@
 #define debug_print_string(str) ((void)0)
 #define debug_print_new_line() ((void)0)
 #define debug_print(str) ((void)0)
-#define print_central_sensors() ((void)0)
-#define print_sensors() ((void)0)
-#define print_errors(errors) ((void)0)
-#define print_diagnostics(...) ((void)0)
+#define debug_print_central_sensors() ((void)0)
+#define debug_print_sensors() ((void)0)
+#define debug_print_errors(errors) ((void)0)
+#define debug_print_diagnostics(...) ((void)0)
+#define debug_print_forward_sensors() ((void)0)
 #endif  // DEBUG_MODE
 
 #ifdef BLUETOOTH_MODE

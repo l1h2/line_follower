@@ -12,15 +12,14 @@ void handle_error(void);
 
 /**
  * @brief Handles the transition from any state to the error state.
- * @param sm Pointer to the state machine structure.
  */
-void handle_any_to_error(StateMachine* sm);
+void handle_any_to_error(void);
 
 /**
  * @brief Handles the transitions within the error state.
- * @param sm Pointer to the state machine structure.
+ * @param next_state The next state to transition to.
  * @return true if the transition was successful, false otherwise.
  */
-bool handle_error_transitions(StateMachine* sm);
+bool handle_error_transitions(const RobotStates next_state);
 
 #endif  // ERROR_STATE_H

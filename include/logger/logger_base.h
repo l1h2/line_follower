@@ -55,6 +55,12 @@ void print_signed_word(int16_t word);
 void print_binary(const uint8_t byte);
 
 /**
+ * @brief Prints a byte in reverse binary format to the USART.
+ * @param byte The byte to print.
+ */
+void print_reverse_binary(const uint8_t byte);
+
+/**
  * @brief Prints a boolean value to the USART.
  * @param value The boolean value to print.
  */

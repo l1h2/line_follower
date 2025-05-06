@@ -9,13 +9,13 @@
 
 void run_state_machine(void) {
     debug_print("Starting State Machine...");
-    StateMachine *sm = get_state_machine();
+    const StateMachine *sm = get_state_machine();
 
     while (sm->current_state != STATE_ERROR) {
-        handle_state(sm);
+        handle_state();
 
         if (sm->current_state != sm->next_state) {
-            request_transition(sm);
+            request_transition();
         }
     }
 }

@@ -7,14 +7,13 @@
 
 /**
  * @brief Handles the stopped state logic.
- * @param sm Pointer to the state machine structure.
  */
-void handle_stopped(StateMachine* sm);
+void handle_stopped(void);
 
 /**
  * @brief Handles the transitions within the stopped state.
- * @param sm Pointer to the state machine structure.
+ * @param next_state The next state to transition to.
  */
-bool handle_stopped_transitions(StateMachine* sm);
+bool handle_stopped_transitions(const RobotStates next_state);
 
 #endif  // STOPPED_STATE_H

@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #include "../../include/hal/sensors.h"
+#include "../../include/pid/mapped_ff.h"
 #include "../../include/vision/vision.h"
 
 #define ERROR_WEIGHT 2  // Weight for error calculation
@@ -22,12 +23,12 @@ static ErrorStruct errors = {
     .last_error = 0,
     .filtered_delta_error = 0,
     .error_sum = 0,
+    .feedforward = 0,
     .error_weight = ERROR_WEIGHT,
     .max_error = MAX_ERROR,
     .min_error = MIN_ERROR,
     .max_error_sum = MAX_ERROR_SUM,
     .min_error_sum = MIN_ERROR_SUM,
-    .error_sum_threshold = ERROR_SUM_THRESHOLD,
     .sensors = get_sensors(),
 };
 
@@ -52,8 +53,7 @@ static void update_error(void) {
 }
 
 static void update_error_sum(void) {
-    // Test integral windup prevention and faster reseting
-    if ((int8_t)abs(errors.error) < 2) {
+    if ((int8_t)abs(errors.error) <= ERROR_SUM_THRESHOLD) {
         errors.error_sum = 0;
         return;
     }
@@ -78,12 +78,17 @@ static void update_delta_error(void) {
 
 static void update_last_error(void) { errors.last_error = errors.error; }
 
+static void update_feedforward(void) {
+    errors.feedforward = get_feed_forward();
+}
+
 void update_errors(void) {
     update_sensors();
     update_error();
     update_error_sum();
     update_delta_error();
     update_last_error();
+    update_feedforward();
 }
 
 void clear_errors(void) {
@@ -94,4 +99,4 @@ void clear_errors(void) {
     clear_sensors();
 }
 
-ErrorStruct* get_errors(void) { return &errors; }
+const ErrorStruct* get_errors(void) { return &errors; }

@@ -37,7 +37,9 @@ void restart_state_machine(void) {
     sm.start_time = 0;
 }
 
-StateMachine* get_state_machine(void) { return &sm; }
+const StateMachine* get_state_machine(void) { return &sm; }
+
+StateMachine* get_state_machine_ptr(void) { return &sm; }
 
 void set_running_mode(const RunningModes mode) {
     if (mode < RUNNING_INIT || mode > RUNNING_SENSOR_TEST) {

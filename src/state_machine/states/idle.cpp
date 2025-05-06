@@ -9,7 +9,7 @@
 #include "../../../include/state_machine/handlers/state_request_handler.h"
 
 #ifdef BLUETOOTH_MODE
-void handle_idle(StateMachine* sm) {
+void handle_idle(const StateMachine* sm) {
     debug_print("IDLE State: Waiting for bluetooth commands");
 
     while (!sm->can_run) {
@@ -17,10 +17,10 @@ void handle_idle(StateMachine* sm) {
     }
 
     debug_print("Start command received in IDLE State");
-    request_next_state(sm, STATE_RUNNING);
+    request_next_state(STATE_RUNNING);
 }
 #else
-void handle_idle(StateMachine* sm) {
+void handle_idle(const StateMachine* sm) {
     debug_print("IDLE State: Waiting for 5 seconds and selecting running mode");
     _delay_ms(5000);
 
@@ -31,7 +31,7 @@ void handle_idle(StateMachine* sm) {
     set_stop_time(0);
 
     debug_print("Finished selecting running mode in IDLE State");
-    request_next_state(sm, STATE_RUNNING);
+    request_next_state(STATE_RUNNING);
 }
 #endif
 
@@ -39,8 +39,8 @@ static void handle_idle_to_running(void) {
     debug_print("Transitioning from IDLE to RUNNING");
 }
 
-bool handle_idle_transitions(StateMachine* sm) {
-    switch (sm->next_state) {
+bool handle_idle_transitions(const RobotStates next_state) {
+    switch (next_state) {
         case STATE_RUNNING:
             handle_idle_to_running();
             break;

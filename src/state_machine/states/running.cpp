@@ -9,13 +9,13 @@
 #include "../../../include/state_machine/running_modes/running_base_pid.h"
 #include "../../../include/state_machine/running_modes/running_sensor_test.h"
 
-void handle_running(StateMachine* sm) {
+void handle_running(const StateMachine* sm) {
     debug_print("RUNNING State: Choosing running mode");
 
     switch (sm->running_mode) {
         case RUNNING_INIT:
             debug_print("No running mode set, going back to IDLE state");
-            request_next_state(sm, STATE_IDLE);
+            request_next_state(STATE_IDLE);
             return;
         case RUNNING_BASE_PID:
             debug_print("Running mode set to RUNNING_BASE_PID");
@@ -27,12 +27,12 @@ void handle_running(StateMachine* sm) {
             break;
         default:
             debug_print("Unknown running mode, program will stop");
-            request_next_state(sm, STATE_ERROR);
+            request_next_state(STATE_ERROR);
             return;
     }
 
     debug_print("Finalizing RUNNING state, preparing to stop");
-    request_next_state(sm, STATE_STOPPED);
+    request_next_state(STATE_STOPPED);
 }
 
 static bool handle_running_to_stopped(const RunningModes running_mode) {
@@ -54,10 +54,11 @@ static bool handle_running_to_stopped(const RunningModes running_mode) {
     return true;
 }
 
-bool handle_running_transitions(StateMachine* sm) {
-    switch (sm->next_state) {
+bool handle_running_transitions(const RobotStates next_state,
+                                const RunningModes running_mode) {
+    switch (next_state) {
         case STATE_STOPPED:
-            return handle_running_to_stopped(sm->running_mode);
+            return handle_running_to_stopped(running_mode);
         case STATE_IDLE:
             set_can_run(false);
             debug_print("Transitioning from RUNNING to IDLE");

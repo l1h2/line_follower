@@ -9,6 +9,18 @@
 #define DETECTION_DEBOUNCE_TIME 30 * TIME_MULTIPLIER  // Debounce time
 
 /**
+ * @enum Tracks
+ * @brief Enumeration of the available tracks.
+ */
+typedef enum {
+    PET,
+    RSM,
+    RIW,
+} Tracks;
+
+#define SELECTED_TRACK RSM  // The selected track for the robot
+
+/**
  * @struct sensor_state
  * @brief Structure to hold the state of the sensors.
  */
@@ -33,6 +45,8 @@ typedef struct {
     uint8_t lost_left_counter;   // Times the line is lost to the left
     uint8_t lost_right_counter;  // Times the line is lost to the right
     uint8_t pitch_counter;       // Times the line is lost due to pitch
+    int8_t section;              // Current section of the track
+    uint8_t laps;                // Number of laps completed
 } TrackCounters;
 
 #endif  // VISION_BASE_H

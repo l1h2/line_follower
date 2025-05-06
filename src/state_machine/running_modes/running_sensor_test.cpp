@@ -5,13 +5,12 @@
 #include "../../../include/logger/logger.h"
 #include "../../../include/pid/errors.h"
 #include "../../../include/receiver/receiver.h"
-#include "../../../include/state_machine/running_modes/running_base.h"
 
-void running_sensor_test(StateMachine* sm) {
+void running_sensor_test(const StateMachine* sm) {
     debug_print("RUNNING_SENSOR_TEST Mode: Handling running logic");
 
     while (sm->can_run) {
-        print_diagnostics();
+        debug_print_diagnostics();
 
         if (sm->log_data) {
             send_start_signal();
@@ -22,7 +21,6 @@ void running_sensor_test(StateMachine* sm) {
         _delay_ms(1000);
         update_errors();
 
-        check_stop(sm);
         process_serial_commands();
     }
 

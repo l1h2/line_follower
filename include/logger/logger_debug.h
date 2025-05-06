@@ -98,17 +98,17 @@ void debug_print(const char *str);
  * @brief Prints the current state of the central sensors in a human-readable
  * format.
  */
-void print_central_sensors(void);
+void debug_print_central_sensors(void);
 
 /**
  * @brief Prints the current state of the sensors in a human-readable format.
  */
-void print_sensors(void);
+void debug_print_sensors(void);
 
 /**
  * @brief Prints the error values for PID control in a human-readable format.
  */
-void print_errors(void);
+void debug_print_errors(void);
 
 /**
  * @brief Prints the diagnostics information, including sensor states and error
@@ -116,6 +116,12 @@ void print_errors(void);
  * @param interval The time interval for printing diagnostics. (Default: 1
  * second)
  */
-void print_diagnostics(const uint32_t interval = LOG_INTERVAL);
+void debug_print_diagnostics(const uint32_t interval = LOG_INTERVAL);
+
+/**
+ * @brief Prints the current state of the forward sensors in a human-readable
+ * format.
+ */
+void debug_print_forward_sensors(void);
 
 #endif  // LOGGER_DEBUG_H

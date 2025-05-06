@@ -20,7 +20,15 @@ void restart_state_machine(void);
  * @brief Gets the current state machine instance.
  * @return Pointer to the current state machine instance.
  */
-StateMachine* get_state_machine(void);
+const StateMachine* get_state_machine(void);
+
+/**
+ * @brief Gets a pointer to the current state machine instance.
+ * @return Pointer to the current state machine instance.
+ * @note This function is used to modify the state machine instance directly.
+ * @warning This function should only be used by other state machine handlers.
+ */
+StateMachine* get_state_machine_ptr(void);
 
 /**
  * @brief Sets the running mode of the state machine.

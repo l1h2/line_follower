@@ -1,10 +1,14 @@
 #include "../../../include/state_machine/handlers/state_request_handler.h"
 
-static bool validate_next_state(StateMachine* sm) {
+#include "../../../include/state_machine/handlers/config_handler.h"
+
+static StateMachine* sm = get_state_machine_ptr();
+
+static bool validate_next_state(void) {
     return (sm->next_state == sm->current_state);
 }
 
-bool request_next_state(StateMachine* sm, RobotStates next_state) {
+bool request_next_state(const RobotStates next_state) {
     if (!validate_next_state) return false;
 
     sm->next_state = next_state;
