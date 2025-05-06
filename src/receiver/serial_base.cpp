@@ -2,7 +2,7 @@
 
 #include "../../include/hal/usart.h"
 
-#define SERIAL_BUFFER_SIZE USART_BUFFER_SIZE
+#define SERIAL_BUFFER_SIZE RX_BUFFER_SIZE
 
 static char serial_buffer[SERIAL_BUFFER_SIZE];
 

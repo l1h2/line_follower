@@ -11,8 +11,6 @@ void receiver_init(void) {
     receiver_enabled = true;
 }
 
-uint8_t buffer_size(void) { return USART_BUFFER_SIZE; }
-
 char read_last_transmission(void) { return usart_read_last_char(); }
 
 char *read_raw_buffer(char *buffer_out) {

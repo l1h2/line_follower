@@ -3,9 +3,11 @@
 
 #include <stdint.h>
 
-#define F_CPU 16000000UL     // CPU frequency in Hz
-#define BAUD 9600            // Baud rate for USART communication
-#define USART_BUFFER_SIZE 2  // Size of the USART buffer
+#define F_CPU 16000000UL  // CPU frequency in Hz
+#define BAUD 9600         // Baud rate for USART communication
+
+#define TX_BUFFER_SIZE 32  // Size of the USART buffer for transmission
+#define RX_BUFFER_SIZE 2   // Size of the USART buffer for reception
 
 /**
  * @brief Initializes the USART transmitter.

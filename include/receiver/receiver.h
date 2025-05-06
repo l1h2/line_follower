@@ -7,7 +7,6 @@
 #include "receiver_base.h"
 #else
 #define receiver_init() ((void)0)
-#define buffer_size() ((uint8_t)0)
 #define read_last_transmission() ((char)0)
 #define read_raw_buffer(buffer_out) ((char *)0)
 #define read_available() (false)

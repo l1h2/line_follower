@@ -10,12 +10,6 @@
 void receiver_init(void);
 
 /**
- * @brief Gets the size of the receiver buffer.
- * @return The size of the receiver buffer.
- */
-uint8_t buffer_size(void);
-
-/**
  * @brief Reads the last character received.
  * @return The last character received.
  */
