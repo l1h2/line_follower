@@ -16,10 +16,10 @@ void running_base_pid(const StateMachine* sm) {
     set_start_time();
 
     while (sm->can_run) {
-        if (update_pid()) {
-            check_stop(sm, update_track_counters());
-            if (sm->log_data) send_vision_data();
-        }
+        if (!update_pid()) continue;
+
+        check_stop(sm, update_track_counters());
+        if (sm->log_data) send_vision_data();
 
         process_serial_commands();
     }

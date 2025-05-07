@@ -27,6 +27,8 @@ typedef enum {
     KP,
     KI,
     KD,
+    KFF,
+    KB,
     BASE_PWM,
     MAX_PWM,
 } SerialPidOutputs;

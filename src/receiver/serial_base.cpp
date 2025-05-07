@@ -8,12 +8,15 @@ static char serial_buffer[SERIAL_BUFFER_SIZE];
 
 static SerialCommands get_serial_command(void) {
     SerialCommands serial_command = (SerialCommands)serial_buffer[0];
+
     switch (serial_command) {
         case START:
         case STOP:
         case SET_KP:
         case SET_KI:
         case SET_KD:
+        case SET_KFF:
+        case SET_KB:
         case SET_BASE_PWM:
         case SET_MAX_PWM:
         case SET_RUNNING_MODE:

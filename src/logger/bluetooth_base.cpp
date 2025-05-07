@@ -15,6 +15,8 @@
 #define SERIAL_KP "KP:"                // Proportional gain
 #define SERIAL_KI "KI:"                // Integral gain
 #define SERIAL_KD "KD:"                // Derivative gain
+#define SERIAL_KFF "KFF:"              // Feedforward gain
+#define SERIAL_KB "KB:"                // Brake gain
 #define SERIAL_BASE_PWM "BASE_PWM:"    // Base PWM value
 #define SERIAL_MAX_PWM "MAX_PWM:"      // Maximum PWM value
 
@@ -65,6 +67,12 @@ void send_pid_info(const PidStruct *pid, const SerialPidOutputs info) {
             break;
         case KD:
             send_data(SERIAL_KD, pid->kd == 1000 ? 255 : pid->kd);
+            break;
+        case KFF:
+            send_data(SERIAL_KFF, pid->kff);
+            break;
+        case KB:
+            send_data(SERIAL_KB, pid->kb);
             break;
         case BASE_PWM:
             send_data(SERIAL_BASE_PWM, pid->base_pwm);

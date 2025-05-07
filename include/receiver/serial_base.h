@@ -13,6 +13,8 @@ typedef enum {
     SET_KP = 'P',
     SET_KI = 'I',
     SET_KD = 'D',
+    SET_KFF = 'F',
+    SET_KB = 'K',
     SET_BASE_PWM = 'B',
     SET_MAX_PWM = 'M',
     SET_RUNNING_MODE = 'R',

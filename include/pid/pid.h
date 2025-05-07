@@ -42,6 +42,18 @@ void set_ki(const uint8_t ki);
 void set_kd(const uint8_t kd);
 
 /**
+ * @brief Set the feedforward gain (Kff) value for the PID controller.
+ * @param kff The new feedforward gain value to be set.
+ */
+void set_kff(const uint8_t kff);
+
+/**
+ * @brief Set the brake gain (Kb) value for the PID controller.
+ * @param kb The new brake gain value to be set.
+ */
+void set_kb(const uint8_t kb);
+
+/**
  * @brief Sets the base PWM value for the motors.
  * @param pwm The new base PWM value to be set.
  */

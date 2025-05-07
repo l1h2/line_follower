@@ -135,6 +135,8 @@ void set_kd(const uint8_t kd) { pid.kd = kd == 255 ? 1000 : kd; }
 
 void set_kff(const uint8_t kff) { pid.kff = kff; }
 
+void set_kb(const uint8_t kb) { pid.kb = kb; }
+
 void set_base_pwm(const uint8_t pwm) {
     if (pwm >= pid.max_pwm) {
         pid.base_pwm = pid.max_pwm;

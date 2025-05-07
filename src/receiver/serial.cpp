@@ -20,6 +20,12 @@ static void handle_command(const Command command) {
         case SET_KD:
             set_kd(command.value);
             break;
+        case SET_KFF:
+            set_kff(command.value);
+            break;
+        case SET_KB:
+            set_kb(command.value);
+            break;
         case SET_BASE_PWM:
             set_base_pwm(command.value);
             break;

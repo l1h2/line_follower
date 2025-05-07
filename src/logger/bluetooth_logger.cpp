@@ -27,8 +27,10 @@ void send_pid_data(void) {
     send_pid_info(pid, KP);
     send_pid_info(pid, KI);
     send_pid_info(pid, KD);
+    send_pid_info(pid, KFF);
+    send_pid_info(pid, KB);
     send_pid_info(pid, BASE_PWM);
-    send_pid_info(pid, MAX_PWM);
+    // send_pid_info(pid, MAX_PWM);
 }
 
 void send_state_machine_data(const StateMachine *sm) {
