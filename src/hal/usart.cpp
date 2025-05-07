@@ -15,9 +15,9 @@ static volatile char tx_buffer[TX_BUFFER_SIZE];
 static volatile uint8_t tx_head = 0;
 static volatile uint8_t tx_tail = 0;
 
-static volatile char buffer[RX_BUFFER_SIZE];
-static volatile uint8_t buffer_index = 0;
-static volatile bool data_received = false;
+static volatile char rx_buffer[RX_BUFFER_SIZE];
+static volatile uint8_t rx_head = 0;
+static volatile uint8_t rx_tail = 0;
 
 static void usart_init(void) {
     if (usart_initialized) return;
@@ -55,14 +55,14 @@ void usart_init_receiver(void) {
 ISR(USART_UDRE_vect) {
     if (tx_head != tx_tail) {
         UDR0 = tx_buffer[tx_tail];
-        tx_tail = (tx_tail + 1) % TX_BUFFER_SIZE;
+        tx_tail = (tx_tail + 1) & (TX_BUFFER_SIZE - 1);
     } else {
         UCSR0B &= ~(1 << UDRIE0);
     }
 }
 
 void usart_transmit(const uint8_t data) {
-    const uint8_t next_head = (tx_head + 1) % TX_BUFFER_SIZE;
+    const uint8_t next_head = (tx_head + 1) & (TX_BUFFER_SIZE - 1);
 
     while (next_head == tx_tail);
 
@@ -73,46 +73,63 @@ void usart_transmit(const uint8_t data) {
 }
 
 ISR(USART_RX_vect) {
-    buffer[buffer_index++] = UDR0;
-    if (buffer_index >= RX_BUFFER_SIZE) buffer_index = 0;
-    data_received = true;
+    const uint8_t next_head = (rx_head + 1) & (RX_BUFFER_SIZE - 1);
+
+    if (next_head == rx_tail) return;  // Buffer overflow
+
+    rx_buffer[rx_head] = UDR0;
+    rx_head = next_head;
 }
 
-char usart_read_last_char(void) {
+char usart_read_char(void) {
     char data;
     cli();
-    const int8_t index =
-        buffer_index - 1 < 0 ? RX_BUFFER_SIZE - 1 : buffer_index - 1;
-    data = buffer[index];
-    data_received = false;
+
+    if (rx_head != rx_tail) {
+        data = rx_buffer[rx_tail];
+        rx_tail = (rx_tail + 1) & (RX_BUFFER_SIZE - 1);
+    } else {
+        data = 0;
+    }
+
     sei();
     return data;
 }
 
-char *usart_read_buffer(char *buffer_out) {
+void usart_read_buffer(char *buffer_out, uint8_t size) {
     cli();
-    for (uint8_t i = 0; i < RX_BUFFER_SIZE; i++) {
-        buffer_out[i] = buffer[i];
-        buffer[i] = 0;
+
+    const uint8_t data_size =
+        (rx_head - rx_tail + RX_BUFFER_SIZE) & (RX_BUFFER_SIZE - 1);
+
+    if (size > data_size || size == 0) size = data_size;
+
+    for (uint8_t i = 0; i < size; i++) {
+        buffer_out[i] = rx_buffer[rx_tail];
+        rx_tail = (rx_tail + 1) & (RX_BUFFER_SIZE - 1);
     }
-    buffer_index = 0;
-    data_received = false;
+
     sei();
-    return buffer_out;
+}
+
+uint8_t usart_data_available(void) {
+    cli();
+    const uint8_t available =
+        (rx_head - rx_tail + RX_BUFFER_SIZE) & (RX_BUFFER_SIZE - 1);
+    sei();
+    return available;
 }
 
 bool usart_is_data_received(void) {
-    bool received;
     cli();
-    received = data_received;
+    const bool received = (rx_head != rx_tail);
     sei();
     return received;
 }
 
 bool usart_is_buffer_full(void) {
-    bool full;
     cli();
-    full = buffer_index == 0 && data_received;
+    const bool full = ((rx_head + 1) & (RX_BUFFER_SIZE - 1)) == rx_tail;
     sei();
     return full;
 }

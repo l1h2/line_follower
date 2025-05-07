@@ -10,17 +10,18 @@
 void receiver_init(void);
 
 /**
- * @brief Reads the last character received.
+ * @brief Reads the last available transmission in the buffer.
  * @return The last character received.
  */
-char read_last_transmission(void);
+char read_transmission(void);
 
 /**
  * @brief Reads the transmission buffer.
  * @param buffer_out The output buffer to store the received data.
- * @return The output buffer with the received data.
+ * @param size The number of bytes to read.
+ * @warning Make sure the buffer is large enough to hold the received data.
  */
-char *read_raw_buffer(char *buffer_out);
+void read_buffer(char *buffer_out, const uint8_t size);
 
 /**
  * @brief Checks if data is available for reading.
@@ -44,9 +45,12 @@ char read_char(void);
 /**
  * @brief Reads data from the receiver into a buffer.
  * @param buffer_out The output buffer to store the received data.
- * @return The output buffer with the received data.
- * @note This function will block until the buffer is full.
+ * @param chars The number of characters to read.
+ * @note This function will block until all characters are received or a newline
+ * is encountered.
+ * @note The buffer will be null-terminated.
+ * @warning Make sure the buffer is large enough to hold the received data.
  */
-char *read(char *buffer_out);
+void read(char *buffer_out, const uint8_t chars);
 
 #endif  // RECEIVER_BASE_H

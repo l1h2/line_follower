@@ -7,7 +7,7 @@
 #define BAUD 74880        // Baud rate for USART communication
 
 #define TX_BUFFER_SIZE 32  // Size of the USART buffer for transmission
-#define RX_BUFFER_SIZE 2   // Size of the USART buffer for reception
+#define RX_BUFFER_SIZE 32  // Size of the USART buffer for reception
 
 /**
  * @brief Initializes the USART transmitter.
@@ -26,17 +26,25 @@ void usart_init_receiver(void);
 void usart_transmit(const uint8_t data);
 
 /**
- * @brief Reads the last character received.
- * @return The last character received.
+ * @brief Reads one character from the USART buffer.
+ * @return char The received character. If no data is available, returns 0.
  */
-char usart_read_last_char(void);
+char usart_read_char(void);
 
 /**
- * @brief Reads the buffer and clears it.
+ * @brief Reads from the USART buffer into a provided buffer.
  * @param buffer_out The output buffer to store the received data.
- * @return The output buffer with the received data.
+ * @param size The number of bytes to read. If 0, reads all available data.
+ * (default: 0)
+ * @warning Make sure the buffer is large enough to hold the received data.
  */
-char *usart_read_buffer(char *buffer_out);
+void usart_read_buffer(char *buffer_out, uint8_t size = 0);
+
+/**
+ * @brief Checks if data is available in the USART buffer.
+ * @return The number of bytes available in the buffer to be read.
+ */
+uint8_t usart_data_available(void);
 
 /**
  * @brief Checks if data has been received.

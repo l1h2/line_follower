@@ -2,12 +2,12 @@
 
 #include "../../include/hal/usart.h"
 
-#define SERIAL_BUFFER_SIZE RX_BUFFER_SIZE
+#define COMMAND_BUFFER_SIZE 2
 
-static char serial_buffer[SERIAL_BUFFER_SIZE];
+static char command_buffer[COMMAND_BUFFER_SIZE];
 
 static SerialCommands get_serial_command(void) {
-    SerialCommands serial_command = (SerialCommands)serial_buffer[0];
+    SerialCommands serial_command = (SerialCommands)command_buffer[0];
 
     switch (serial_command) {
         case START:
@@ -30,14 +30,14 @@ static SerialCommands get_serial_command(void) {
     }
 }
 
-static uint8_t get_command_value(void) { return serial_buffer[1]; }
+static uint8_t get_command_value(void) { return command_buffer[1]; }
 
 Command read_command(void) {
     Command command = {INVALID_COMMAND, 0};
 
-    if (!usart_is_buffer_full()) return command;
+    if (usart_data_available() < COMMAND_BUFFER_SIZE) return command;
 
-    usart_read_buffer(serial_buffer);
+    usart_read_buffer(command_buffer, COMMAND_BUFFER_SIZE);
 
     command.command = get_serial_command();
     command.value = get_command_value();
@@ -46,6 +46,6 @@ Command read_command(void) {
 }
 
 Command wait_for_command(void) {
-    while (!usart_is_buffer_full());
+    while (usart_data_available() < COMMAND_BUFFER_SIZE);
     return read_command();
 }

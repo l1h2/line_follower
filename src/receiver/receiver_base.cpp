@@ -11,10 +11,10 @@ void receiver_init(void) {
     receiver_enabled = true;
 }
 
-char read_last_transmission(void) { return usart_read_last_char(); }
+char read_transmission(void) { return usart_read_char(); }
 
-char *read_raw_buffer(char *buffer_out) {
-    return usart_read_buffer(buffer_out);
+void read_buffer(char *buffer_out, const uint8_t size) {
+    usart_read_buffer(buffer_out, size);
 }
 
 bool read_available(void) { return usart_is_data_received(); }
@@ -23,10 +23,17 @@ bool read_buffer_full(void) { return usart_is_buffer_full(); }
 
 char read_char(void) {
     while (!usart_is_data_received());
-    return read_last_transmission();
+    return usart_read_char();
 }
 
-char *read(char *buffer_out) {
-    while (!usart_is_buffer_full());
-    return read_raw_buffer(buffer_out);
+void read(char *buffer_out, const uint8_t chars) {
+    uint8_t i = 0;
+
+    for (i = 0; i < chars - 1; i++) {
+        buffer_out[i] = read_char();
+
+        if (buffer_out[i] == '\n') break;
+    }
+
+    buffer_out[i + 1] = '\0';
 }

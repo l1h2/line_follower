@@ -53,10 +53,17 @@ static void handle_command(const Command command) {
 }
 
 bool process_serial_commands(void) {
-    Command command = read_command();
+    Command command;
+    bool command_received = false;
 
-    if (command.command == INVALID_COMMAND) return false;
+    while (true) {
+        command = read_command();
 
-    handle_command(command);
-    return true;
+        if (command.command == INVALID_COMMAND) break;
+
+        handle_command(command);
+        command_received = true;
+    }
+
+    return command_received;
 }
