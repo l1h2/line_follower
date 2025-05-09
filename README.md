@@ -60,7 +60,7 @@ The robot also uses a `HC-05` Bluetooth module for remote control and monitoring
 ## Project Structure
 
 ```plaintext
-line_follower
+line_follower/
 ├── docs/               # Documentation files
 ├── include/            # Header files
 │   ├── battery/        # Battery monitoring module
