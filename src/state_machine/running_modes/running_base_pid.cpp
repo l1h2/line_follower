@@ -35,6 +35,8 @@ void running_base_pid_to_stopped(void) {
     const uint8_t max_pwm_save = pid->max_pwm;
     uint8_t max_pwm = max_pwm_save;
 
+    if (sm->log_data) send_start_signal();
+
     while (pid->max_pwm) {
         if (!update_pid()) continue;
 
@@ -43,5 +45,6 @@ void running_base_pid_to_stopped(void) {
         if (sm->log_data) send_vision_data();
     }
 
+    if (sm->log_data) send_stop_signal();
     set_max_pwm(max_pwm_save);
 }
