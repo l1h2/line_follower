@@ -16,13 +16,11 @@ typedef enum { NONE, CROSSING, CURVE, MARKER } MemoryCounters;
 static struct {
     uint8_t counter;
     MemoryCounters last;
-    bool started;
-} memory = {0, NONE, false};
+} memory = {0, NONE};
 
 static void reset_memory(void) {
     memory.counter = 0;
     memory.last = NONE;
-    memory.started = false;
 }
 
 void reset_counters(void) {
@@ -36,6 +34,7 @@ void reset_counters(void) {
     track.pitch_counter = 0;
     track.section = 0;
     track.laps = 0;
+    track.started = false;
 
     reset_memory();
 }
@@ -85,10 +84,10 @@ static bool check_memory(const MemoryCounters counter_type) {
 }
 
 static void update_section(void) {
-    track.section = get_section(&track, memory.started);
+    track.section = get_section(&track, track.started);
 
-    if (!memory.started && track.section) {
-        memory.started = true;
+    if (!track.started && track.section) {
+        track.started = true;
     } else if (track.marker_counter >= 2) {
         complete_lap();
     }
@@ -102,22 +101,22 @@ static bool process_event(const MemoryCounters counter_type) {
     switch (counter_type) {
         case CROSSING:
             track.crossing_counter++;
-            // debug_print_string("C ");
+            debug_print_string("C ");
             break;
         case CURVE:
             track.curve_counter++;
-            // debug_print_string("V ");
+            debug_print_string("V ");
             break;
         case MARKER:
             track.marker_counter++;
-            // debug_print_string("M ");
+            debug_print_string("M ");
             break;
         default:
             return false;
     }
 
     update_section();
-    // debug_print_forward_sensors();
+    debug_print_forward_sensors();
     return true;
 }
 

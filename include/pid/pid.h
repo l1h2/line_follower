@@ -60,6 +60,12 @@ void set_kb(const uint8_t kb);
 void set_base_pwm(const uint8_t pwm);
 
 /**
+ * @brief Sets base PWM to safe stop value.
+ * @return uint8_t The old base PWM value to be saved and restored after stop.
+ */
+uint8_t set_stop_pwm(void);
+
+/**
  * @brief Sets the PWM value for the motors.
  * @param pwm The new PWM value to be set.
  */

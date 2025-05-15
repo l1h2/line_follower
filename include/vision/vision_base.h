@@ -47,6 +47,7 @@ typedef struct {
     uint8_t pitch_counter;       // Times the line is lost due to pitch
     int8_t section;              // Current section of the track
     uint8_t laps;                // Number of laps completed
+    bool started;                // If line follower has started the track
 } TrackCounters;
 
 #endif  // VISION_BASE_H

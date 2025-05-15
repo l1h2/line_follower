@@ -8,15 +8,16 @@
 #include "../../include/timer/time.h"
 #include "../../include/vision/vision.h"
 
-#define KP 16           // Proportional gain
-#define KI 0            // Integral gain
-#define KD 1000         // Derivative gain
-#define KFF 10          // Feedforward gain
-#define KB 0            // Brake gain
-#define INITIAL_PWM 70  // Initial PWM value to avoid acceleration issues
-#define BASE_PWM 90     // Base PWM value for the motors
+#define KP 16          // Proportional gain
+#define KI 0           // Integral gain
+#define KD 1000        // Derivative gain
+#define KFF 10         // Feedforward gain
+#define KB 5           // Brake gain
+#define INITIAL_PWM 0  // Initial PWM value to avoid acceleration issues
+#define STOP_PWM 40    // Stop PWM value
+#define BASE_PWM 90    // Base PWM value for the motors
 #define PID_FRAME_INTERVAL 1 * TIME_MULTIPLIER  // PID frame interval
-#define BRAKE_THRESHOLD 3                       // Threshold for braking factor
+#define BRAKE_THRESHOLD 2                       // Threshold for braking factor
 
 static PidStruct pid = {
     .kp = KP,
@@ -147,6 +148,12 @@ void set_base_pwm(const uint8_t pwm) {
     }
 
     pid.current_pwm = pid.base_pwm;
+}
+
+uint8_t set_stop_pwm(void) {
+    const uint8_t base_pwm = pid.base_pwm;
+    pid.base_pwm = STOP_PWM;
+    return base_pwm;
 }
 
 void set_current_pwm(const int16_t pwm) {
